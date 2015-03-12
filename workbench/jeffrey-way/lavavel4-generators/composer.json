@@ -1,0 +1,20 @@
+{
+    "name": "jeffrey-way/lavavel4-generators",
+    "description": "",
+    "authors": [
+        {
+            "name": "",
+            "email": ""
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "JeffreyWay\\Lavavel4Generators": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

@@ -1,0 +1,61 @@
+@extends('master')
+
+@section('products_active')
+    class="active"
+@stop
+
+@section('form_search')
+
+{{ Form::open(array('class'=>'navbar-form navbar-left','method'=>'get','role'=>'search','route'=>'products.index')) }}
+    <div class="form-group">
+        {{ Form::text('filter',$filter,array('class'=>'form-control','placeholder'=>'Search')) }}
+    </div>
+{{ Form::submit('Search', array('class'=>'btn btn-default')) }} 
+{{ Form::close() }}
+
+@stop
+
+@section('main')
+
+<p> {{ link_to_route('products.create', Lang::get('products.add.new')) }} </p>
+
+@if ($products->count())
+<table class="table table-striped table-ordered table-condensed">
+    <thead>
+        <tr>
+            <th>{{Lang::get('products.description')}}</th>
+            <th>{{Lang::get('products.short_description')}}</th>
+            <th>{{Lang::get('products.codes')}}</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($products as $product)
+        <tr>
+            <td> {{ $product->description }}  </td>
+            <td> {{ $product->short_description }}  </td>
+            
+            <td> @foreach ($product->productcodes as $productcode)
+                    {{'/ '. $productcode->description}}
+                 @endforeach
+            </td>
+            
+            <td> {{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
+            
+            <td> {{ link_to_route('productcodes.index', 'Codes', array('product_id'=>$product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
+
+            <td>
+                {{ Form::open(array('method'=>'DELETE', 'route'=>array('products.destroy', $product->id))) }}
+                {{ Form::submit('Delete', array('class'=>'btn btn-danger '.Config::get('global/default.button_size'), 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }} 
+                {{ Form::close() }}
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+{{ $products->appends(array('filter'=>$filter))->links() }}
+@else
+    There are no products
+@endif
+@stop
