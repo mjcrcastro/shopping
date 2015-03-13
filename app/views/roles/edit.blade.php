@@ -11,18 +11,21 @@
 <h1> Edit role </h1>
 
 
-{{ Form::model($role, array('method'=>'PATCH', 'route'=> array('inventions.update', $role->id)))  }}
+{{ Form::model($role, array('method'=>'PATCH', 'route'=> array('roles.update', $role->id)))  }}
 
-<dl class="dl-horizontal">
-    
-    <dt>
-    {{ Form::label('description', 'Description:') }}
-    </dt>
-    <dd>
-        {{ Form::text('docket_number') }}
-    </dd>
-                {{ Form::submit('submit', array('class'=>'btn')) }}
-</dl>
+    <ul>
+        
+        <li>
+            {{ Form::label('description', 'Role Description:') }}
+            {{ Form::text('description') }}
+        </li>
+
+        <li>
+            {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
+            {{ link_to_route('roles.index', 'cancel', $role->id, array('class'=>'btn')) }}
+        </li>
+
+    </ul>
 {{ Form::close() }}
 
 @if ($errors->any())

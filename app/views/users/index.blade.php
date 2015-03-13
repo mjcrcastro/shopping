@@ -27,6 +27,7 @@
             <td> {{ $user->username }}  </td>
             <td> {{ $user->name }}  </td>
             <td> {{ $user->email }}  </td>
+            <td> {{ $user->role->description }}  </td>
 
             <td> {{ link_to_route('users.edit', 'Edit', array($user->id), array('class'=>'btn btn-info')) }} </td>
 
