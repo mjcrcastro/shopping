@@ -27,7 +27,7 @@ class shopsController extends \BaseController {
      */
     public function create() {
         //Display form for creation of shops
-        $action_code ='shops_create';
+        $action_code ='shops_add';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
