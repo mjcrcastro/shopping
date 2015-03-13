@@ -30,6 +30,11 @@
         </li>
 
         <li>
+            {{ Form::label('name', 'Name:') }}
+            {{ Form::select('role_id', $roles) }}
+        </li>    
+      
+        <li>
             {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
             {{ link_to_route('users.index', 'cancel', $user->id, array('class'=>'btn')) }}
         </li>

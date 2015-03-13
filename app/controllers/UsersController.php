@@ -99,7 +99,8 @@ class UsersController extends \BaseController {
             if (is_null($user)) {
                 return Redirect::route('users.index');
             }
-            return View::make('users.edit', compact('user'));
+            $roles = Role::lists('description','id');
+            return View::make('users.edit', compact('user','roles'));
         }
     }
 
