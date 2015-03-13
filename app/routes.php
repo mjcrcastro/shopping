@@ -27,6 +27,8 @@ Route::group(array('before' => 'auth'), function() {
    
     Route::resource('shops', 'ShopsController');
     
+    Route::resource('generics','GenericsController');
+    
     /*
     // For testing queries
       Event::listen('illuminate.query', function($query, $params, $time, $conn)

@@ -51,7 +51,7 @@
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
                                         <li @yield('inventions_active')>{{ link_to_route('products.index','Products') }}</li>
                                         <li @yield('shops_active')> {{ link_to_route('shops.index','Shops')  }}</li>
-                                        <li @yield('tech_areas_active')>{{ link_to_route('products.index','Products')  }}</li>
+                                        <li @yield('generics_active')>{{ link_to_route('generics.index','Generics')  }}</li>
                                         <li class ="dropdown @yield('dropdown_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users and Roles<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
