@@ -44,6 +44,8 @@ class ActionsTableSeeder extends Seeder {
            array('id'=>17, 
                'description'=>'Update shop','code'=>'shops_update'),    
            array('id'=>18, 
+               'description'=>'Update shop','code'=>'shops_store'),  
+           array('id'=>19, 
                'description'=>'List shops','code'=>'shops_index'), 
         ));
     }

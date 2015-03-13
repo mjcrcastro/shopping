@@ -7,23 +7,21 @@
     class="active"
 @stop
 
+
 @section('main')
 
-<h1> Edit Shop </h1>
+<h1> Create Shop </h1>
 
-
-{{ Form::model($shop, array('method'=>'PATCH', 'route'=> array('shops.update', $shop->id)))  }}
+{{ Form::open(array('route'=>'shops.store')) }}
 
     <ul>
-        
         <li>
             {{ Form::label('description', 'Shop Description:') }}
             {{ Form::text('description') }}
         </li>
-
+       
         <li>
-            {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
-            {{ link_to_route('shops.index', 'cancel', $shop->id, array('class'=>'btn')) }}
+            {{ Form::submit('submit', array('class'=>'btn')) }}
         </li>
 
     </ul>
