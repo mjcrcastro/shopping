@@ -22,7 +22,7 @@
 
         <li>
             {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
-            {{ link_to_route('roles.index', 'cancel', $role->id, array('class'=>'btn')) }}
+            {{ link_to_route('roles.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
         </li>
 
     </ul>

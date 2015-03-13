@@ -21,7 +21,6 @@ class PermissionsController extends \BaseController {
             /*      For testing purposes only
               $queries = DB::getQueryLog();
               $last_query = end($queries);
-
               return($last_query);
 
              */

@@ -152,7 +152,7 @@ class shopsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'shops_delete';
+        $action_code = 'shops_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
