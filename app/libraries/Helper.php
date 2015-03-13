@@ -16,15 +16,13 @@ class Helper {
          * has been granted permissions, otherwise the answer is false
          */
 
-        return 0;
-
         $actions_allowed = $user->role->actions()->where('code', '=', $action_code)->get();
 
         return count($actions_allowed) ? 0 : 'Access denied to action : ' . Helper::actionDescription($action_code);
     }
 
     public static function actionDescription($action_code) {
-
+           //returns description of $action_code
         $actions_collection = Action::where('code', '=', $action_code)->get();
 
         foreach ($actions_collection as $action_record) {
@@ -33,7 +31,7 @@ class Helper {
     }
 
     public static function lastQuery() {
-
+        //returns last executed query
         $queries = DB::getQueryLog();
         $last_query = end($queries);
 

@@ -8,7 +8,7 @@ class shopsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Returns all roles to a view
+        //Returns all shops to a view
         $action_code ='shops_index';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -26,7 +26,7 @@ class shopsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //Display form for creation of roles
+        //Display form for creation of shops
         $action_code ='shops_create';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -42,7 +42,7 @@ class shopsController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //
+        //name of the action code, a corresponding entry in actions table
         $action_code = 'shops_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -53,16 +53,17 @@ class shopsController extends \BaseController {
             $validation = Validator::make($input, Shop::$rules);
 
             if ($validation->passes()) {
-
+                //if valid data, create a new shop
                 $shop = Shop::create($input);
-
+                //and return to the index
                 return Redirect::route('shops.index')
                                 ->with('message', 'Shop ' . $shop->description . ' created');
             }
-            return Redirect::route('shop.create')
-                            ->withInput()
-                            ->withErrors($validation)
-                            ->with('message', 'There were validation errors');
+            //if data is not valid, return to edition for additional input
+                return Redirect::route('shop.create')
+                                ->withInput()
+                                ->withErrors($validation)
+                                ->with('message', 'There were validation errors');
         }
     }
 
@@ -72,6 +73,7 @@ class shopsController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
+    //I do not actually use this function since is is a simple object
     public function show($id) {
         $action_code = 'shops_show';
         $message = Helper::usercan($action_code, Auth::user());
@@ -116,25 +118,26 @@ class shopsController extends \BaseController {
      */
     public function update($id) {
 
-        $action_code = 'roles_update';
+        $action_code = 'shops_update';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            //Receives and updates new role  data
+            //Receives and updates new shop data
             $input = Input::all();
-
-            $rules = array('description' => 'required|unique:roles,description,' . $id);
+            //make sure the description is unique but 
+            //exclude the $id for the current shop
+            $rules = array('description' => 'required|unique:shops,description,' . $id);
 
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                $role = Role::find($id);
-                $role->update($input);
-                return Redirect::route('roles.index');
+                $shop = Shop::find($id);
+                $shop->update($input);
+                return Redirect::route('shops.index');
             }
-            return Redirect::route('roles.edit', $id)
+            return Redirect::route('shops.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
@@ -149,13 +152,13 @@ class shopsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'roles_delete';
+        $action_code = 'shops_delete';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             Role::find($id)->delete();
-            return Redirect::route('roles.index');
+            return Redirect::route('shops.index');
         }
     }
 

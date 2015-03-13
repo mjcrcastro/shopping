@@ -12,7 +12,7 @@
  */
 
 Route::group(array('before' => 'auth'), function() {
-
+    //routes within this group require authentication
     Route::get('/', array('uses' => 'HomeController@showDashboard'));
         
     Route::resource('users', 'UsersController');

@@ -26,7 +26,7 @@ class ActionsTableSeeder extends Seeder {
            array('id'=>8, 
                'description'=>'Edit role','code'=>'roles_edit'),   
            array('id'=>9, 
-               'description'=>'Delete role','code'=>'roles_delte'),    
+               'description'=>'Delete role','code'=>'roles_delete'),    
            array('id'=>10, 
                'description'=>'Update role','code'=>'roles_update'),    
            array('id'=>11, 
@@ -36,7 +36,15 @@ class ActionsTableSeeder extends Seeder {
            array('id'=>13, 
                'description'=>'Update role','code'=>'roles_permissions_update'),
            array('id'=>14, 
-               'description'=>'List Shops','code'=>'shops_index'), 
+               'description'=>'Add shop','code'=>'shops_add'),   
+           array('id'=>15, 
+               'description'=>'Edit shop','code'=>'shops_edit'),   
+           array('id'=>16, 
+               'description'=>'Delete shop','code'=>'shops_delete'),    
+           array('id'=>17, 
+               'description'=>'Update shop','code'=>'shops_update'),    
+           array('id'=>18, 
+               'description'=>'List shops','code'=>'shops_index'), 
         ));
     }
 }
