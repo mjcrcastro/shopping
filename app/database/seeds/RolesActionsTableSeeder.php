@@ -54,6 +54,15 @@ class RolesActionsTableSeeder extends Seeder {
             array('id'=>15, 
                'role_id'=>'1',
                'action_id'=>'15',),
+            array('id'=>16, 
+               'role_id'=>'1',
+               'action_id'=>'15',),
+            array('id'=>17, 
+               'role_id'=>'1',
+               'action_id'=>'15',),
+            array('id'=>18, 
+               'role_id'=>'1',
+               'action_id'=>'15',),
         ));
     }
 }
