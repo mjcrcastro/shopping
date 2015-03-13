@@ -2,7 +2,7 @@
 
 @extends('master')
 
-@section('config_active')
+@section('dropdown_config')
     class = "active"
 @stop
 

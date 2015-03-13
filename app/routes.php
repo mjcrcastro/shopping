@@ -14,6 +14,8 @@
 Route::group(array('before' => 'auth'), function() {
     //routes within this group require authentication
     Route::get('/', array('uses' => 'HomeController@showDashboard'));
+    
+    Route::get('/about', array('uses' => 'HomeController@showDashboard'));
         
     Route::resource('users', 'UsersController');
 
@@ -28,6 +30,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('shops', 'ShopsController');
     
     Route::resource('generics','GenericsController');
+    
+    Route::resource('brands','BrandsController');
     
     /*
     // For testing queries

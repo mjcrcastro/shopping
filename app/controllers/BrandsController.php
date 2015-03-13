@@ -1,6 +1,6 @@
 <?php
 
-class GenericsController extends \BaseController {
+class BrandsController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -9,14 +9,14 @@ class GenericsController extends \BaseController {
      */
     public function index() {
         //Returns all generics to a view
-        $action_code ='generics_index';
+        $action_code ='brands_index';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            $generics = Generic::paginate(7);
+            $brands = Brand::paginate(7); //return all brands paginated to 7
 
-            return View::make('generics.index', compact('generics'));
+            return View::make('brands.index', compact('brands'));
         }
     }
 
@@ -26,13 +26,13 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //Display form for creation of generics
-        $action_code ='generics_create';
+        //Display form for creation of roles
+        $action_code ='brands_create';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            return View::make('generics.create');
+            return View::make('brands.create');
         }
     }
 
@@ -43,23 +43,23 @@ class GenericsController extends \BaseController {
      */
     public function store() {
         //
-        $action_code = 'generics_store';
+        $action_code = 'brands_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             $input = Input::all();
 
-            $validation = Validator::make($input, Generic::$rules);
+            $validation = Validator::make($input, Brand::$rules);
 
             if ($validation->passes()) {
 
-                $generic = Generic::create($input);
+                $brand = Brand::create($input);
 
-                return Redirect::route('generics.index')
-                                ->with('message', 'Generics ' . $generic->description . ' created');
+                return Redirect::route('brands.index')
+                                ->with('message', 'Brand ' . $brand->description . ' created');
             }
-            return Redirect::route('generics.create')
+            return Redirect::route('brands.create')
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors');
@@ -73,7 +73,7 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        $action_code = 'generics_show';
+        $action_code = 'brands_show';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -91,18 +91,18 @@ class GenericsController extends \BaseController {
      */
     public function edit($id) {
         //Redirect to Company editor
-        $action_code = 'generics_edit';
+        $action_code = 'brands_edit';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            $generic = Generic::find($id);
+            $brand = Brand::find($id);
 
-            if (is_null($generic)) {
-                return Redirect::route('generics.index');
+            if (is_null($brand)) {
+                return Redirect::route('brands.index');
             }
-            return View::make('generics.edit', compact('generic'));
+            return View::make('brands.edit', compact('brand'));
             // End of actual code to execute
         }
     }
@@ -115,25 +115,25 @@ class GenericsController extends \BaseController {
      */
     public function update($id) {
 
-        $action_code = 'generics_update';
+        $action_code = 'brands_update';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            //Receives and updates new generic  data
+            //Receives and updates new brands  data
             $input = Input::all();
 
-            $rules = array('description' => 'required|unique:generics,description,' . $id);
+            $rules = array('description' => 'required|unique:brands,description,' . $id);
 
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                $generic = Generic::find($id);
-                $generic->update($input);
-                return Redirect::route('generics.index');
+                $brand = Brand::find($id);
+                $brand->update($input);
+                return Redirect::route('brands.index');
             }
-            return Redirect::route('generics.edit', $id)
+            return Redirect::route('brands.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
@@ -148,13 +148,13 @@ class GenericsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'generics_destroy';
+        $action_code = 'brands_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            Generic::find($id)->delete();
-            return Redirect::route('generics.index');
+            Brand::find($id)->delete();
+            return Redirect::route('brands.index');
         }
     }
 

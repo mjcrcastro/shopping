@@ -52,6 +52,16 @@
                                         <li @yield('inventions_active')>{{ link_to_route('products.index','Products') }}</li>
                                         <li @yield('shops_active')> {{ link_to_route('shops.index','Shops')  }}</li>
                                         <li @yield('generics_active')>{{ link_to_route('generics.index','Generics')  }}</li>
+                                        
+                                        <li class ="dropdown @yield('config_active')">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<span class="caret"></span></a>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li> {{ link_to_route('shops.index','Shops') }} </li>
+                                                <li> {{ link_to_route('generics.index','Generics') }} </li>
+                                                <li> {{ link_to_route('brands.index','Brands') }} </li>
+                                            </ul>
+                                        </li>
+                                        
                                         <li class ="dropdown @yield('dropdown_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users and Roles<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
