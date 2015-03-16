@@ -4,7 +4,7 @@
     let know master blade that the shops 
     menu option needs to be highligted--}}
 @section('config_active')
-    class="active"
+    active
 @stop
 
 @section('main')
@@ -28,7 +28,9 @@
                     <td> {{ $descriptorType->description }}  </td>
 
                     <td> {{ link_to_route('descriptorsTypes.edit', 'Edit', array($descriptorType->id), array('class'=>'btn btn-info')) }} </td>
-
+                    
+                    <td> {{ link_to_route('descriptors.index', 'Descriptors', array('descriptorType_id'=>$descriptorType->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
+                    
                     <td>
                         {{ Form::open(array('method'=>'DELETE', 'route'=>array('descriptorsTypes.destroy', $descriptorType->id))) }}
                         {{ Form::submit('Delete', array('class'=>'btn btn-danger', 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }}

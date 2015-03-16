@@ -8,14 +8,32 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Returns all shops to a view
-        $action_code ='descriptors_index';
+        //Return all products
+
+        $action_code = 'descriptors_index';
+
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            $descriptors = Descriptor::paginate(7);
-            return View::make('descriptors.index', compact('descriptors'));
+
+            $descriptorType_id = Input::get('descriptorType_id');
+            $filter = Input::get('filter');
+
+            if ($filter) {
+
+                $descriptors = Descriptor::orderBy('description', 'asc')
+                        ->where('description', 'like', '%' . $filter . '%')
+                        ->where('descriptorType_id', '=', $descriptorType_id)
+                        ->paginate(7);
+            } else {
+                $descriptors = Descriptor::orderBy('description', 'asc')
+                        ->where('descriptorType_id', '=', $descriptorType_id)
+                        ->paginate(7);
+            }
+            return View::make('descriptors.index', compact('descriptors'))
+                            ->with('descriptorType_id', $descriptorType_id)
+                            ->with('filter', $filter);
         }
     }
 
@@ -25,13 +43,16 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //Display form for creation of shops
-        $action_code ='shops_add';
+        //Display form for creation of roles
+
+        $action_code = 'descriptors_create';
+
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            return View::make('shops.create');
+            return View::make('descriptors.create')
+                            ->with('descriptorType_id', Input::get('descriptorType_id'));
         }
     }
 
@@ -41,28 +62,28 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //name of the action code, a corresponding entry in actions table
-        $action_code = 'shops_store';
+        $action_code = 'descriptors_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
+            //Save new user data
             $input = Input::all();
 
-            $validation = Validator::make($input, Shop::$rules);
+            $validation = Validator::make($input, Descriptor::$rules);
 
             if ($validation->passes()) {
-                //if valid data, create a new shop
-                $shop = Shop::create($input);
-                //and return to the index
-                return Redirect::route('shops.index')
-                                ->with('message', 'Shop ' . $shop->description . ' created');
+
+                $descriptor = Descriptor::create($input);
+
+                $descriptorType_id = $descriptor->descriptorType_id;
+
+                return Redirect::route('descriptors.index', array('descriptorType_id' => $descriptorType_id, 'filter' => Input::get('filter')));
             }
-            //if data is not valid, return to edition for additional input
-                return Redirect::route('shop.create')
-                                ->withInput()
-                                ->withErrors($validation)
-                                ->with('message', 'There were validation errors');
+            return Redirect::route('descriptors.create')
+                            ->withInput()
+                            ->withErrors($validation)
+                            ->with('message', 'There were validation errors');
         }
     }
 
@@ -72,16 +93,8 @@ class DescriptorsController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
-    //I do not actually use this function since is is a simple object
     public function show($id) {
-        $action_code = 'shops_show';
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        } else {
-            //
-            return Redirect::to('/');
-        }
+        //
     }
 
     /**
@@ -91,20 +104,25 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //Redirect to Shops editor
-        $action_code = 'shops_edit';
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) { //I the user does not have permissions
-            return Redirect::back()->with('message', $message);
-        } else { //is the user has permissions
-            //Actual code to execute
-            $shop = Shop::find($id); //the the shop by the id
+        //Redirect to Company editor
+        $action_code = 'descriptors_edit';
 
-            if (is_null($shop)) { //if no shop is found
-                return Redirect::route('shops.index'); //go to previous page
+        $message = Helper::usercan($action_code, Auth::user());
+        if ($message) {
+            return Redirect::back()->with('message', $message);
+        } else {
+            //Actual code to execute
+            $descriptor = Descriptor::find($id);
+
+            if (is_null($descriptor)) {
+                return Redirect::route('descriptors.index', 
+                        array('descriptorType_id' => Input::get('descriptorType_id'),
+                            'filter' => Input::get('filter'))
+                        );
             }
-            //otherwise display the shop editor view
-            return View::make('shops.edit', compact('shop'));
+            return View::make('descriptors.edit', compact('descriptor'), 
+                    array('descriptorType_id' => Input::get('descriptorType_id'),
+                        'filter' => Input::get('filter')));
             // End of actual code to execute
         }
     }
@@ -117,26 +135,27 @@ class DescriptorsController extends \BaseController {
      */
     public function update($id) {
 
-        $action_code = 'shops_update';
+        $action_code = 'descriptors_update';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            //Receives and updates new shop data
+            //Receives and updates new role  data
             $input = Input::all();
-            //make sure the description is unique but 
-            //exclude the $id for the current shop
-            $rules = array('description' => 'required|unique:shops,description,' . $id);
 
-            $validation = Validator::make($input, $rules);
+            $validation = Validator::make($input, Descriptor::$rules);
 
             if ($validation->passes()) {
-                $shop = Shop::find($id);
-                $shop->update($input);
-                return Redirect::route('shops.index');
+                $descriptor = Descriptor::find($id);
+                $descriptor->update($input);
+                return Redirect::route('descriptors.index', 
+                        array('descriptorType_id' => Input::get('descriptorType_id'),
+                            'filter' => Input::get('filter'))
+                        );
             }
-            return Redirect::route('shops.edit', $id)
+            //if errors, return to edition
+            return Redirect::route('descriptors.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
@@ -151,13 +170,18 @@ class DescriptorsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'shops_destroy';
+        $action_code = 'descriptors_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            Role::find($id)->delete();
-            return Redirect::route('shops.index');
+            $descriptor = Descriptor::find($id);
+            $descriptorType_id = $descriptor->descriptorType_id;
+            $descriptor->delete();
+
+            return Redirect::route('descriptors.index',
+                    array('descriptorType_id'=>$descriptorType_id));
+                    
         }
     }
 

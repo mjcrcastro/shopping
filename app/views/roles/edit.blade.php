@@ -2,8 +2,8 @@
 
 @extends('master')
 
-@section('dropdown_role')
-    class = "active"
+@section('dropdown_active')
+    active
 @stop
 
 @section('main')

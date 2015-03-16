@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('products_active')
-    class="active"
+    active
 @stop
 
 @section('form_search')

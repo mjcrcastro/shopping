@@ -33,6 +33,9 @@ Route::group(array('before' => 'auth'), function() {
     
     Route::resource('descriptors','DescriptorsController');
     
+    Route::resource('purchases','PurchasesController');
+    
+    
     /*
     // For testing queries
       Event::listen('illuminate.query', function($query, $params, $time, $conn)

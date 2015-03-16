@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('dropdown_active')
-   class = "active"
+   active
 @stop
 
 
