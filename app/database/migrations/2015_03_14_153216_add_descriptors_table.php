@@ -16,9 +16,12 @@ class AddDescriptorsTable extends Migration {
             
                  Schema::create('descriptors', function($table) {
                    $table->increments('id');
-                   $table->integer('descriptor_id')->index()->references('id')->on('descriptors');
-                   $table->integer('category_id')->index()->references('id')->on('categories');
                    $table->string('description');
+                   //id of parent descriptor
+                   $table->integer('descriptor_id')->default(0)
+                           //this is a selfrerencing table
+                           //parents are categories, childs are values
+                           ->index()->references('id')->on('descriptors');
                    $table->timestamps();
                });
 	}

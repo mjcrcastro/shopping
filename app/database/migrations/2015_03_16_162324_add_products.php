@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFlavorsTable extends Migration {
+class AddProducts extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class AddFlavorsTable extends Migration {
 	 */
 	public function up()
 	{
-		//Add product codes
-            //Add products table
-            
-                 Schema::create('flavors', function($table) {
+               
+            //For storing the descriptors of a given product
+                   Schema::create('products', function($table) {
                    $table->increments('id');
-                   $table->string('description');
                    $table->timestamps();
-               });
+                    });
 	}
 
 	/**
@@ -29,8 +27,8 @@ class AddFlavorsTable extends Migration {
 	 */
 	public function down()
 	{
-		//Drop table product codes
-                Schema::drop('flavors');
+		//
+            Schema::drop('products');
 	}
 
 }

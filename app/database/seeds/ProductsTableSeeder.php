@@ -9,14 +9,12 @@
 class ProductsTableSeeder extends Seeder {
     public function run () {
         DB::table('products')->insert(array(
-           array('id'=>1, 
-               'generic_id'=>"1",
-               'brand_id'=>"1",
-               'style_id'=>"1",
-               'package_id'=>"1",
-               'size_id'=>"1",
-               'color_id'=>"1",
-               'flavor_id'=>"1",),
+           array('id'=>1,),
+           array('id'=>2,),
+           array('id'=>3,),
+           array('id'=>4,),
+           array('id'=>5,),
+           array('id'=>6,), 
         ));
     }
 }

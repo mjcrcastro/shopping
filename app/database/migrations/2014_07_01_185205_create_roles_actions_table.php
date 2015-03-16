@@ -14,8 +14,10 @@ class CreateRolesActionsTable extends Migration {
 	{
                    Schema::create('roles_actions', function($table) {
                    $table->increments('id');
-                   $table->integer('action_id')->index()->references('id')->on('actions');
-                   $table->integer('role_id')->index()->references('id')->on('roles');
+                   $table->integer('action_id')
+                           ->index()->references('id')->on('actions');
+                   $table->integer('role_id')
+                           ->index()->references('id')->on('roles');
                    $table->timestamps();
                });
 	}
