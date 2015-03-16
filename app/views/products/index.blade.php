@@ -24,8 +24,6 @@
     <thead>
         <tr>
             <th>{{Lang::get('products.description')}}</th>
-            <th>{{Lang::get('products.short_description')}}</th>
-            <th>{{Lang::get('products.codes')}}</th>
             <th></th>
             <th></th>
         </tr>
@@ -34,16 +32,10 @@
         @foreach ($products as $product)
         <tr>
             <td> {{ $product->description }}  </td>
-            <td> {{ $product->short_description }}  </td>
-            
-            <td> @foreach ($product->productcodes as $productcode)
-                    {{'/ '. $productcode->description}}
-                 @endforeach
-            </td>
             
             <td> {{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
             
-            <td> {{ link_to_route('productcodes.index', 'Codes', array('product_id'=>$product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
+            <td> {{-- link_to_route('productDescriptors.index', 'Descriptors', array('product_id'=>$product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) --}} </td>
 
             <td>
                 {{ Form::open(array('method'=>'DELETE', 'route'=>array('products.destroy', $product->id))) }}

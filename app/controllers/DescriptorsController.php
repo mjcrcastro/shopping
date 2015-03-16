@@ -8,7 +8,7 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Return all products
+        //Return all descriptors
 
         $action_code = 'descriptors_index';
 

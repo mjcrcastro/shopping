@@ -72,7 +72,19 @@ class ActionsTableSeeder extends Seeder {
            array('id'=>31, 
                'description'=>'Update Descriptor type','code'=>'descriptorsTypes_store'),  
            array('id'=>32, 
-               'description'=>'List Descriptor types','code'=>'descriptorsTypes_index'),  
+               'description'=>'List Descriptor types','code'=>'descriptorsTypes_index'),
+           array('id'=>33, 
+               'description'=>'Add product','code'=>'products_create'),   
+           array('id'=>34, 
+               'description'=>'Edit product','code'=>'products_edit'),   
+           array('id'=>35, 
+               'description'=>'Delete product','code'=>'products_destroy'),    
+           array('id'=>36, 
+               'description'=>'Update product','code'=>'products_update'),    
+           array('id'=>37, 
+               'description'=>'Update product','code'=>'products_store'),  
+           array('id'=>38, 
+               'description'=>'List products','code'=>'products_index'),  
         ));
     }
 }

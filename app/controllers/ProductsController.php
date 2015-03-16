@@ -20,17 +20,17 @@ class ProductsController extends \BaseController {
             $filter = Input::get('filter');
 
             if ($filter) {
+                
+                $products = Product::whereHas('descriptors', function($q)
+                {
+                    $q->where('description', 'like', '%' . $filter . '%');
 
-                $products = Product::orderBy('description','asc')                        
-                        ->where('description', 'like', '%' . $filter . '%')
-                        ->orWhere('short_description', 'like', '%' . $filter . '%')
-                        ->paginate(Config::get('global/default.rows'));
-
+                })->paginate(Config::get('global/default.rows'));
+                
                 return View::make('products.index', compact('products'))
                                 ->with('filter', $filter);
             } else {
-                $products = Product::orderBy('description','asc')
-                        ->paginate(Config::get('global/default.rows'));
+                $products = Product::paginate(Config::get('global/default.rows'));
 
                 return View::make('products.index', compact('products'))
                                 ->with('filter', $filter);
