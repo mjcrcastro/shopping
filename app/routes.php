@@ -25,13 +25,13 @@ Route::group(array('before' => 'auth'), function() {
 
     Route::resource('actions', 'ActionsController');
     
-    Route::resource('products','ProductsController');
-   
     Route::resource('shops', 'ShopsController');
     
-    Route::resource('generics','GenericsController');
+    Route::resource('products','ProductsController');
     
-    Route::resource('brands','BrandsController');
+    Route::resource('descriptorsTypes','DescriptorsTypesController');
+    
+    Route::resource('descriptors','DescriptorsController');
     
     /*
     // For testing queries

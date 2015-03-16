@@ -1,6 +1,6 @@
 <?php
 
-class BrandsController extends \BaseController {
+class DescriptorsController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -8,15 +8,14 @@ class BrandsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Returns all generics to a view
-        $action_code ='brands_index';
+        //Returns all shops to a view
+        $action_code ='descriptors_index';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            $brands = Brand::paginate(7); //return all brands paginated to 7
-
-            return View::make('brands.index', compact('brands'));
+            $descriptors = Descriptor::paginate(7);
+            return View::make('descriptors.index', compact('descriptors'));
         }
     }
 
@@ -26,13 +25,13 @@ class BrandsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //Display form for creation of roles
-        $action_code ='brands_create';
+        //Display form for creation of shops
+        $action_code ='shops_add';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            return View::make('brands.create');
+            return View::make('shops.create');
         }
     }
 
@@ -42,27 +41,28 @@ class BrandsController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //
-        $action_code = 'brands_store';
+        //name of the action code, a corresponding entry in actions table
+        $action_code = 'shops_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             $input = Input::all();
 
-            $validation = Validator::make($input, Brand::$rules);
+            $validation = Validator::make($input, Shop::$rules);
 
             if ($validation->passes()) {
-
-                $brand = Brand::create($input);
-
-                return Redirect::route('brands.index')
-                                ->with('message', 'Brand ' . $brand->description . ' created');
+                //if valid data, create a new shop
+                $shop = Shop::create($input);
+                //and return to the index
+                return Redirect::route('shops.index')
+                                ->with('message', 'Shop ' . $shop->description . ' created');
             }
-            return Redirect::route('brands.create')
-                            ->withInput()
-                            ->withErrors($validation)
-                            ->with('message', 'There were validation errors');
+            //if data is not valid, return to edition for additional input
+                return Redirect::route('shop.create')
+                                ->withInput()
+                                ->withErrors($validation)
+                                ->with('message', 'There were validation errors');
         }
     }
 
@@ -72,8 +72,9 @@ class BrandsController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
+    //I do not actually use this function since is is a simple object
     public function show($id) {
-        $action_code = 'brands_show';
+        $action_code = 'shops_show';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -90,19 +91,20 @@ class BrandsController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //Redirect to Company editor
-        $action_code = 'brands_edit';
+        //Redirect to Shops editor
+        $action_code = 'shops_edit';
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
+        if ($message) { //I the user does not have permissions
             return Redirect::back()->with('message', $message);
-        } else {
+        } else { //is the user has permissions
             //Actual code to execute
-            $brand = Brand::find($id);
+            $shop = Shop::find($id); //the the shop by the id
 
-            if (is_null($brand)) {
-                return Redirect::route('brands.index');
+            if (is_null($shop)) { //if no shop is found
+                return Redirect::route('shops.index'); //go to previous page
             }
-            return View::make('brands.edit', compact('brand'));
+            //otherwise display the shop editor view
+            return View::make('shops.edit', compact('shop'));
             // End of actual code to execute
         }
     }
@@ -115,25 +117,26 @@ class BrandsController extends \BaseController {
      */
     public function update($id) {
 
-        $action_code = 'brands_update';
+        $action_code = 'shops_update';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            //Receives and updates new brands  data
+            //Receives and updates new shop data
             $input = Input::all();
-
-            $rules = array('description' => 'required|unique:brands,description,' . $id);
+            //make sure the description is unique but 
+            //exclude the $id for the current shop
+            $rules = array('description' => 'required|unique:shops,description,' . $id);
 
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                $brand = Brand::find($id);
-                $brand->update($input);
-                return Redirect::route('brands.index');
+                $shop = Shop::find($id);
+                $shop->update($input);
+                return Redirect::route('shops.index');
             }
-            return Redirect::route('brands.edit', $id)
+            return Redirect::route('shops.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
@@ -148,13 +151,13 @@ class BrandsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'brands_destroy';
+        $action_code = 'shops_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            Brand::find($id)->delete();
-            return Redirect::route('brands.index');
+            Role::find($id)->delete();
+            return Redirect::route('shops.index');
         }
     }
 

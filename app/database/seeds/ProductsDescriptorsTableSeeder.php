@@ -8,7 +8,7 @@
 
 class ProductsDescriptorsTableSeeder extends Seeder {
     public function run () {
-        DB::table('roles_actions')->insert(array(
+        DB::table('products_descriptors')->insert(array(
             array('id'=>1,
                 'product_id'=>'1',
                 'descriptor_id'=>'1',),

@@ -1,6 +1,6 @@
 <?php
 
-class GenericsController extends \BaseController {
+class DescriptorsTypesController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -8,15 +8,14 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Returns all generics to a view
-        $action_code ='generics_index';
+        //Returns all shops to a view
+        $action_code ='descriptorsTypes_index';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            $generics = Generic::paginate(7);
-
-            return View::make('generics.index', compact('generics'));
+            $descriptorsTypes = DescriptorType::paginate(7);
+            return View::make('descriptorsTypes.index', compact('descriptorsTypes'));
         }
     }
 
@@ -26,13 +25,13 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //Display form for creation of generics
-        $action_code ='generics_create';
+        //Display form for creation of shops
+        $action_code ='descriptorsTypes_create';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            return View::make('generics.create');
+            return View::make('descriptorsTypes.create');
         }
     }
 
@@ -42,27 +41,28 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //
-        $action_code = 'generics_store';
+        //name of the action code, a corresponding entry in actions table
+        $action_code = 'descriptorsTypes_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             $input = Input::all();
 
-            $validation = Validator::make($input, Generic::$rules);
+            $validation = Validator::make($input, DescriptorType::$rules);
 
             if ($validation->passes()) {
-
-                $generic = Generic::create($input);
-
-                return Redirect::route('generics.index')
-                                ->with('message', 'Generics ' . $generic->description . ' created');
+                //if valid data, create a new shop
+                $descriptorType = DescriptorType::create($input);
+                //and return to the index
+                return Redirect::route('descriptorsTypes.index')
+                                ->with('message', 'Descriptor Type ' . $descriptorType->description . ' created');
             }
-            return Redirect::route('generics.create')
-                            ->withInput()
-                            ->withErrors($validation)
-                            ->with('message', 'There were validation errors');
+            //if data is not valid, return to edition for additional input
+                return Redirect::route('descriptorsTypes.create')
+                                ->withInput()
+                                ->withErrors($validation)
+                                ->with('message', 'There were validation errors');
         }
     }
 
@@ -72,8 +72,9 @@ class GenericsController extends \BaseController {
      * @param  int  $id
      * @return Response
      */
+    //I do not actually use this function since is is a simple object
     public function show($id) {
-        $action_code = 'generics_show';
+        $action_code = 'descriptorsTypes_show';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -90,19 +91,20 @@ class GenericsController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //Redirect to Company editor
-        $action_code = 'generics_edit';
+        //Redirect to Shops editor
+        $action_code = 'descriptorsTypes_edit';
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
+        if ($message) { //I the user does not have permissions
             return Redirect::back()->with('message', $message);
-        } else {
+        } else { //is the user has permissions
             //Actual code to execute
-            $generic = Generic::find($id);
+            $descriptorType = DescriptorType::find($id); //the the shop by the id
 
-            if (is_null($generic)) {
-                return Redirect::route('generics.index');
+            if (is_null($descriptorType)) { //if no shop is found
+                return Redirect::route('descriptorsTypes.index'); //go to previous page
             }
-            return View::make('generics.edit', compact('generic'));
+            //otherwise display the shop editor view
+            return View::make('descriptorsTypes.edit', compact('descriptorType'));
             // End of actual code to execute
         }
     }
@@ -115,25 +117,26 @@ class GenericsController extends \BaseController {
      */
     public function update($id) {
 
-        $action_code = 'generics_update';
+        $action_code = 'descriptorsTypes_update';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
             //Actual code to execute
-            //Receives and updates new generic  data
+            //Receives and updates new shop data
             $input = Input::all();
-
-            $rules = array('description' => 'required|unique:generics,description,' . $id);
+            //make sure the description is unique but 
+            //exclude the $id for the current shop
+            $rules = array('description' => 'required|unique:descriptors_types,description,' . $id);
 
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                $generic = Generic::find($id);
-                $generic->update($input);
-                return Redirect::route('generics.index');
+                $descriptorType =DescriptorType::find($id);
+                $descriptorType->update($input);
+                return Redirect::route('descriptorsTypes.index');
             }
-            return Redirect::route('generics.edit', $id)
+            return Redirect::route('descriptorsTypes.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
@@ -148,13 +151,13 @@ class GenericsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'generics_destroy';
+        $action_code = 'descriptorsTypes_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            Generic::find($id)->delete();
-            return Redirect::route('generics.index');
+            DescriptorType::find($id)->delete();
+            return Redirect::route('descriptorsTypes.index');
         }
     }
 

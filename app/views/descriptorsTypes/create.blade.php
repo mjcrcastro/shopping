@@ -1,19 +1,22 @@
 @extends('master')
 
+{{-- The next section only serves to 
+    let know master blade that the shops 
+    menu option needs to be highligted--}}
 @section('config_active')
-   class = "active"
+    class="active"
 @stop
 
 
 @section('main')
 
-<h1> Create Generic name </h1>
+<h1> Create Descriptor type </h1>
 
-{{ Form::open(array('route'=>'generics.store')) }}
+{{ Form::open(array('route'=>'descriptorsTypes.store')) }}
 
     <ul>
         <li>
-            {{ Form::label('description', 'Generic Name:') }}
+            {{ Form::label('description', 'Description:') }}
             {{ Form::text('description') }}
         </li>
        

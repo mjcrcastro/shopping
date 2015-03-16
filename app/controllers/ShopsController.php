@@ -1,6 +1,6 @@
 <?php
 
-class shopsController extends \BaseController {
+class ShopsController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -157,7 +157,7 @@ class shopsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            Role::find($id)->delete();
+            Shop::find($id)->delete();
             return Redirect::route('shops.index');
         }
     }
