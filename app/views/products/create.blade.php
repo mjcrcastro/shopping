@@ -6,14 +6,30 @@
 
 @section('header')
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script type='text/javascript'> 
+      
+    $(window).load(function(){
+    $(function() {
+            var scntDiv = $('#descriptors');
+            var i = $('#p_scents p').size() + 1;
 
-    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+            $(document).on('click', '#addDescriptor',function() {
+                    $('<p> {{ Form::select('descriptors[]', $descriptors) }} <a href="#" id="removedescriptor">Remove</a></p>').appendTo(scntDiv);
+                      i++;
+                      return false;
+                  });
 
-    <script>
-        $(function() {
-            $("#inventor_review_date").datepicker();
-        });
+                  $(document).on('click', '#removedescriptor', function () {
+                      if (i > 1) {
+                          $(this).parents('p').remove();
+                          i--;
+                      }
+                      return false;
+                  });
+              });
+
+          });
+    
     </script>
 
 @stop
@@ -26,35 +42,25 @@
 
     <div class="form-group">
 
-            <dt>
-            {{ Form::label('description', 'Long description:') }}
-            </dt>
-            <dd>
-                {{ Form::text('description') }}
-            </dd>
-            <dt>
-            {{ Form::label('short_description', 'Short description:') }}
-            </dt>
-            
-            <dd>
-                {{ Form::text('short_description') }}
-            </dd>
-            
-             <dt>
-            {{ Form::label('product_code', 'Product code:') }}
-            </dt>
-            
-            <dd>
-                {{ Form::text('product_code') }}
-            </dd>
-            
-            
-            <dt>
-            {{ Form::submit('submit', array('class'=>'btn')) }}
-            </dt>
+        <div id="descriptors">
+            <p>
+                
+                {{ Form::select('descriptors[]', $descriptors) }}
+                
+            </p>
+        </div>
+        
+        <a href="#" id="addDescriptor">Add another descriptor</a>
+        
+        <dt>
+        {{ Form::submit('submit', array('class'=>'btn btn-info')) }}
+        {{ link_to_route('products.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
+        </dt>
     </div>
 
     {{ Form::close() }}
+    
+    
 
     @if ($errors->any())
     <ul>

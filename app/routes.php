@@ -35,6 +35,8 @@ Route::group(array('before' => 'auth'), function() {
     
     Route::resource('purchases','PurchasesController');
     
+    Route::get('jdescriptors','DescriptorsController@axdescriptors');
+    
     
     /*
     // For testing queries
@@ -63,5 +65,5 @@ Route::get('denied', array('uses' => 'LoginController@denied'));
 
 //To tell the user that the resource was not found.
 App::missing(function($exception){
-return Response::make("Page not found", 404);
+    return Response::make("Page not found", 404);
 });

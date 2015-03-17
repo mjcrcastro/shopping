@@ -20,6 +20,12 @@
             {{ Form::label('username', 'Username:') }}
             {{ Form::text('username') }}
         </li>
+        
+        <li>
+            {{ Form::label('role', 'Role:') }}
+            {{ Form::select('role_id', $roles) }}
+        </li>   
+        
         <li>
             {{ Form::label('password', 'Password:') }}
             {{ Form::password('password') }}

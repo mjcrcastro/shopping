@@ -94,7 +94,7 @@ class DescriptorsController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        //
+        
     }
 
     /**
@@ -184,5 +184,30 @@ class DescriptorsController extends \BaseController {
                     
         }
     }
+    /*
+     * Returns a json string with all desciptors from filter
+     */
+    public function axdescriptors() {
 
+        $action_code = 'products_index';
+
+        $message = Helper::usercan($action_code, Auth::user());
+        if ($message) {
+            return Redirect::back()->with('message', $message);
+        } else {
+            
+            if (Request::ajax()) {
+
+            $filter = Input::get('term');
+            //Will use the show function to return a json for ajax
+            $descriptors = Descriptor::orderBy('description', 'asc')
+                    ->where('description', 'like', '%' . $filter . '%')
+                    ->get();
+            return Response::json($descriptors);
+            }else{
+                return Response::make("Page not found", 404);
+            }            
+        }
+    }
+    
 }

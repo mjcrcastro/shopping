@@ -32,8 +32,8 @@ class UsersController extends \BaseController {
             return Redirect::back()->with('message', $message);
         } else {
             //For adding new users
-
-            return View::make('users.create');
+            $roles = Role::lists('description','id');
+            return View::make('users.create',compact('roles'));
         }
     }
 
@@ -61,6 +61,7 @@ class UsersController extends \BaseController {
                 $user->name = Input::get('name');
                 $user->email = Input::get('email');
                 $user->password = Hash::make(Input::get('password'));
+                $user->role_id = Input::get('role_id');
                 $user->save();
 
                 return Redirect::route('users.index');

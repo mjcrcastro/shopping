@@ -17,11 +17,12 @@
 
         <!-- script src="https://code.jquery.com/jquery.js"></script-->
         {{ HTML::script('js/jquery/jquery.js') }}
+        {{ HTML::script('js/jquery/jquery-ui.js') }}
 
         <!-- script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script-->
         {{ HTML::script('js/bootstrap/bootstrap.js') }}
 
-        @yield('header') <!-- Header is here to include required functions -->
+        @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
 

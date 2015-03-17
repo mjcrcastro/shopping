@@ -26,17 +26,20 @@
             <th>{{Lang::get('products.description')}}</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach ($products as $product)
         <tr>
-            <td> {{ $product->description }}  </td>
             
-            <td> {{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
+            <td> @foreach ($product->productDescriptors as $productdescriptor)
+                    {{ $productdescriptor->descriptor->description.' '}}
+                 @endforeach
+            </td>
+               
+            <td>{{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
             
-            <td> {{-- link_to_route('productDescriptors.index', 'Descriptors', array('product_id'=>$product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) --}} </td>
-
             <td>
                 {{ Form::open(array('method'=>'DELETE', 'route'=>array('products.destroy', $product->id))) }}
                 {{ Form::submit('Delete', array('class'=>'btn btn-danger '.Config::get('global/default.button_size'), 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }} 

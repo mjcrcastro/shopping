@@ -51,7 +51,8 @@ class ProductsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            return View::make('products.create');
+            $descriptors = Descriptor::lists('description','id');
+            return View::make('products.create',compact('descriptors'));
         }
     }
 
@@ -66,31 +67,25 @@ class ProductsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-            //Save new user data
-            $input = Input::all();
-
-            $validation = Validator::make($input, Product::$rules);
-
-            if ($validation->passes()) {
-
-                $product = new Product;
-                
-                $product->description = Input::get('description');
-                $product->short_description = Input::get('short_description');
-                $product->save();
-                
-                $product_code = new ProductCode;
-                
-                $product_code->description = Input::get('product_code'); 
-                $product_code->product_id = $product->id; 
-                $product_code->save();
-
-                return Redirect::route('products.index');
+                       
+            //Receives and updates new company data
+            $input = Input::get('descriptor_id');
+            
+            //first check if the product has been already created
+            //will create validation here.
+            //first run over all the array to add the role_id
+            
+            $product = new Product;
+            $product->save();
+            
+            foreach ($input as &$row) {
+                $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
             }
-            return Redirect::route('products.create')
-                            ->withInput()
-                            ->withErrors($validation)
-                            ->with('message', 'There were validation errors');
+
+            ProductDescriptor::insert($data);
+
+            return Redirect::route('products.index');
+            
         }
     }
 
