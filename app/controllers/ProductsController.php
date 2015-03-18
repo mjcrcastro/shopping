@@ -71,13 +71,8 @@ class ProductsController extends \BaseController {
             //Receives and updates new company data
             $input = Input::get('descriptors');
 
-            //first check if the product has been already created
-            
-            $result = ProductDescriptor::where('descriptor_id', '=', 100)->get();
-            
-            return $result; 
-            
-            if (!$result) {//check for duplicate products
+            // check if the product has already been created
+            if (Helper::) {//check for duplicate products
                 $product = new Product;
                 $product->save();
 

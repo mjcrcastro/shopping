@@ -37,5 +37,16 @@ class Helper {
 
         return $last_query;
     }
+    
+    public static function productExists($data, $position) {
+        if($position === $data.length - 1 ){
+            return ProductDescriptor::where('descriptor_id','=',$data[$position])
+                    ->get();
+        }else{
+            return ProductDescriptor::where('descriptor_id','=',$data[$position])
+                    ->get() && productExists($data, $position+1);
+        }
+            
+    }
 
 }
