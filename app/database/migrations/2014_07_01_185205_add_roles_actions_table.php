@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesActionsTable extends Migration {
+class AddRolesActionsTable extends Migration {
 
 	/**
 	 * Run the migrations.

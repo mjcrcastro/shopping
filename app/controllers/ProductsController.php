@@ -19,7 +19,7 @@ class ProductsController extends \BaseController {
 
         $filter = Input::get('filter');
         
-        if (true) {
+        if ($filter) {
             //this query depends on the definition of 
             //function productDescriptors in the products model
             //productDescriptors returns all of this product descriptors
@@ -115,13 +115,7 @@ class ProductsController extends \BaseController {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
         //Actual code to execute
-        $product = Product::find($id);
-
-        if (is_null($product)) {
-            return Redirect::route('products.index');
-        }
-        return View::make('products.edit', compact('product'));
-        // End of actual code to execute
+        return Redirect::route('products.index');
     }
 
     /**
@@ -140,22 +134,7 @@ class ProductsController extends \BaseController {
         //
         //Actual code to execute
         //Receives and updates new role  data
-        $input = Input::all();
-
-        $rules = array('short_description' => 'required|unique:products,description,' . $id,
-            'description' => 'required',);
-
-        $validation = Validator::make($input, $rules);
-
-        if ($validation->passes()) {
-            $product = Product::find($id);
-            $product->update($input);
-            return Redirect::route('products.index');
-        }
-        return Redirect::route('products.edit', $id)
-                        ->withInput()
-                        ->withErrors($validation)
-                        ->with('message', 'There were validation errors.');
+        
     }
 
     /**

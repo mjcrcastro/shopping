@@ -138,6 +138,9 @@ class RolesActionsTableSeeder extends Seeder {
            array('id' => 43,
                 'role_id' => '1',
                 'action_id' => '43',), 
+           array('id' => 44,
+                'role_id' => '1',
+                'action_id' => '44',),  
         ));
     }
 }

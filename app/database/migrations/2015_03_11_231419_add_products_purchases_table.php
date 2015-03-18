@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPurchasesTable extends Migration {
+class AddProductsPurchasesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -14,15 +14,12 @@ class AddPurchasesTable extends Migration {
 	{
 		//Add products table
             
-                 Schema::create('purchases', function($table) {
+                 Schema::create('products_purchases', function($table) {
                    $table->increments('id');
                    $table->integer('product_id')
                            ->index()->references('id')->on('products');
-                   $table->integer('shop_id')
-                           ->index()->references('id')->on('shops');
                    $table->float('amount');
                    $table->float('total');
-                   $table->datetime('purchase_date');
                    $table->timestamps();
                });
 	}
@@ -35,7 +32,7 @@ class AddPurchasesTable extends Migration {
 	public function down()
 	{
 		//Drop table products
-            Schema::drop('purchases');
+            Schema::drop('products_purchases');
 	}
 
 }

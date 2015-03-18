@@ -10,7 +10,7 @@ class PurchasesController extends \BaseController {
     public function index() {
         //Return all products
 
-        $action_code = 'products_index';
+        $action_code = 'purchases_index';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -19,7 +19,7 @@ class PurchasesController extends \BaseController {
 
         $filter = Input::get('filter');
         
-        if (true) {
+        if ($filter) {
             //this query depends on the definition of 
             //function productDescriptors in the products model
             //productDescriptors returns all of this product descriptors

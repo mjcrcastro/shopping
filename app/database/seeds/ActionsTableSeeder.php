@@ -84,7 +84,20 @@ class ActionsTableSeeder extends Seeder {
            array('id'=>37, 
                'description'=>'Update product','code'=>'products_store'),  
            array('id'=>38, 
-               'description'=>'List products','code'=>'products_index'),  
+               'description'=>'List products','code'=>'products_index'), 
+            
+           array('id'=>39, 
+               'description'=>'Add purchase','code'=>'purchases_create'),   
+           array('id'=>40, 
+               'description'=>'Edit purchase','code'=>'purchases_edit'),   
+           array('id'=>41, 
+               'description'=>'Delete purchase','code'=>'purchases_destroy'),    
+           array('id'=>42, 
+               'description'=>'Update purchase','code'=>'purchases_update'),    
+           array('id'=>43, 
+               'description'=>'Update purchase','code'=>'purchases_store'),  
+           array('id'=>44, 
+               'description'=>'List purchases','code'=>'purchases_index'), 
         ));
     }
 }
