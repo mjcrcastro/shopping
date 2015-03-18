@@ -12,7 +12,11 @@ class DescriptorsTableSeeder extends Seeder {
            array('id'=>1,'descriptorType_id'=>1,'description'=>"Salsa de Tomate",),
            array('id'=>2,'descriptorType_id'=>2,'description'=>"Naturas",),
            array('id'=>3,'descriptorType_id'=>3,'description'=>"Bolsa",), 
-           array('id'=>4,'descriptorType_id'=>4,'description'=>"220 gr",),  
+           array('id'=>4,'descriptorType_id'=>4,'description'=>"220 gr",),
+           array('id'=>5,'descriptorType_id'=>1,'description'=>"Leche de Sabor",),
+           array('id'=>6,'descriptorType_id'=>2,'description'=>"Centrolac",),
+           array('id'=>7,'descriptorType_id'=>3,'description'=>"Caja",), 
+           array('id'=>8,'descriptorType_id'=>4,'description'=>"250 ml",),   
         ));
     }
 }
