@@ -18,7 +18,7 @@ class Product extends Eloquent {
     protected $guarded = array('id');
     // $ fillable are fields that can be sent as input
     
-    public function productDescriptors() {
-        return $this->hasMany('ProductDescriptor');
+    public function productDescriptors(){
+        return $this->belongsToMany('Descriptor','products_descriptors');
     }
 }

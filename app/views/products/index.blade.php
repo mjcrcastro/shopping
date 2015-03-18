@@ -34,12 +34,10 @@
         <tr>
             
             <td> @foreach ($product->productDescriptors as $productdescriptor)
-                    {{ $productdescriptor->descriptor->description.' '}}
+                    {{ $productdescriptor->description.' '}}
                  @endforeach
             </td>
                
-            <td>{{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} </td>
-            
             <td>
                 {{ Form::open(array('method'=>'DELETE', 'route'=>array('products.destroy', $product->id))) }}
                 {{ Form::submit('Delete', array('class'=>'btn btn-danger '.Config::get('global/default.button_size'), 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }} 

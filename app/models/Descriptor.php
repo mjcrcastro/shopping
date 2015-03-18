@@ -23,4 +23,8 @@ class Descriptor extends Eloquent {
         'description' => 'required|unique:shops',
     );
     
+    public function descriptorProducts(){
+        return $this->belongsToMany('Product');
+    }
+    
 }

@@ -38,15 +38,30 @@ class Helper {
         return $last_query;
     }
     
-    public static function productExists($data, $position) {
-        if($position === $data.length - 1 ){
-            return ProductDescriptor::where('descriptor_id','=',$data[$position])
-                    ->get();
-        }else{
-            return ProductDescriptor::where('descriptor_id','=',$data[$position])
-                    ->get() && productExists($data, $position+1);
-        }
+    public static function productGet($descriptors) {
+            $filter = Helper::toGroupCount($descriptors);
+            //returns an empty aray if no product, having
+            //the given descriptors exists
+            //returns the identified produc otherwise
+            return DB::table('products_descriptors')
+                     ->select('product_id')
+                     ->havingRaw("GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='".$filter."'")
+                     ->groupBy('product_id')
+                     ->get();
             
+    }
+    
+    public static function toGroupCount($data) {
+        //prepare the filter for the query
+
+        $filter = '';
+
+        for ($nCount = 0; $nCount < sizeof($data); $nCount++) {
+            $filter = $filter . $data[$nCount] . ',';
+        }
+        //cut the trailing ','
+        $filter = substr($filter, 0, strlen($filter) - 1);
+        return $filter;
     }
 
 }
