@@ -67,25 +67,30 @@ class ProductsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-                       
+
             //Receives and updates new company data
-            $input = Input::get('descriptor_id');
-            
+            $input = Input::get('descriptors');
+
             //first check if the product has been already created
-            //will create validation here.
-            //first run over all the array to add the role_id
             
-            $product = new Product;
-            $product->save();
+            $result = ProductDescriptor::where('descriptor_id', '=', 100)->get();
             
-            foreach ($input as &$row) {
-                $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
+            return $result; 
+            
+            if (!$result) {//check for duplicate products
+                $product = new Product;
+                $product->save();
+
+                foreach ($input as &$row) {
+                    $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
+                }
+
+                ProductDescriptor::insert($data);
+
+                return Redirect::route('products.index');
+            } else {
+                return Redirect::back()->with('message', 'Product already in database');
             }
-
-            ProductDescriptor::insert($data);
-
-            return Redirect::route('products.index');
-            
         }
     }
 
@@ -166,7 +171,7 @@ class ProductsController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'products_delete';
+        $action_code = 'products_destroy';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
