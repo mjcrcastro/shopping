@@ -21,7 +21,7 @@ return array(
 	| you may use many connections at once using the Database library.
 	|
 	*/
-	'default' => 'mysql',
+	'default' => 'pgsql',
 	/*
 	|--------------------------------------------------------------------------
 	| Database Connections
@@ -55,10 +55,10 @@ return array(
 		),
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database' => 'forge',
-			'username' => 'forge',
-			'password' => '',
+			'host'     => 'ec2-107-22-173-230.compute-1.amazonaws.com',
+			'database' => 'd6kkk8t44ej68p',
+			'username' => 'slpzgcikycyrlp',
+			'password' => 'HOVyGzUCjNifvJe9totGgX2cQw',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
