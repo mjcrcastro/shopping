@@ -3,7 +3,6 @@
 /app/config/database.php
 /nbproject
 composer.phar
-composer.lock
 .env.*.php
 .env.php
 .DS_Store
