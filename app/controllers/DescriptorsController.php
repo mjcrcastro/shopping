@@ -187,9 +187,9 @@ class DescriptorsController extends \BaseController {
     /*
      * Returns a json string with all desciptors from filter
      */
-    public function axdescriptors() {
-
-        $action_code = 'products_index';
+    public function jdescriptors() {
+        
+        $action_code = 'descriptors_index';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {

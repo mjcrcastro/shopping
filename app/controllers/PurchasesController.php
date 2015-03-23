@@ -47,7 +47,7 @@ class PurchasesController extends \BaseController {
     public function create() {
         //Display form for creation of roles
 
-        $action_code = 'products_create';
+        $action_code = 'purchases_create';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -55,7 +55,7 @@ class PurchasesController extends \BaseController {
         }//a return won't let the following code to continue
 
         $descriptors = Descriptor::lists('description', 'id');
-        return View::make('products.create', compact('descriptors'));
+        return View::make('purchases.create', compact('descriptors'));
     }
 
     /**

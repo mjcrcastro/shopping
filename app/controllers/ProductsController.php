@@ -46,7 +46,7 @@ class ProductsController extends \BaseController {
      */
     public function create() {
         //Display form for creation of roles
-
+        
         $action_code = 'products_create';
 
         $message = Helper::usercan($action_code, Auth::user());
@@ -64,6 +64,9 @@ class ProductsController extends \BaseController {
      * @return Response
      */
     public function store() {
+        
+        return Input::all();
+         
         $action_code = 'products_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {

@@ -16,6 +16,7 @@
         {{ HTML::style('css/style.css') }}
 
         <!-- script src="https://code.jquery.com/jquery.js"></script-->
+        {{ HTML::style('css/jquery/jquery-ui.css') }}
         {{ HTML::script('js/jquery/jquery.js') }}
         {{ HTML::script('js/jquery/jquery-ui.js') }}
 
