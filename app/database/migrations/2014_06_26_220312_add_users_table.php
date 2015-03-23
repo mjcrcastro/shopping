@@ -17,7 +17,6 @@ class AddUsersTable extends Migration {
             $table->string('username');
             $table->integer('role_id')->index()->references('id')->on('roles');
             $table->string('name');
-            $table->string('remember_token');
             $table->string('email');
             $table->string('password');
             $table->timestamps();
