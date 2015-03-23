@@ -15,6 +15,8 @@ class UsersTableSeeder extends Seeder {
                'role_id'=>'1',
                'email'=>"mjcrcastro@hotmail.com",
                'password'=>Hash::make('1h1hpcha')),
+               'created_at'=>'2015-03-23', 
+               'updated_at'=>'2015-03-23',  
         ));
     }
 }
