@@ -40,7 +40,10 @@ $(document).ready(function() {
         "ajax": {
             "url": "{{ url('jproducts') }}",
             "type": "GET"
-        }
+        },
+        "columns": [ //tells where (from data) the columns are to be placed
+            { "data": "product_description" },
+        ]
     } );
 } );
 </script>
@@ -76,14 +79,14 @@ $(document).ready(function() {
     <table id="example" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Product description</th>
+                <th>Product</th>
                 <th></th>
             </tr>
         </thead>
  
         <tfoot>
             <tr>
-                <th>Product Name</th>
+                <th>Product</th>
                 <th></th>
             </tr>
         </tfoot>

@@ -41,7 +41,7 @@ class Helper {
     public static function productGet($descriptors) {
             $filter = Helper::toGroupCount($descriptors);
             //returns an empty aray if no product, having
-            //the given descriptors exists
+            //the given group of descriptors exists
             //returns the identified produc otherwise
             return DB::table('products_descriptors')
                      ->select('product_id')
@@ -54,14 +54,13 @@ class Helper {
     public static function toGroupCount($data) {
         //prepare the filter for the query
 
-        $filter = '';
+        static $filter = '';
 
         for ($nCount = 0; $nCount < sizeof($data); $nCount++) {
             $filter = $filter . $data[$nCount] . ',';
         }
         //cut the trailing ','
-        $filter = substr($filter, 0, strlen($filter) - 1);
-        return $filter;
+        return substr($filter, 0, strlen($filter) - 1);
     }
 
 }
