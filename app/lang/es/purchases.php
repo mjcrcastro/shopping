@@ -12,10 +12,9 @@ return array(
       |
      */
 
-    "description" => "Descripcion",
-    "short_description" => "Descripcion Corta",
-    "codes"=>"Códigos",
-    "add.new"=>"Agregar nueva compra",        
+        "description" => "Descripción",
+	"store" => "Tienda",
+        "add.new"=>"Agregar nueva compra",       
 
     
     

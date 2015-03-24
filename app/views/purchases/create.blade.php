@@ -6,51 +6,45 @@
 
 @section('header')
 
-<style>
-  .ui-autocomplete-category {
-    font-weight: bold;
-    padding: .2em .4em;
-    margin: .8em 0 .2em;
-    line-height: 1.5;
-  }
-  </style>
-  <script>
-  $.widget( "custom.catcomplete", $.ui.autocomplete, {
-    _create: function() {
-      this._super();
-      this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-    },
-    _renderMenu: function( ul, items ) {
-      var that = this,
-        currentCategory = "";
-      $.each( items, function( index, item ) {
-        var li;
-        if ( item.category != currentCategory ) {
-          ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-          currentCategory = item.category;
-        }
-        li = that._renderItemData( ul, item );
-        if ( item.category ) {
-          li.attr( "aria-label", item.category + " : " + item.label );
-        }
-      });
-    }
-  });
-  </script>
-  <script>
-  $(function() {
+<script type='text/javascript'> 
+      
+$(window).load(function(){
+$(function() {
     var scntDiv = $('#descriptors');
-    $( "#description" ).catcomplete({
-      delay: 0,
-      source: '{{ url('jdescriptors') }}',
-      select: function (event, ui) {
-    $("#txDestination").val(ui.item.descriptor_id);
-        $('<p> <input type="hidden" name="descriptor_id[]" value='+ ui.item.descriptor_id +'></p>').appendTo(scntDiv);
-              }
-          });
-      });
-  </script>
-  
+            var i = $('#p_scents p').size() + 1;
+
+            $(document).on('click', '#addDescriptor', function () {
+                $('<p> {{ Form::select('descriptors[]', $descriptors) }} <a href="#" id="removedescriptor">Remove</a></p>').appendTo(scntDiv);
+                i++;
+                return false;
+            });
+
+            $(document).on('click', '#removedescriptor', function () {
+                if (i > 1) {
+                    $(this).parents('p').remove();
+                    i--;
+                }
+                return false;
+            });
+        });
+
+    });
+
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#example').dataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url('jproducts') }}",
+            "type": "GET"
+        }
+    } );
+} );
+</script>
+
 @stop
 
 @section('main')
@@ -60,10 +54,13 @@
     {{ Form::open(array('route'=>'products.store','class'=>'horizontal','role'=>'form')) }}
 
     <div class="form-group">
-        {{ Form::text('description', '',array('id'=>'description', 'class'=>'ui-widget')) }}
-        
+
         <div id="descriptors">
-             
+            <p>
+                
+                {{ Form::select('descriptors[]', $descriptors) }}
+                
+            </p>
         </div>
         
         <a href="#" id="addDescriptor">Add another descriptor</a>
@@ -76,7 +73,21 @@
 
     {{ Form::close() }}
     
-    
+    <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Product description</th>
+                <th></th>
+            </tr>
+        </thead>
+ 
+        <tfoot>
+            <tr>
+                <th>Product Name</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
 
     @if ($errors->any())
     <ul>

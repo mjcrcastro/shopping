@@ -65,8 +65,6 @@ class ProductsController extends \BaseController {
      */
     public function store() {
         
-        return Input::all();
-         
         $action_code = 'products_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {

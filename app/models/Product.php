@@ -19,6 +19,7 @@ class Product extends Eloquent {
     // $ fillable are fields that can be sent as input
     
     public function productDescriptors(){
-        return $this->belongsToMany('Descriptor','products_descriptors');
+        return $this->belongsToMany('Descriptor','products_descriptors')
+            ->orderBy('descriptorType_id', 'asc');
     }
 }

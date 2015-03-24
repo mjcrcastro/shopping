@@ -8,28 +8,28 @@
 
     <script type='text/javascript'> 
       
-    $(window).load(function(){
-    $(function() {
-            var scntDiv = $('#descriptors');
-            var i = $('#p_scents p').size() + 1;
+$(window).load(function(){
+$(function() {
+        var scntDiv = $('#descriptors');
+        var i = $('#p_scents p').size() + 1;
 
-            $(document).on('click', '#addDescriptor',function() {
-                    $('<p> {{ Form::select('descriptors[]', $descriptors) }} <a href="#" id="removedescriptor">Remove</a></p>').appendTo(scntDiv);
-                      i++;
-                      return false;
-                  });
+            $(document).on('click', '#addDescriptor', function () {
+                $('<p> {{ Form::select('descriptors[]', $descriptors) }} <a href="#" id="removedescriptor">Remove</a></p>').appendTo(scntDiv);
+                i++;
+                return false;
+            });
 
-                  $(document).on('click', '#removedescriptor', function () {
-                      if (i > 1) {
-                          $(this).parents('p').remove();
-                          i--;
-                      }
-                      return false;
-                  });
-              });
+            $(document).on('click', '#removedescriptor', function () {
+                if (i > 1) {
+                    $(this).parents('p').remove();
+                    i--;
+                }
+                return false;
+            });
+        });
 
-          });
-    
+    });
+
     </script>
 
 @stop

@@ -20,13 +20,17 @@ class Purchase extends Eloquent {
     //returns a product this purchase relates to
     //eloquent will look for a product_id column in table purchases
     public function product() {
-        return $this->belongsTo('Products');
+        return $this->belongsTo('Product');
     }
     
     //returns a shop this purchase was made in
     //eloquent will look for a shop_id column in table purchases
     public function shop() {
-        return $this->belongsTo('Shops');
+        return $this->belongsTo('Shop');
+    }
+    
+    public function user() {
+        return $this->belongsTo('User');
     }
     
 

@@ -1,12 +1,12 @@
 @extends('master')
 
-@section('purchases_active')
+@section('products_active')
     active
 @stop
 
 @section('form_search')
-{{-- Creates a form search on the menu bar --}}
-{{ Form::open(array('class'=>'navbar-form navbar-left','method'=>'get','role'=>'search','route'=>'purchases.index')) }}
+
+{{ Form::open(array('class'=>'navbar-form navbar-left','method'=>'get','role'=>'search','route'=>'products.index')) }}
     <div class="form-group">
         {{ Form::text('filter',$filter,array('class'=>'form-control','placeholder'=>'Search')) }}
     </div>
@@ -17,32 +17,29 @@
 
 @section('main')
 
-<p> {{ link_to_route('purchases.create', Lang::get('purchases.add.new')) }} </p>
+<p> {{ link_to_route('products.create', Lang::get('products.add.new')) }} </p>
 
-@if ($purchases->count())
+@if ($products->count())
 <table class="table table-striped table-ordered table-condensed">
     <thead>
         <tr>
-            <th>{{Lang::get('purchases.store')}}</th>
-            <th>Date</th>
+            <th>{{Lang::get('products.description')}}</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($purchases as $purchase)
+        @foreach ($products as $product)
         <tr>
             
-            <td> 
-                {{ $purchase->shop->description }}
+            <td> @foreach ($product->productDescriptors as $productdescriptor)
+                    {{ $productdescriptor->description.' '}}
+                 @endforeach
             </td>
-            
+               
             <td>
-                {{ $purchase->purchase_date }}
-            </td>
-            
-            <td>
-                {{ Form::open(array('method'=>'DELETE', 'route'=>array('purchases.destroy', $purchase->id))) }}
+                {{ Form::open(array('method'=>'DELETE', 'route'=>array('products.destroy', $product->id))) }}
                 {{ Form::submit('Delete', array('class'=>'btn btn-danger '.Config::get('global/default.button_size'), 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }} 
                 {{ Form::close() }}
             </td>
@@ -50,8 +47,8 @@
         @endforeach
     </tbody>
 </table>
-{{ $purchases->appends(array('filter'=>$filter))->links() }}
+{{ $products->appends(array('filter'=>$filter))->links() }}
 @else
-    There are no purchases
+    There are no products
 @endif
 @stop

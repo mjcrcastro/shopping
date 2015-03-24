@@ -23,18 +23,19 @@ class PurchasesController extends \BaseController {
             //this query depends on the definition of 
             //function productDescriptors in the products model
             //productDescriptors returns all of this product descriptors
-            $products = Product::whereHas('productDescriptors', function($q)
+            $purchases = Purchase::whereHas('Shop', function($q)
                 {
-                    $q->where('description', 'like', ''.'%'.Input::get('filter').''.'%');
+                    $q->where('description', 'like', ''.'%'.Input::get('filter').''.'%')
+                      ->orWhere('purchase_date', 'like', ''.'%'.Input::get('filter').''.'%');
                 })->paginate(Config::get('global/default.rows'));
             
-            return View::make('products.index', compact('products'))
+            return View::make('products.index', compact('purchases'))
                             ->with('filter', $filter);
         } else {
             
-            $products = Product::paginate(Config::get('global/default.rows'));
+            $purchases = Purchase::paginate(Config::get('global/default.rows'));
 
-            return View::make('products.index', compact('products'))
+            return View::make('purchases.index', compact('purchases'))
                             ->with('filter', $filter);
         }
     }

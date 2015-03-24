@@ -18,6 +18,8 @@ class AddPurchasesTable extends Migration {
                 $table->integer('shop_id')
                            ->index()->references('id')->on('shops');
                 $table->datetime('purchase_date');
+                $table->string('user')
+                        ->index()->references('id')->on('users');
                 $table->timestamps();
             });
             

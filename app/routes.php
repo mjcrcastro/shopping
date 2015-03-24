@@ -36,6 +36,7 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('purchases','PurchasesController');
     
     Route::get('jdescriptors',array('uses'=>'JsonController@descriptors'));
+    Route::get('jproducts',array('uses'=>'JsonController@products'));
     
     
     /*

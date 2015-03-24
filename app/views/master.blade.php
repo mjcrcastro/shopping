@@ -10,17 +10,14 @@
 
         <title>Shopping Management System</title>
 
-        <!--link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"-->
         {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
-
         {{ HTML::style('css/style.css') }}
-
-        <!-- script src="https://code.jquery.com/jquery.js"></script-->
         {{ HTML::style('css/jquery/jquery-ui.css') }}
+        
         {{ HTML::script('js/jquery/jquery.js') }}
         {{ HTML::script('js/jquery/jquery-ui.js') }}
+        {{ HTML::script('js/jquery/datatables/datatables.js') }}
 
-        <!-- script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script-->
         {{ HTML::script('js/bootstrap/bootstrap.js') }}
 
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
