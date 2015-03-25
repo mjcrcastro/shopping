@@ -38,29 +38,6 @@ class Helper {
         return $last_query;
     }
     
-    public static function productGet($descriptors) {
-            $filter = Helper::toGroupCount($descriptors);
-            //returns an empty aray if no product, having
-            //the given group of descriptors exists
-            //returns the identified produc otherwise
-            return DB::table('products_descriptors')
-                     ->select('product_id')
-                     ->havingRaw("GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='".$filter."'")
-                     ->groupBy('product_id')
-                     ->get();
-            
-    }
     
-    public static function toGroupCount($data) {
-        //prepare the filter for the query
-
-        static $filter = '';
-
-        for ($nCount = 0; $nCount < sizeof($data); $nCount++) {
-            $filter = $filter . $data[$nCount] . ',';
-        }
-        //cut the trailing ','
-        return substr($filter, 0, strlen($filter) - 1);
-    }
-
+    
 }

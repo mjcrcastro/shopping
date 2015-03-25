@@ -43,11 +43,14 @@ class JsonController extends \BaseController {
                     //this query depends on the definition of 
                     //function productDescriptors in the products model
                     //productDescriptors returns all of this product descriptors
+                    //decompose the incoming string in
+                    
                     $products = Product::select('products.id',
                              DB::raw('GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description'))
                             ->join('products_descriptors','products_descriptors.product_id','=','products.id')
                             ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')
                             ->groupBy('products.id')
+                            ->havingRaw($this->getHavingRaw($filter))
                             ->get();
                 } else {
                     $products = Product::select('products.id',
@@ -67,6 +70,22 @@ class JsonController extends \BaseController {
                 $response['data'] = $products->all();
                 return Response::json($response);
             //}
+        }
+        /*
+         * Receives a seach string and converts every word into individual
+         * words that are used to prepare a havingRaw clause for a search of product
+         * in function $this->products
+         */
+        public function getHavingRaw($search_string) {
+            $searchArray = explode(" ",$search_string);
+            
+            static $having;
+            
+            for($nCount = 0; $nCount < sizeof($searchArray);$nCount++){
+                $having.=' AND GROUP_CONCAT(DISTINCT descriptors.description) '.
+                        'like "%'.ltrim(rtrim($searchArray[$nCount])).'%"';
+            }
+            return substr($having,5,strlen($having)-5);
         }
     }
 

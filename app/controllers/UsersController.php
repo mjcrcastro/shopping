@@ -159,4 +159,5 @@ class UsersController extends \BaseController {
     }
 
     // functions to manage permissions from a given role
+    
 }

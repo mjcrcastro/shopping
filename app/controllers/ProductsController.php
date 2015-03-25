@@ -18,20 +18,19 @@ class ProductsController extends \BaseController {
         }//a return won't let the following code to continue
 
         $filter = Input::get('filter');
-        
+
         if ($filter) {
             //this query depends on the definition of 
             //function productDescriptors in the products model
             //productDescriptors returns all of this product descriptors
-            $products = Product::whereHas('productDescriptors', function($q)
-                {
-                    $q->where('description', 'like', ''.'%'.Input::get('filter').''.'%');
-                })->paginate(Config::get('global/default.rows'));
-            
+            $products = Product::whereHas('productDescriptors', function($q) {
+                        $q->where('description', 'like', '' . '%' . Input::get('filter') . '' . '%');
+                    })->paginate(Config::get('global/default.rows'));
+
             return View::make('products.index', compact('products'))
                             ->with('filter', $filter);
         } else {
-            
+
             $products = Product::paginate(Config::get('global/default.rows'));
 
             return View::make('products.index', compact('products'))
@@ -46,7 +45,7 @@ class ProductsController extends \BaseController {
      */
     public function create() {
         //Display form for creation of roles
-        
+
         $action_code = 'products_create';
 
         $message = Helper::usercan($action_code, Auth::user());
@@ -64,7 +63,7 @@ class ProductsController extends \BaseController {
      * @return Response
      */
     public function store() {
-        
+
         $action_code = 'products_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -74,7 +73,7 @@ class ProductsController extends \BaseController {
         $descriptors = Input::get('descriptors');
 
         // check if the product has already been created
-        if (!Helper::productGet($descriptors)) {//check for duplicate products
+        if (!$this->productGet($descriptors)) {//check for duplicate products
             $product = new Product;
             $product->save();
 
@@ -135,7 +134,6 @@ class ProductsController extends \BaseController {
         //
         //Actual code to execute
         //Receives and updates new role  data
-        
     }
 
     /**
@@ -154,6 +152,32 @@ class ProductsController extends \BaseController {
         }//a return won't let the following code to continue
         Product::find($id)->delete();
         return Redirect::route('products.index');
+    }
+
+    public function productGet($descriptors) {
+        $filter = $this->toGroupCount($descriptors);
+        //returns an empty aray if no product, having
+        //the given group of descriptors exists
+        //returns the identified produc otherwise
+        return DB::table('products_descriptors')
+                        ->select('product_id')
+                        ->havingRaw("GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'")
+                        ->groupBy('product_id')
+                        ->get();
+    }
+
+    public function toGroupCount($data) {
+        //concatenate data in the array to
+        //prepare the filter for the query used by
+        //productGet
+
+        static $filter = '';
+
+        for ($nCount = 0; $nCount < sizeof($data); $nCount++) {
+            $filter = $filter . $data[$nCount] . ',';
+        }
+        //cut the trailing ','
+        return substr($filter, 0, strlen($filter) - 1);
     }
 
 }
