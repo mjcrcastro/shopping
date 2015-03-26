@@ -8,7 +8,7 @@ class PurchasesController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //Return all products
+        //Return all purchases
 
         $action_code = 'purchases_index';
 
@@ -66,7 +66,9 @@ class PurchasesController extends \BaseController {
      */
     public function store() {
         $action_code = 'products_store';
-
+        
+        return Input::all();
+        
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);

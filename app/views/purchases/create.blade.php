@@ -11,12 +11,12 @@ active
      * Script to delete a product in the purchase list
      */
     $(window).load(function () {
-            $(document).on('click', '#removedescriptor', function () {
-                    $(this).parents('#productrow').remove();
-                return false;
-            });
+        $(document).on('click', '#removedescriptor', function () {
+            $(this).parents('#productrow').remove();
+            return false;
         });
- </script>
+    });
+</script>
 
 <script type='text/javascript'>
     /*Shows a datepicker widget for
@@ -41,40 +41,50 @@ active
             "serverSide": true,
             dom: 'T<"clear">lfrtip',
             tableTools: {
-                    "sRowSelect": "multi",
-                    "aButtons": [
-                        {"sExtends": "text", "sButtonText": "add selection to purchase",
-                            "fnClick": function (nButton, oConfig, oFlash) {
-                                var oTT = TableTools.fnGetInstance( 'example' );
-                                var aData = oTT.fnGetSelectedData()
-                                for(nCount = 0; nCount < aData.length; nCount++) {
+                "sRowSelect": "multi",
+                "aButtons": [
+                    {"sExtends": "text", "sButtonText": "add selection to purchase",
+                        "fnClick": function (nButton, oConfig, oFlash) {
+                            var oTT = TableTools.fnGetInstance('example');
+                            var aData = oTT.fnGetSelectedData()
+                            var values = $("input[id='productarray']")//gets the value of all elements whose id is product_id
+                                    .map(function(){return parseInt($(this).val());}).get();
+                            for (nCount = 0; nCount < aData.length; nCount++) {
+                                //check if there exists produc with same id in purchase list
+                                //$.inArray only compares between numbers or characters
+                                //so I converted the values to Int within the array before comparison.
+                                if (!values.length || $.inArray(aData[nCount]['product_id'],values) === -1) { 
                                     $('<div id="productrow">' +
-                                        '<input type="hidden" name="product_id[]" value=' + aData[nCount]['id'] + '>' +
-                                        '<div class="col-xs-7"> {{ "'+ aData[nCount]['product_description'] +'" }} </div> ' +
-                                        '<div class="col-xs-2"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                        '<div class="col-xs-2"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                        '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
-                                        '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
-                                        '</a></div> ' +
-                                    '</div>').appendTo('#products');
+                                            '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
+                                            '<div class="col-xs-7"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
+                                            '<div class="col-xs-2"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                            '<div class="col-xs-2"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                            '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
+                                            '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
+                                            '</a></div> ' +
+                                            '</div>').appendTo('#products');
                                 }
                             }
                         }
-                    ]
-                },
-                "ajax": {
-                    "url": "{{ url('jproducts') }}",
-                    "type": "GET"
-                },
-                "columns": [//tells where (from data) the columns are to be placed
-                    {"data": "product_description"}
+                    }
                 ]
-            });
+            },
+            "ajax": {
+                "url": "{{ url('jproducts') }}",
+                "type": "GET"
+            },
+            
+            "columns": [//tells where (from data) the columns are to be placed
+                {"data": "product_id"},
+                {"data": "product_description"}
+                
+            ]
         });
-        
-        
-        
-        
+    });
+
+
+
+
 </script>
 
 @stop
@@ -135,12 +145,14 @@ active
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr>
+                                <th>Id</th>
                                 <th>Product</th>
                             </tr>
                         </thead>
 
                         <tfoot>
                             <tr>
+                                <th>Id</th>
                                 <th>Product</th>
                             </tr>
                         </tfoot>

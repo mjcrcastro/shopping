@@ -45,7 +45,7 @@ class JsonController extends \BaseController {
                     //productDescriptors returns all of this product descriptors
                     //decompose the incoming string in
                     
-                    $products = Product::select('products.id',
+                    $products = Product::select('products.id as product_id',
                              DB::raw('GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description'))
                             ->join('products_descriptors','products_descriptors.product_id','=','products.id')
                             ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')
@@ -53,7 +53,7 @@ class JsonController extends \BaseController {
                             ->havingRaw($this->getHavingRaw($filter))
                             ->get();
                 } else {
-                    $products = Product::select('products.id',
+                    $products = Product::select('products.id as product_id',
                              DB::raw('GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description'))
                             ->join('products_descriptors','products_descriptors.product_id','=','products.id')
                             ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')

@@ -10,6 +10,7 @@ class ProductsTableSeeder extends Seeder {
     public function run () {
         DB::table('products')->insert(array(
            array('id'=>1,),
+           array('id'=>99,), 
         ));
     }
 }

@@ -21,6 +21,18 @@ class ProductsDescriptorsTableSeeder extends Seeder {
             array('id'=>4,
                 'product_id'=>'1',
                 'descriptor_id'=>'4',),
+            array('id'=>5,
+                'product_id'=>'99',
+                'descriptor_id'=>'5',),
+            array('id'=>6,
+                'product_id'=>'99',
+                'descriptor_id'=>'6',),
+            array('id'=>7,
+                'product_id'=>'99',
+                'descriptor_id'=>'7',),
+            array('id'=>8,
+                'product_id'=>'99',
+                'descriptor_id'=>'8',),
         ));
     }
 }
