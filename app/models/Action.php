@@ -20,7 +20,7 @@ class Action extends Eloquent{
 	 */
         protected $guarded = array('id');
 
-         public static $rules = array (
+        public static $rules = array (
             'code'=>'required',
             'description'=>'required',
         );

@@ -15,8 +15,6 @@ return array(
     "description" => "Descripcion",
     "short_description" => "Descripcion Corta",
     "codes"=>"Códigos",
-    "add.new"=>"Agregar nueva compra",        
+    "add.new"=>"Agregar nuevo producto",        
 
-    
-    
 );

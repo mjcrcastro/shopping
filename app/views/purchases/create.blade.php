@@ -12,7 +12,7 @@ active
      */
     $(window).load(function () {
         $(document).on('click', '#removedescriptor', function () {
-            $(this).parents('#productrow').remove();
+            $(this).parents('#productRow').remove();
             return false;
         });
     });
@@ -48,13 +48,15 @@ active
                             var oTT = TableTools.fnGetInstance('example');
                             var aData = oTT.fnGetSelectedData()
                             var values = $("input[id='productarray']")//gets the value of all elements whose id is product_id
-                                    .map(function(){return parseInt($(this).val());}).get();
+                                    .map(function () {
+                                        return parseInt($(this).val());
+                                    }).get();
                             for (nCount = 0; nCount < aData.length; nCount++) {
                                 //check if there exists produc with same id in purchase list
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
-                                if (!values.length || $.inArray(aData[nCount]['product_id'],values) === -1) { 
-                                    $('<div id="productrow">' +
+                                if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
+                                    $('<div id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
                                             '<div class="col-xs-7"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
                                             '<div class="col-xs-2"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
@@ -73,11 +75,17 @@ active
                 "url": "{{ url('jproducts') }}",
                 "type": "GET"
             },
-            
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
             "columns": [//tells where (from data) the columns are to be placed
                 {"data": "product_id"},
                 {"data": "product_description"}
-                
+
             ]
         });
     });
@@ -112,24 +120,20 @@ active
 
                     <dt>
                     <p></p>
+
                     <div class="row">
-                        <div class="col-xs-4">
+                        <div class="col-xs-7">
                             Product
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-2">
                             Amount
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-2">
                             Total Cost
                         </div>
-                        <div class='row'>
-                            <div class='col-xs-12'>
-                                <hr>
-                            </div>
+                        <div class="col-xs-1">
                         </div>
-                        <div clas="row">
-                            <div id="products"></div>
-                        </div>
+                        <div id="products"></div>
                     </div>
 
                     </dt>
@@ -145,14 +149,14 @@ active
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th></th>
                                 <th>Product</th>
                             </tr>
                         </thead>
 
                         <tfoot>
                             <tr>
-                                <th>Id</th>
+                                <th></th>
                                 <th>Product</th>
                             </tr>
                         </tfoot>

@@ -9,8 +9,16 @@
 class ProductsPurchasesTableSeeder extends Seeder {
     public function run () {
         DB::table('products_purchases')->insert(array(
-           array('id'=>1,'product_id'=>1,'amount'=>1,'total'=>'48',),
-           array('id'=>2,'product_id'=>2,'amount'=>12,'total'=>'120',), 
+           array('id'=>1,
+               'purchase_id'=>1,
+               'product_id'=>1,
+               'amount'=>1,
+               'total'=>'48',),
+           array('id'=>2,
+               'purchase_id'=>1,
+               'product_id'=>2,
+               'amount'=>12,
+               'total'=>'120',), 
         ));
     }
 }

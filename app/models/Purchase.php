@@ -17,12 +17,12 @@ class Purchase extends Eloquent {
      */
     protected $guarded = array('id');
     
+    public static $rules = array(
+        'shop_id' => 'required',
+        'purchase_date' => 'required',
+    );
+
     //returns a product this purchase relates to
-    //eloquent will look for a product_id column in table purchases
-    public function product() {
-        return $this->belongsTo('Product');
-    }
-    
     //returns a shop this purchase was made in
     //eloquent will look for a shop_id column in table purchases
     public function shop() {
@@ -31,6 +31,18 @@ class Purchase extends Eloquent {
     
     public function user() {
         return $this->belongsTo('User');
+    }
+    
+    public function productsPurchases() {
+        return $this->hasMany('ProductPurchase');
+    }
+    //called upon being deleted
+    //deletes all childs
+    protected static function boot() {
+        parent::boot();
+        static::deleting(function($purchase) { // called BEFORE delete()
+            $purchase->productsPurchases()->delete();
+        });
     }
     
 

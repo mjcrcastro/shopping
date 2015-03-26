@@ -66,31 +66,55 @@ class PurchasesController extends \BaseController {
      */
     public function store() {
         $action_code = 'products_store';
-        
-        return Input::all();
-        
+
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
-        //Receives and updates new company data
-        $descriptors = Input::get('descriptors');
+        //Receives and updates new purchase data
 
-        // check if the product has already been created
-        if (!Helper::productGet($descriptors)) {//check for duplicate products
-            $product = new Product;
-            $product->save();
+        $purchaseData = array("shop_id" => Input::get('shop_id'),
+            "purchase_date" => Input::get('purchase_date'));
+        
+        $purchasedProducts = Input::get('product_id');
+        
+        if(!$purchasedProducts) {
+           return Redirect::route('purchases.create')
+                    ->withInput()
+                    ->with('message', 'No product was found'); 
+        }
+        
+        $validation = Validator::make($purchaseData, Purchase::$rules);
+        
+        
+        if ($validation->passes()) {
+            
+            $purchase = Purchase::create($purchaseData);
 
-            //modify the array so that it includes the product id
-            foreach ($descriptors as &$row) {
-                $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
+            $purchasedAmount = Input::get('amount');
+            $purchasedTotal = Input::get('total');
+            
+            for ($nCount = 0; $nCount < count($purchasedProducts); $nCount++) {
+                $purchaseDetails[] = array('purchase_id' => $purchase->id, 
+                                'product_id' => $purchasedProducts[$nCount],
+                                'amount' => $purchasedAmount[$nCount],
+                                'total' => $purchasedTotal[$nCount],
+                    );
             }
-
-            ProductDescriptor::insert($data);
-
-            return Redirect::route('products.index');
+                 
+            $detailValidation = Validator::make($purchaseDetails, Purchase::$rules);    
+                
+            ProductPurchase::insert($purchaseDetails);
+                
+            return Redirect::route('purchases.index')
+                    ->withInput()
+                    ->withErrors($detailValidation)
+                    ->with('message', 'Purchase Created');    
         } else {
-            return Redirect::back()->with('message', 'Product already in database');
+            return Redirect::route('purchases.create')
+                    ->withInput()
+                    ->withErrors($validation)
+                    ->with('message', 'There were validation errors');
         }
     }
 
@@ -170,14 +194,14 @@ class PurchasesController extends \BaseController {
      */
     public function destroy($id) {
         //
-        $action_code = 'products_destroy';
+        $action_code = 'purchases_destroy';
         $message = Helper::usercan($action_code, Auth::user());
 
         if ($message) {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
-        Product::find($id)->delete();
-        return Redirect::route('products.index');
+        Purchase::find($id)->delete();
+        return Redirect::route('purchases.index');
     }
 
 }

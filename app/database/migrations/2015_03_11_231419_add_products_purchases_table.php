@@ -16,6 +16,8 @@ class AddProductsPurchasesTable extends Migration {
             
                  Schema::create('products_purchases', function($table) {
                    $table->increments('id');
+                   $table->integer('purchase_id')
+                           ->index()->references('id')->on('purchases');
                    $table->integer('product_id')
                            ->index()->references('id')->on('products');
                    $table->float('amount');
