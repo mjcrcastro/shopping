@@ -55,8 +55,9 @@ class PurchasesController extends \BaseController {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
 
-        $descriptors = Descriptor::lists('description', 'id');
-        return View::make('purchases.create', compact('descriptors'));
+        $shops = Shop::orderBy('description','asc')->lists('description', 'id');
+
+        return View::make('purchases.create', compact('shops'));
     }
 
     /**

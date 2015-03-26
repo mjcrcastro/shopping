@@ -12,14 +12,13 @@
 
         {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
         {{ HTML::style('css/style.css') }}
-        {{ HTML::style('css/jquery/jquery-ui.css') }}
+        {{ HTML::style('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css') }}
         
         {{ HTML::script('js/jquery/jquery.js') }}
-        {{ HTML::script('js/jquery/jquery-ui.js') }}
-        {{ HTML::script('js/jquery/datatables/datatables.js') }}
-
+        {{ HTML::script('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js') }}
         {{ HTML::script('js/bootstrap/bootstrap.js') }}
-
+        {{ HTML::script('js/jquery/datatables/datatables.js') }}
+        
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
@@ -77,11 +76,10 @@
                                 </div><!-- /.navbar-collapse -->
                             </div><!-- /.container-fluid -->
                         </nav>
-
                         @if(Session::has('message'))
-                        <div class="alert alert-success">
-                            {{Session::get('message')}}
-                        </div>
+                            <div class="alert alert-success">
+                                {{Session::get('message')}}
+                            </div>
                         @endif
 
                         @yield('main')
