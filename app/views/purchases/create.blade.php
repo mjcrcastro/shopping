@@ -9,52 +9,57 @@ active
 <script type='text/javascript'>
     /*
      * 
-     */ * /
+     */
     $(window).load(function () {
-            $(function () {
+        $(function () {
             var scntDiv = $('#products');
-                    var i = $('#p_scents p').size() + 1;
-                    $(document).on('click', '#addDescriptor', function () {
-            $('<p>  {{ Form::hidden('products[]') }} ' +
-                    '{{ 'product description' }}' +
-                    '{{ Form::text('amounts[]') }} ' +
-                    '{{ Form::text('totals[]') }} ' +
-                    '<a href="#" id="removedescriptor">Remove</a></p>').appendTo(scntDiv);
-                    i++;
-                    return false;
+            $(document).on('click', '#addDescriptor', function () {
+                $('<div id="productrow">    {{ Form::hidden("products[]") }} ' +
+                        '<div class="col-xs-7"> {{ "product description" }} </div> ' +
+                        '<div class="col-xs-2"> {{ Form::text("amounts[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                        '<div class="col-xs-2"> {{ Form::text("totals[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                        '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
+                        '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
+                        '</a></div> ' +
+                        '</div>').appendTo(scntDiv);
+                return false;
             });
-                    $(document).on('click', '#removedescriptor', function () {
-            if (i > 1) {
-            $(this).parents('p').remove();
-                    i--;
-            }
-            return false;
+            $(document).on('click', '#removedescriptor', function () {
+                    $(this).parents('#productrow').remove();
+                return false;
             });
-            });
+        });
     });</script>
 
-<script>
-            $(function() {
-            $("#purchase_date").datepicker({
+<script type='text/javascript'>
+    /*Shows a datepicker widget for
+     * the purchase_date text input control
+     */
+    $(function () {
+        $("#purchase_date").datepicker({
             changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-            });
-            });</script>
+            changeYear: true,
+            dateFormat: "yy-mm-dd"
+        });
+    });</script>
 
 <script type='text/javascript'>
-            $(document).ready(function () {
-    $('#example').dataTable({
-    "processing": true,
+    /*
+     * Displays list of products using
+     * a datatables jQuery plugin on table id="example"
+     */
+    $(document).ready(function () {
+        $('#example').dataTable({
+            "processing": true,
             "serverSide": true,
             "ajax": {
-            "url": "{{ url('jproducts') }}",
-                    "type": "GET"
+                "url": "{{ url('jproducts') }}",
+                "type": "GET"
             },
             "columns": [//tells where (from data) the columns are to be placed
-            {"data": "product_description"},
+                {"data": "product_description"},
             ]
-    });
+        });
     });
 </script>
 
@@ -94,9 +99,12 @@ active
                             Total Cost
                         </div>
                         <div class='row'>
-                            <div class='span12'>
+                            <div class='col-xs-12'>
                                 <hr>
                             </div>
+                        </div>
+                        <div clas="row">
+                            <div id="products"></div>
                         </div>
                     </div>
 
@@ -110,7 +118,7 @@ active
 
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-xs-6">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr>
