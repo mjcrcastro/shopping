@@ -49,7 +49,6 @@ class PurchasesController extends \BaseController {
         //Display form for creation of roles
 
         $action_code = 'purchases_create';
-
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -67,6 +66,7 @@ class PurchasesController extends \BaseController {
      */
     public function store() {
         $action_code = 'products_store';
+
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);

@@ -12,7 +12,6 @@ active
      */
     $(window).load(function () {
         $(function () {
-            var scntDiv = $('#products');
             $(document).on('click', '#addDescriptor', function () {
                 $('<div id="productrow">    {{ Form::hidden("products[]") }} ' +
                         '<div class="col-xs-7"> {{ "product description" }} </div> ' +
@@ -21,7 +20,7 @@ active
                         '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
                         '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                         '</a></div> ' +
-                        '</div>').appendTo(scntDiv);
+                        '</div>').appendTo('#products');
                 return false;
             });
             $(document).on('click', '#removedescriptor', function () {
@@ -49,18 +48,43 @@ active
      * a datatables jQuery plugin on table id="example"
      */
     $(document).ready(function () {
-        $('#example').dataTable({
+        var table = $('#example').dataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": {
-                "url": "{{ url('jproducts') }}",
-                "type": "GET"
-            },
-            "columns": [//tells where (from data) the columns are to be placed
-                {"data": "product_description"},
-            ]
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                    "sRowSelect": "multi",
+                    "aButtons": [
+                        {"sExtends": "text", "sButtonText": "add selection to purchase",
+                            "fnClick": function (nButton, oConfig, oFlash) {
+                                $('<div id="productrow">    {{ Form::hidden("products[]") }} ' +
+                                        '<div class="col-xs-7"> {{ "product description" }} </div> ' +
+                                        '<div class="col-xs-2"> {{ Form::text("amounts[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                        '<div class="col-xs-2"> {{ Form::text("totals[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                        '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
+                                        '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
+                                        '</a></div> ' +
+                                        '</div>').appendTo('#products');
+                                return false;
+                            }
+                        }
+                    ]
+                },
+                "ajax": {
+                    "url": "{{ url('jproducts') }}",
+                    "type": "GET"
+                },
+                "columns": [//tells where (from data) the columns are to be placed
+                    {"data": "product_description"}
+                ]
+            });
+
+
+            $('#example tbody').on('click', 'tr', function () {
+                $(this).toggleClass('selected');
+            });
+
         });
-    });
 </script>
 
 @stop
@@ -69,7 +93,7 @@ active
 
 <h1> Create purchase </h1>
 
-{{ Form::open(array('route'=>'products.store','class'=>'horizontal','role'=>'form')) }}
+{{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
 <div class="container">
 
     <div class="form-group">
@@ -113,7 +137,7 @@ active
 
                     <dt>
                     {{ Form::submit('submit', array('class'=>'btn btn-info')) }}
-                    {{ link_to_route('products.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
+                    {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
                     </dt>
 
                 </div>

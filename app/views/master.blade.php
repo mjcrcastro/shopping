@@ -13,12 +13,14 @@
         {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
         {{ HTML::style('css/style.css') }}
         {{ HTML::style('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css') }}
-        
+        {{ HTML::style('DataTables-1.10.5/media/css/jquery.dataTables.css') }}
+        {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
+
         {{ HTML::script('js/jquery/jquery.js') }}
         {{ HTML::script('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js') }}
         {{ HTML::script('js/bootstrap/bootstrap.js') }}
-        {{ HTML::script('js/jquery/datatables/datatables.js') }}
-        
+        {{ HTML::script('DataTables-1.10.5/media/js/jquery.dataTables.js') }}
+        {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
