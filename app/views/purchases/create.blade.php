@@ -8,27 +8,15 @@ active
 
 <script type='text/javascript'>
     /*
-     * 
+     * Script to delete a product in the purchase list
      */
     $(window).load(function () {
-        $(function () {
-            $(document).on('click', '#addDescriptor', function () {
-                $('<div id="productrow">    {{ Form::hidden("products[]") }} ' +
-                        '<div class="col-xs-7"> {{ "product description" }} </div> ' +
-                        '<div class="col-xs-2"> {{ Form::text("amounts[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                        '<div class="col-xs-2"> {{ Form::text("totals[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                        '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
-                        '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
-                        '</a></div> ' +
-                        '</div>').appendTo('#products');
-                return false;
-            });
             $(document).on('click', '#removedescriptor', function () {
                     $(this).parents('#productrow').remove();
                 return false;
             });
         });
-    });</script>
+ </script>
 
 <script type='text/javascript'>
     /*Shows a datepicker widget for
@@ -57,15 +45,19 @@ active
                     "aButtons": [
                         {"sExtends": "text", "sButtonText": "add selection to purchase",
                             "fnClick": function (nButton, oConfig, oFlash) {
-                                $('<div id="productrow">    {{ Form::hidden("products[]") }} ' +
-                                        '<div class="col-xs-7"> {{ "product description" }} </div> ' +
-                                        '<div class="col-xs-2"> {{ Form::text("amounts[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                        '<div class="col-xs-2"> {{ Form::text("totals[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                var oTT = TableTools.fnGetInstance( 'example' );
+                                var aData = oTT.fnGetSelectedData()
+                                for(nCount = 0; nCount < aData.length; nCount++) {
+                                    $('<div id="productrow">' +
+                                        '<input type="hidden" name="product_id[]" value=' + aData[nCount]['id'] + '>' +
+                                        '<div class="col-xs-7"> {{ "'+ aData[nCount]['product_description'] +'" }} </div> ' +
+                                        '<div class="col-xs-2"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                        '<div class="col-xs-2"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
                                         '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
                                         '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                         '</a></div> ' +
-                                        '</div>').appendTo('#products');
-                                return false;
+                                    '</div>').appendTo('#products');
+                                }
                             }
                         }
                     ]
@@ -78,13 +70,11 @@ active
                     {"data": "product_description"}
                 ]
             });
-
-
-            $('#example tbody').on('click', 'tr', function () {
-                $(this).toggleClass('selected');
-            });
-
         });
+        
+        
+        
+        
 </script>
 
 @stop
@@ -132,7 +122,6 @@ active
                         </div>
                     </div>
 
-                    <a href="#" id="addDescriptor">Add another descriptor</a>
                     </dt>
 
                     <dt>
