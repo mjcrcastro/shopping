@@ -21,6 +21,7 @@
         {{ HTML::script('js/bootstrap/bootstrap.js') }}
         {{ HTML::script('DataTables-1.10.5/media/js/jquery.dataTables.js') }}
         {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
+        {{ HTML::script('js/jquery/locationpicker/locationpicker.jquery.min.js') }}
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
