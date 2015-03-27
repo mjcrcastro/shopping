@@ -9,7 +9,8 @@
 class PurchasesTableSeeder extends Seeder {
     public function run () {
         DB::table('purchases')->insert(array(
-           array('id'=>1,'shop_id'=>'1','purchase_date'=>'2015-03-12'),
+           array('id'=>1,'shop_id'=>'1','purchase_date'=>'2015-03-12','created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
         ));
     }
 }

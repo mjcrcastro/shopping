@@ -9,14 +9,22 @@
 class DescriptorsTableSeeder extends Seeder {
     public function run () {
         DB::table('descriptors')->insert(array(
-           array('id'=>1,'descriptorType_id'=>1,'description'=>"Salsa de Tomate",),
-           array('id'=>2,'descriptorType_id'=>2,'description'=>"Naturas",),
-           array('id'=>3,'descriptorType_id'=>3,'description'=>"Bolsa",), 
-           array('id'=>4,'descriptorType_id'=>4,'description'=>"220 gr",),
-           array('id'=>5,'descriptorType_id'=>1,'description'=>"Leche de Sabor",),
-           array('id'=>6,'descriptorType_id'=>2,'description'=>"Centrolac",),
-           array('id'=>7,'descriptorType_id'=>3,'description'=>"Caja",), 
-           array('id'=>8,'descriptorType_id'=>4,'description'=>"250 ml",),   
+           array('id'=>1,'descriptorType_id'=>1,'description'=>"Salsa de Tomate",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>2,'descriptorType_id'=>2,'description'=>"Naturas",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>3,'descriptorType_id'=>3,'description'=>"Bolsa",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",), 
+           array('id'=>4,'descriptorType_id'=>4,'description'=>"220 gr",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>5,'descriptorType_id'=>1,'description'=>"Leche de Sabor",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>6,'descriptorType_id'=>2,'description'=>"Centrolac",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>7,'descriptorType_id'=>3,'description'=>"Caja",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",), 
+           array('id'=>8,'descriptorType_id'=>4,'description'=>"250 ml",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),   
         ));
     }
 }

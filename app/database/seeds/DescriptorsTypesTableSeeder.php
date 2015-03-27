@@ -9,10 +9,14 @@
 class DescriptorsTypesTableSeeder extends Seeder {
     public function run () {
         DB::table('descriptors_types')->insert(array(
-           array('id'=>1,'description'=>"Generic Name",),
-           array('id'=>2,'description'=>"Marca",),
-           array('id'=>3,'description'=>"Empaque",),
-           array('id'=>4,'description'=>"Peso",), 
+           array('id'=>1,'description'=>"Generic Name",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>2,'description'=>"Marca",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>3,'description'=>"Empaque",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",),
+           array('id'=>4,'description'=>"Peso",'created_at'=>"2015-03-23",
+               'updated_at'=>"2015-03-23",), 
         ));
     }
 }
