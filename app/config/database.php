@@ -57,7 +57,7 @@ return array(
 			'driver'   => 'pgsql',
 			'host'     => 'ec2-23-21-73-32.compute-1.amazonaws.com',
 			'database' => 'dbf4ch41di1n89',
-			'username' => 'dbf4ch41di1n89',
+			'username' => 'mowwcghzrrynfe',
 			'password' => '9C4a0Ck0LdzO0q38KFSILuSoCv',
 			'charset'  => 'utf8',
 			'prefix'   => '',
