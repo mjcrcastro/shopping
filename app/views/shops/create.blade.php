@@ -11,25 +11,29 @@ active
 <script>$(function ()
     {
         var map = L.map('wLocationMap', {
-            center: [51.3, 0.7],
-                zoom: 13,
-                closeButton: true
-            });
+            closeButton: false
+        });
         $('wLocationMap').addClass('mfp-hide');
         // add an OpenStreetMap tile layer
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+        
+        var osmGeocoder = new L.Control.OSMGeocoder();
+
+	map.addControl(osmGeocoder);
 
         var marker;
+        
+        map.on('click', onMapClick);
 
         function onMapClick(e) {
-        
-         if (confirm("Set new location here?") === false) {
-            return;
-        }
 
-        if (marker) {
+            if (confirm("Set new location here?") === false) {
+                return;
+            }
+
+            if (marker) {
                 map.removeLayer(marker);
             }
             marker = new L.Marker(e.latlng, {draggable: true});
@@ -38,9 +42,7 @@ active
             document.getElementById("locationLat").value = marker.getLatLng().lat;
             document.getElementById("locationLng").value = marker.getLatLng().lng;
         }
-
-        map.on('click', onMapClick);
-
+        
         $('.open-popup-link').magnificPopup({
             type: 'inline',
             midClick: true, // allow opening popup on middle mouse click. 
@@ -51,6 +53,7 @@ active
                 open: function () {
                     // Will fire when this exact popup is opened
                     // this - is Magnific Popup object
+                    map.locate( {setView: true});
                     map.invalidateSize(true);
                 }
             }
