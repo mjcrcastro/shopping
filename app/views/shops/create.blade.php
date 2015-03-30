@@ -10,21 +10,50 @@ active
 @section('header')
 <script>$(function ()
     {
-        var map = L.map('wLocationMap').setView([51.505, -0.09], 13);
+        var map = L.map('wLocationMap', {
+            center: [51.3, 0.7],
+                zoom: 13,
+                closeButton: true
+            });
+        $('wLocationMap').addClass('mfp-hide');
         // add an OpenStreetMap tile layer
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        var marker;
+
         function onMapClick(e) {
-            document.getElementById("locationMap").value = e.latlng;
+        
+         if (confirm("Set new location here?") === false) {
+            return;
+        }
+
+        if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = new L.Marker(e.latlng, {draggable: true});
+            map.addLayer(marker);
+            marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+            document.getElementById("locationLat").value = marker.getLatLng().lat;
+            document.getElementById("locationLng").value = marker.getLatLng().lng;
         }
 
         map.on('click', onMapClick);
 
         $('.open-popup-link').magnificPopup({
             type: 'inline',
-            midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+            midClick: true, // allow opening popup on middle mouse click. 
+            // Always set it to true if you don't provide 
+            // alternative source.
+            closeBtnInside: false,
+            callbacks: {
+                open: function () {
+                    // Will fire when this exact popup is opened
+                    // this - is Magnific Popup object
+                    map.invalidateSize(true);
+                }
+            }
         });
 
     });
@@ -36,7 +65,7 @@ active
 
 @section('main')
 
-
+<div id="wLocationMap" class="white-popup  mfp-hide"></div>
 
 <h1> Create Shop </h1>
 
@@ -48,10 +77,9 @@ active
         {{ Form::text('description') }}
     </li>
     <li>
-        {{ Form::hidden('locationMap',null,array('id'=>'locationMap')) }}
+        {{ Form::hidden('locationLat',null,array('id'=>'locationLat')) }}
+        {{ Form::hidden('locationLng',null,array('id'=>'locationLng')) }}
 
-        <div id="wLocationMap" class="white-popup mfp-hide" style="width: 500px; height: 400px;"></div>
-        
         <a href="#wLocationMap" class="open-popup-link">Show inline popup</a>
 
     </li>
