@@ -9,10 +9,11 @@
 class ProductsTableSeeder extends Seeder {
     public function run () {
         DB::table('products')->insert(array(
-           array('id'=>1,),
-           array('id'=>99,),
-           'created_at'=>"2015-03-23",
-           'updated_at'=>"2015-03-23",
+           array('id'=>1,'created_at'=>"2015-03-23",
+           'updated_at'=>"2015-03-23",),
+           array('id'=>99,'created_at'=>"2015-03-23",
+           'updated_at'=>"2015-03-23",),
+           
         ));
     }
 }
