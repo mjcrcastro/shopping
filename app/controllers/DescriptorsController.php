@@ -16,24 +16,33 @@ class DescriptorsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
-
             $descriptorType_id = Input::get('descriptorType_id');
+            $label = '';
             $filter = Input::get('filter');
 
-            if ($filter) {
-
+            if ($filter and $descriptorType_id) {
                 $descriptors = Descriptor::orderBy('description', 'asc')
                         ->where('description', 'like', '%' . $filter . '%')
                         ->where('descriptorType_id', '=', $descriptorType_id)
                         ->paginate(7);
-            } else {
+                $label = ' for '.DescriptorType::find($descriptorType_id)->description;
+            } elseif ($descriptorType_id) {
                 $descriptors = Descriptor::orderBy('description', 'asc')
                         ->where('descriptorType_id', '=', $descriptorType_id)
+                        ->paginate(7);
+                $label = ' for '.DescriptorType::find($descriptorType_id)->description;
+            } elseif ($filter) {
+                $descriptors = Descriptor::orderBy('description', 'asc')
+                        ->where('description', 'like', '%' . $filter . '%')
+                        ->paginate(7);
+            } else {
+                $descriptors = Descriptor::orderBy('description', 'asc')
                         ->paginate(7);
             }
             return View::make('descriptors.index', compact('descriptors'))
                             ->with('descriptorType_id', $descriptorType_id)
-                            ->with('filter', $filter);
+                            ->with('filter', $filter)
+                            ->with('label',$label);
         }
     }
 
@@ -46,13 +55,27 @@ class DescriptorsController extends \BaseController {
         //Display form for creation of roles
 
         $action_code = 'descriptors_create';
+        
+        return Input::all();
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         } else {
+            $descriptorType_id = Input::get('descriptorType_id');
+            $descriptorsTypes = DescriptorType::orderBy('description','asc')
+                    ->lists('description','id');
+            $label = '';
+            if ($descriptorType_id) {
+                //say that the descriptor is of a specific descriptor type
+                $label = ' for '.DescriptorType::find($descriptorType_id)->description;
+                return $label;
+            }
+            
             return View::make('descriptors.create')
-                            ->with('descriptorType_id', Input::get('descriptorType_id'));
+                    ->with('descriptorType_id', $descriptorType_id)
+                    ->with('descriptorsTypes',$descriptorsTypes)
+                    ->with('label',$label);
         }
     }
 

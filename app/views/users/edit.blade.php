@@ -36,7 +36,7 @@
       
         <li>
             {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
-            {{ link_to_route('users.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
+            {{ link_to_route('users.index', 'Cancel', null, array('class'=>'btn btn-info')) }}
         </li>
 
     </ul>

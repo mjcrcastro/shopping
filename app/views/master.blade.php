@@ -62,6 +62,7 @@
                                             <ul class="dropdown-menu" role="menu">
                                                 <li> {{ link_to_route('shops.index','Shops') }} </li>
                                                 <li> {{ link_to_route('products.index','Products') }} </li>
+                                                <li> {{ link_to_route('descriptors.index','Descriptors') }} </li>
                                                 <li> {{ link_to_route('descriptorsTypes.index','Descriptors Types') }} </li>
                                             </ul>
                                         </li>

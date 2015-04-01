@@ -6,26 +6,25 @@
 
 @section('main')
 
-<h1> Create {{ DescriptorType::find($descriptorType_id)->description }} descriptor</h1>
+<h1> Create {{ $label }} descriptor</h1>
 
     {{ Form::open(array('route'=>'descriptors.store','class'=>'horizontal','role'=>'form')) }}
 
     <div class="form-group">
 
-            <dt>
+            <li>
             {{ Form::label('description', 'Description:') }}
-            </dt>
-            <dd>
                 {{ Form::text('description') }}
-            </dd>
+            </li>
             
-            <dd>
-                {{ Form::hidden('descriptorType_id', $descriptorType_id) }}
-            </dd>
+            <li>
+            {{ Form::label('DescriptorType', 'Descriptor Type:') }}
+            {{ Form::select('descriptorType_id', $descriptorsTypes, $descriptorType_id) }}
+            </li>   
             
-            <dt>
+            <li>
             {{ Form::submit('submit', array('class'=>'btn')) }}
-            </dt>
+            </li>
     </div>
 
     {{ Form::close() }}
