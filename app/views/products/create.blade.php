@@ -27,7 +27,7 @@ active
                     currentCategory = "";
             $.each(items, function (index, item) {
                 var li;
-                if (item.category != currentCategory) {
+                if (item.category !== currentCategory) {
                     ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
                     currentCategory = item.category;
                 }
@@ -95,12 +95,12 @@ active
         });
         $('#formSubmit').submit(function (e) {
             //se traen todos los inputs del formulario
-            var values = $("input[id='descriptorarray']")//gets the value of all elements whose id is productarray
+            var values = $("input[id='descriptorArray']")//gets the value of all elements whose id is productarray
                     .map(function () {
                         return parseInt($(this).val());
                     }).get();
             if (!values.length) {
-                alert('At least the generic name need to be provided');
+                alert('At least the generic name needs to be provided');
                 e.preventDefault(); // Cancel the submit
                 return false; // 
             }
