@@ -18,13 +18,13 @@ active
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        
+
         var osmGeocoder = new L.Control.OSMGeocoder();
 
-	map.addControl(osmGeocoder);
+        map.addControl(osmGeocoder);
 
         var marker;
-        
+
         map.on('click', onMapClick);
 
         function onMapClick(e) {
@@ -42,7 +42,7 @@ active
             document.getElementById("locationLat").value = marker.getLatLng().lat;
             document.getElementById("locationLng").value = marker.getLatLng().lng;
         }
-        
+
         $('.open-popup-link').magnificPopup({
             type: 'inline',
             midClick: true, // allow opening popup on middle mouse click. 
@@ -53,8 +53,10 @@ active
                 open: function () {
                     // Will fire when this exact popup is opened
                     // this - is Magnific Popup object
-                    map.locate( {setView: true});
                     map.invalidateSize(true);
+                    if (!marker) {
+                        map.locate({setView: true});
+                    }
                 }
             }
         });
