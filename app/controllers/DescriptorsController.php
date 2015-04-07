@@ -137,13 +137,15 @@ class DescriptorsController extends \BaseController {
         } else {
             //Actual code to execute
             $descriptor = Descriptor::find($id);
+            $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
+                ->lists('description', 'id');
 
             if (is_null($descriptor)) {
                 return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
                             'filter' => Input::get('filter'))
                 );
             }
-            return View::make('descriptors.edit', compact('descriptor'), array('descriptorType_id' => Input::get('descriptorType_id'),
+            return View::make('descriptors.edit', compact('descriptor','descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
                         'filter' => Input::get('filter')));
             // End of actual code to execute
         }

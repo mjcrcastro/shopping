@@ -24,6 +24,12 @@
         {{ Form::hidden('descriptorType_id', $descriptor->descriptorType_id) }}
     </dd>
     <dt>
+        {{ Form::label('descriptorType', 'Descriptor Type:') }}
+    </dt>
+    <dd>
+        {{ Form::select('descriptorType_id', $descriptorsTypes) }}
+    </dd>
+    <dt>
     {{ Form::submit('submit', array('class'=>'btn')) }}
     </dt>
 
