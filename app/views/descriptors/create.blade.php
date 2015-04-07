@@ -6,33 +6,27 @@
 
 @section('main')
 
-<h1> Create {{ $label }} descriptor</h1>
+<h1> Create descriptor {{ $label }} </h1>
 
-    {{ Form::open(array('route'=>'descriptors.store','class'=>'horizontal','role'=>'form')) }}
+    {{ Form::open(array('route'=>'descriptors.store','class'=>'vertical','role'=>'form')) }}
 
     <div class="form-group">
 
-            <li>
             {{ Form::label('description', 'Description:') }}
-                {{ Form::text('description') }}
-            </li>
+            {{ Form::text('description', null, array('class="form-control"')) }}
             
-            <li>
             {{ Form::label('DescriptorType', 'Descriptor Type:') }}
-            {{ Form::select('descriptorType_id', $descriptorsTypes, $descriptorType_id) }}
-            </li>   
-            
-            <li>
-            {{ Form::submit('submit', array('class'=>'btn')) }}
-            </li>
+            {{ Form::select('descriptorType_id', $descriptorsTypes, $descriptorType_id, array('class="form-control"')) }}
+            <p></p>
+            {{ Form::submit('Submit', array('class'=>'btn btn-default')) }}
     </div>
 
     {{ Form::close() }}
 
     @if ($errors->any())
-    <ul>
-        {{ implode('',$errors->all('<li class="error">:message</li>')) }}
-    </ul>
+        {{ implode('',$errors->all('<div class="alert alert-danger" role="alert">'
+                    .'<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'
+                    .'<span class="sr-only">Error:</span>:message</div>')) }}
     @endif
 
 @stop

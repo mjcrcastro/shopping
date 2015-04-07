@@ -11,7 +11,7 @@ class ProductsController extends \BaseController {
         //Return all products
 
         $action_code = 'products_index';
-
+        
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -32,7 +32,7 @@ class ProductsController extends \BaseController {
         } else {
 
             $products = Product::paginate(Config::get('global/default.rows'));
-
+            
             return View::make('products.index', compact('products'))
                             ->with('filter', $filter);
         }
@@ -54,7 +54,8 @@ class ProductsController extends \BaseController {
         }//a return won't let the following code to continue
 
         $descriptors = Descriptor::lists('description', 'id');
-        return View::make('products.create', compact('descriptors'));
+        $descriptorsTypes = DescriptorType::lists('description', 'id');
+        return View::make('products.create', compact('descriptors','descriptorsTypes'));
     }
 
     /**
@@ -70,7 +71,7 @@ class ProductsController extends \BaseController {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
         //Receives and updates new company data
-        $descriptors = Input::get('descriptors');
+        $descriptors = Input::get('descriptor_id');
 
         // check if the product has already been created
         if (!$this->productGet($descriptors)) {//check for duplicate products

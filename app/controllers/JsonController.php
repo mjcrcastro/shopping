@@ -15,13 +15,20 @@ class JsonController extends \BaseController {
         } else {
             if (Request::ajax()) {
                 $filter = Input::get('term');
+                $descriptorType_id = Input::get('descriptorType_id');
                 //Will use the show function to return a json for ajax
                 $descriptors = Descriptor::orderBy('descriptors_types.id', 'asc')
                         ->orderBy('descriptors.description', 'asc')
-                        ->select('descriptors.id as descriptor_id', 'descriptors.description as label', 'descriptors_types.description as category')
+                        ->select('descriptors.id as descriptor_id', 
+                                'descriptors.description as label', 
+                                'descriptors_types.description as category',
+                                'descriptors.descriptorType_id')
                         ->join('descriptors_types', 'descriptors.descriptorType_id', '=', 'descriptors_types.id')
                         ->where('descriptors.description', 'like', '%' . $filter . '%')
+                        ->where('descriptors.descriptorType_id','=',$descriptorType_id)
                         ->get();
+                
+                
                 return Response::json($descriptors);
             } else {
                 return Response::make("Unable to comply request", 404);

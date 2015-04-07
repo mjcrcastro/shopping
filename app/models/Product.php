@@ -19,7 +19,18 @@ class Product extends Eloquent {
     // $ fillable are fields that can be sent as input
     
     public function productDescriptors(){
-        return $this->belongsToMany('Descriptor','products_descriptors')
-            ->orderBy('descriptorType_id', 'asc');
+        return $this->hasMany('ProductDescriptor')
+                ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')
+                ->orderBy('descriptors.descriptorType_id');
+    }
+    
+    
+    public static function boot()
+    {
+        parent::boot();    
+
+        static::deleted(function($product)  {
+            $product->productDescriptors()->delete();
+        });
     }
 }

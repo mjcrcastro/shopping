@@ -47,12 +47,12 @@ active
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('example');
                             var aData = oTT.fnGetSelectedData()
-                            var values = $("input[id='productarray']")//gets the value of all elements whose id is product_id
+                            var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
                                     .map(function () {
                                         return parseInt($(this).val());
                                     }).get();
                             for (nCount = 0; nCount < aData.length; nCount++) {
-                                //check if there exists produc with same id in purchase list
+                                //check if there exists a product with same id in purchase list
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
                                 if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {

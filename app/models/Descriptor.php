@@ -20,11 +20,7 @@ class Descriptor extends Eloquent {
     protected $guarded = array('id');
     
     public static $rules = array(
-        'description' => 'required|unique:shops',
+        'description' => 'required|unique:descriptors',
     );
-    
-    public function descriptorProducts(){
-        return $this->belongsToMany('Product');
-    }
     
 }

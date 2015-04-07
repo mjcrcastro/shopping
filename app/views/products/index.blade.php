@@ -34,7 +34,7 @@
         <tr>
             
             <td> @foreach ($product->productDescriptors as $productdescriptor)
-                    {{ $productdescriptor->description.' '}}
+                    {{ $productdescriptor->descriptor->description.' '}}
                  @endforeach
             </td>
                

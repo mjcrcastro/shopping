@@ -10,7 +10,7 @@
 
         <title>Shopping Management System</title>
 
-        {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
+        {{ HTML::style('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css') }}
         {{ HTML::style('css/style.css') }}
         {{ HTML::style('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css') }}
         {{ HTML::style('DataTables-1.10.5/media/css/jquery.dataTables.css') }}
@@ -18,9 +18,9 @@
         {{ HTML::style('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css') }}
         {{ HTML::style('magnific/magnific.css') }}
 
-        {{ HTML::script('js/jquery/jquery.js') }}
-        {{ HTML::script('css/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js') }}
-        {{ HTML::script('js/bootstrap/bootstrap.js') }}
+        {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
+        {{ HTML::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js') }}
+        {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
         {{ HTML::script('DataTables-1.10.5/media/js/jquery.dataTables.js') }}
         {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
         {{ HTML::script('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js') }} 
