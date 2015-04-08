@@ -83,7 +83,7 @@ class ProductsController extends \BaseController {
                 $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
             }
 
-            ProductDescriptor::insert($data);
+            ProductDescriptor::create($data);
 
             return Redirect::route('products.index');
         } else {
