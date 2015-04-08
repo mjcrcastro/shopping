@@ -167,9 +167,11 @@ class DescriptorsController extends \BaseController {
             //Actual code to execute
             //Receives and updates new role  data
             $input = Input::all();
-
+            
+            Descriptor::$rules['description'] = 'required|unique:descriptors,description,' . $id;
+            
             $validation = Validator::make($input, Descriptor::$rules);
-
+            
             if ($validation->passes()) {
                 $descriptor = Descriptor::find($id);
                 $descriptor->update($input);

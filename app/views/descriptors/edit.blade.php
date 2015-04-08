@@ -21,7 +21,6 @@
     </dt>
     <dd>
         {{ Form::text('description') }}
-        {{ Form::hidden('descriptorType_id', $descriptor->descriptorType_id) }}
     </dd>
     <dt>
         {{ Form::label('descriptorType', 'Descriptor Type:') }}
