@@ -160,9 +160,14 @@ class ProductsController extends \BaseController {
         //returns an empty aray if no product, having
         //the given group of descriptors exists
         //returns the identified produc otherwise
+        if(Config::get('database.default') === 'mysql') {
+            $havingRaw = "GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'";
+        }else{
+            $havingRaw = "string_agg(descriptor_id, ',') ='" . $filter . "'";
+        }
         return DB::table('products_descriptors')
                         ->select('product_id')
-                        ->havingRaw("GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'")
+                        ->havingRaw($havingRaw)
                         ->groupBy('product_id')
                         ->get();
     }
