@@ -20,7 +20,7 @@ class Descriptor extends Eloquent {
     protected $guarded = array('id');
     
     public static $rules = array(
-        'description' => 'required|unique:descriptors,description',
+        'description' => 'required|unique:descriptors,description,{$id}',
     );
     
 }
