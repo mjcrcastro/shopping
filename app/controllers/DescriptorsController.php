@@ -95,12 +95,16 @@ class DescriptorsController extends \BaseController {
             $descriptor = Descriptor::create($input);
 
             $descriptorType_id = $descriptor->descriptorType_id;
-            
+
             if (Request::wantsJson()) {
                 return Response::json($descriptor);
             }
 
-            return Redirect::route('descriptors.index', array('descriptorType_id' => $descriptorType_id, 'filter' => Input::get('filter')));
+            return Redirect::route('descriptors.index', array(
+                        'descriptorType_id' => $descriptorType_id,
+                        'filter' => Input::get('filter')
+                            )
+            );
         }
 
 
@@ -138,14 +142,14 @@ class DescriptorsController extends \BaseController {
             //Actual code to execute
             $descriptor = Descriptor::find($id);
             $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
-                ->lists('description', 'id');
+                    ->lists('description', 'id');
 
             if (is_null($descriptor)) {
                 return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
                             'filter' => Input::get('filter'))
                 );
             }
-            return View::make('descriptors.edit', compact('descriptor','descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
+            return View::make('descriptors.edit', compact('descriptor', 'descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
                         'filter' => Input::get('filter')));
             // End of actual code to execute
         }
@@ -167,11 +171,11 @@ class DescriptorsController extends \BaseController {
             //Actual code to execute
             //Receives and updates new role  data
             $input = Input::all();
-            
+
             Descriptor::$rules['description'] = 'required|unique:descriptors,description,' . $id;
-            
+
             $validation = Validator::make($input, Descriptor::$rules);
-            
+
             if ($validation->passes()) {
                 $descriptor = Descriptor::find($id);
                 $descriptor->update($input);

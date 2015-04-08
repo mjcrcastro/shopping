@@ -45,15 +45,16 @@ active
     $(function () {
 
         //descriptors will be inserted
-        $("#description").catcomplete({
-            delay: 200,
+        $("#descriptor").catcomplete({
+            delay: 500,
+            autoFocus: true,
+            position: {my: "right top", at: "right bottom"},
             source: function (request, response) { //declared so I can send more than one parameter
                 $.ajax({
                     url: '{{ url('jdescriptors') }}',
                     dataType: "json",
                     data: {
                         term: request.term,
-                        descriptorType_id: parseInt($('#descriptorType option:selected').val())
                     },
                     success: function (data) {
                         response(data);
@@ -61,38 +62,48 @@ active
 
                 });
             },
-            response: function (event, ui) {
-                if (ui.content.length === 0) {
-                    var newDescription = $('#description').val();
-                    var descriptorType_id = parseInt($('#descriptorType option:selected').val());
-                    if (confirm('Add ' + newDescription + ' as a descriptor?')) {
-                        var descriptor = {
-                            descriptorType_id: descriptorType_id,
-                            description: newDescription
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('descriptors.store') }}",
-                            data: descriptor,
-                            dataType: 'json',
-                            success: function (data) {
-                                addDescriptorToList(data.id, data.descriptorType_id, data.description);
-                            }
-                        });
-                    } else {
-                        return false;
-                    }
-                }
-            },
             select: function (event, ui) { //function to run on select event
-                addDescriptorToList(ui.item.descriptor_id, parseInt($('#descriptorType option:selected').val()), ui.item.label);
+                addDescriptorToList(ui.item.descriptor_id, 
+                                    ui.item.descriptorType_id, 
+                                    ui.item.category, 
+                                    ui.item.label);
                 $(this).val(''); //clear text from the textbox
                 return false; //returns false to cancel the event
             }
         });
         $(document).on('click', '#removedescriptor', function () { //removes the <p></p> block 
-            $(this).parents('p').remove();
+             $(this).parents('p').remove();
         });
+
+        $(document).on('click', '#addAsDescriptor', function () { 
+            //Show modal bootstrap
+            $('#description').val($('#descriptor').val());
+            $('#myModal').modal('show');
+            //return
+        });
+        
+        ///
+        
+        $(document).on('click', '#addNewDescriptor', function () { 
+                    //Adds a new descriptor to database
+                    var newDescription = $('#descriptor').val();
+                    var descriptorType_id = parseInt($('#descriptorType option:selected').val());
+                    var category = $('#descriptorType option:selected').text();
+                    var descriptor = {
+                            descriptorType_id: descriptorType_id,
+                            description: newDescription
+                    };
+                            $.ajax({
+                            type: "POST",
+                                    url: "{{ route('descriptors.store') }}",
+                                    data: descriptor,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                    addDescriptorToList(data.id, data.descriptorType_id, category, data.description);
+                                    }
+                            });
+                    });
+        
         $('#formSubmit').submit(function (e) {
             //se traen todos los inputs del formulario
             var values = $("input[id='descriptorArray']")//gets the value of all elements whose id is productarray
@@ -108,7 +119,7 @@ active
         });
     });
 
-    function addDescriptorToList(id, descriptorType_id, description) {
+    function addDescriptorToList(id, descriptorType_id, category, description) {
         //adds a hidden input with the descriptor's id along with 
         //a hidden input with the descriptorType's id along as well as 
         //a href with the description, and an image link 
@@ -117,22 +128,22 @@ active
                 .map(function () {
                     return parseInt($(this).val());
                 }).get();
-        
+
         var valuesDescriptorType = $("input[id='descriptorTypeArray']")//gets the value of all elements whose id is productarray
                 .map(function () {
                     return parseInt($(this).val());
                 }).get();
-                
-        if($.inArray(descriptorType_id, valuesDescriptorType) !== -1)   {
+
+        if ($.inArray(descriptorType_id, valuesDescriptorType) !== -1) {
             alert('There is already a descriptor of this type');
             return false;
-        }   
+        }
 
         if (!valuesDescriptor.length || $.inArray(id, valuesDescriptor) === -1) {
             $('<p> ' +
                     '<input type="hidden" name="descriptor_id[]" id="descriptorArray" value=' + id + '>' +
                     '<input type="hidden" name="descriptorType_id[]" id="descriptorTypeArray" value=' + descriptorType_id + '>' +
-                    $('#descriptorType option:selected').text() + ': ' + description + ' ' +
+                    category + ': ' + description + ' ' +
                     '<a href="#" id="removedescriptor">' +
                     '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
                     '</a>' +
@@ -146,8 +157,44 @@ active
 
 @section('main')
 
-<h1 class="h1" > Create product </h1>
+
 <div class ="container-fluid">
+
+    <h1 class="h1" > Create product </h1>
+    
+{{-- Hidden form from Bootstrap --}}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add new descriptor</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+
+                        {{ Form::label('description', 'Description:') }}
+                        {{ Form::text('description', null, 
+                                    array('class="form-control"',
+                                          'disabled',
+                                          'id'=>'description')) }}
+
+                        {{ Form::label('DescriptorType', 'Descriptor Type:') }}
+                        {{ Form::select('descriptorType_id', $descriptorsTypes, 
+                                    null, array('class="form-control"','id'=>'descriptorType')) }}
+                        <p></p>
+                        {{ HTML::link('#','Add descriptor',
+                            array('class'=>'btn btn-primary',
+                                  "data-toggle='modal' data-target='#myModal'",
+                                  'id'=>'addNewDescriptor')) }} 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{-- Hidden form from Bootstrap --}}
+
     {{ Form::open(array('route'=>'products.store','class'=>'horizontal','role'=>'form','id'=>'formSubmit')) }}
 
     <div class="form-group">
@@ -161,9 +208,8 @@ active
         </div>
 
         <p>
-            {{ Form::label('DescriptorType', 'Descriptor Type:') }}
-            {{ Form::select('descriptorType_id', $descriptorsTypes, null, array('class'=>"form-control",'id'=>'descriptorType')) }}
-            {{ Form::text('description', '',array('id'=>'description', 'class'=>'ui-widget form-control')) }}
+            {{ Form::text('descriptor', '',array('id'=>'descriptor', 'class'=>'ui-widget form-control')) }}
+            {{ HTML::link('#','Add as descriptor',array('id'=>'addAsDescriptor')) }} 
         <p>
             {{ Form::submit('submit', array('class'=>'btn btn-info','id'=>'submitButton')) }}
             {{ link_to_route('products.index', 'Cancel', [],array('class'=>'btn btn-primary')) }}

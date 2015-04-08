@@ -15,7 +15,6 @@ class JsonController extends \BaseController {
         } else {
             if (Request::ajax()) {
                 $filter = Input::get('term');
-                $descriptorType_id = Input::get('descriptorType_id');
                 //Will use the show function to return a json for ajax
                 $descriptors = Descriptor::orderBy('descriptors_types.id', 'asc')
                         ->orderBy('descriptors.description', 'asc')
@@ -25,7 +24,6 @@ class JsonController extends \BaseController {
                                 'descriptors.descriptorType_id')
                         ->join('descriptors_types', 'descriptors.descriptorType_id', '=', 'descriptors_types.id')
                         ->where('descriptors.description', 'like', '%' . $filter . '%')
-                        ->where('descriptors.descriptorType_id','=',$descriptorType_id)
                         ->get();
                 
                 
