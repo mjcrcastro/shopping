@@ -80,7 +80,10 @@ class ProductsController extends \BaseController {
 
             //modify the array so that it includes the product id
             foreach ($descriptors as &$row) {
-                $data[] = array('product_id' => $product->id, 'descriptor_id' => $row);
+                $data[] = array('product_id' => $product->id, 
+                                'descriptor_id' => $row,
+                                'created_at'=>date("Y-m-d H:i:s"),
+                                'updated_at'=>date("Y-m-d H:i:s"));
             }
 
             ProductDescriptor::insert($data);
@@ -160,11 +163,17 @@ class ProductsController extends \BaseController {
         //returns an empty aray if no product, having
         //the given group of descriptors exists
         //returns the identified produc otherwise
+        if(Config::get('database.default') === 'mysql') {
+            $havingRaw = "GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'";
+        }else{
+            $havingRaw = "array_to_string(array_agg(descriptor_id), ', ') ='" . $filter . "'";
+        }
         return DB::table('products_descriptors')
                         ->select('product_id')
-                        ->havingRaw("GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'")
+                        ->havingRaw($havingRaw)
                         ->groupBy('product_id')
                         ->get();
+        
     }
 
     public function toGroupCount($data) {

@@ -43,17 +43,24 @@ class JsonController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
+        }
             //if (Request::ajax()) {
                 $filter = Input::get('search.value');
+                $dbRaw = '';
                 if ($filter) {
                     //this query depends on the definition of 
                     //function productDescriptors in the products model
                     //productDescriptors returns all of this product descriptors
                     //decompose the incoming string in
                     
+                    if(Config::get('database.default') === 'mysql') {
+                        $dbRaw = 'GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description';
+                    }else{
+                        $dbRaw = "array_to_string(array_agg(descriptors.description), ' ') as product_description";
+                    }
+
                     $products = Product::select('products.id as product_id',
-                             DB::raw('GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description'))
+                             DB::raw($dbRaw))
                             ->join('products_descriptors','products_descriptors.product_id','=','products.id')
                             ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')
                             ->groupBy('products.id')
@@ -61,14 +68,13 @@ class JsonController extends \BaseController {
                             ->get();
                 } else {
                     $products = Product::select('products.id as product_id',
-                             DB::raw('GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description'))
+                             DB::raw($dbRaw))
                             ->join('products_descriptors','products_descriptors.product_id','=','products.id')
                             ->join('descriptors','descriptors.id','=','products_descriptors.descriptor_id')
                             ->groupBy('products.id')
                             ->get();
                 }
                 
-            }
                 
                 $response['length'] = Input::get('length');
                 $response['draw'] = Input::get('draw');
@@ -86,11 +92,16 @@ class JsonController extends \BaseController {
         public function getHavingRaw($search_string) {
             $searchArray = explode(" ",$search_string);
             
-            static $having;
+            static $having ='';
             
             for($nCount = 0; $nCount < sizeof($searchArray);$nCount++){
-                $having.=' AND GROUP_CONCAT(DISTINCT descriptors.description) '.
+                if(Config::get('database.default') === 'mysql') {
+                    $having.=" AND GROUP_CONCAT(descriptors.description) ".
                         'like "%'.ltrim(rtrim($searchArray[$nCount])).'%"';
+                }else{
+                    $having.=" AND array_to_string(array_agg(descriptors.description), ' ') ".
+                        'like "%'.ltrim(rtrim($searchArray[$nCount])).'%"';
+                }
             }
             return substr($having,5,strlen($having)-5);
         }
