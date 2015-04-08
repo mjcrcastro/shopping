@@ -46,6 +46,7 @@ class JsonController extends \BaseController {
         }
             //if (Request::ajax()) {
                 $filter = Input::get('search.value');
+                $dbRaw = '';
                 if ($filter) {
                     //this query depends on the definition of 
                     //function productDescriptors in the products model
