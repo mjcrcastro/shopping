@@ -163,7 +163,7 @@ class ProductsController extends \BaseController {
         if(Config::get('database.default') === 'mysql') {
             $havingRaw = "GROUP_CONCAT(DISTINCT descriptor_id ORDER BY descriptor_id) ='" . $filter . "'";
         }else{
-            $havingRaw = "string_agg(descriptor_id, ',') ='" . $filter . "'";
+            $havingRaw = "string_agg(descriptor_id, ',' ORDER BY descriptor_id) ='" . $filter . "'";
         }
         return DB::table('products_descriptors')
                         ->select('product_id')
