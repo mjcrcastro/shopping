@@ -76,7 +76,7 @@ class PurchasesController extends \BaseController {
         $purchaseData = array(
             "shop_id" => Input::get('shop_id'),
             "purchase_date" => Input::get('purchase_date'),
-            "user"=>Auth::user(),
+            "user"=>Auth::user()->username,
                 );
         
         $purchasedProducts = Input::get('product_id');
