@@ -46,7 +46,7 @@ active
 
         //descriptors will be inserted
         $("#descriptor").catcomplete({
-            delay: 500,
+            delay: 200,
             autoFocus: true,
             position: {my: "right top", at: "right bottom"},
             source: function (request, response) { //declared so I can send more than one parameter
@@ -62,12 +62,15 @@ active
 
                 });
             },
+            response: function (event, ui) {
+                $("#addAsDescriptor").removeClass('disabled');
+                $("#addAsDescriptor").text("Add " + $('#descriptor').val() + " to descriptors");
+            },
             select: function (event, ui) { //function to run on select event
                 addDescriptorToList(ui.item.descriptor_id,
                         ui.item.descriptorType_id,
                         ui.item.category,
                         ui.item.label);
-                $(this).val(''); //clear text from the textbox
                 return false; //returns false to cancel the event
             }
         });
@@ -99,7 +102,13 @@ active
                 data: descriptor,
                 dataType: 'json',
                 success: function (data) {
-                    addDescriptorToList(data.id, data.descriptorType_id, category, data.description);
+                    addDescriptorToList(
+                            data.id, 
+                            parseInt(data.descriptorType_id), 
+                            category, 
+                            data.description
+                            );
+                    $("#addAsDescriptor").text("...");
                 }
             });
         });
@@ -124,6 +133,8 @@ active
         //a hidden input with the descriptorType's id along as well as 
         //a href with the description, and an image link 
         //to be able to remove the descriptor later
+        $('#descriptor').val(''); //clear text from the textbox
+        
         var valuesDescriptor = $("input[id='descriptorArray']")//gets the value of all elements whose id is productarray
                 .map(function () {
                     return parseInt($(this).val());
@@ -199,21 +210,22 @@ active
 
     <div class="form-group">
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div id="descriptors">
-                    {{-- Placeholder for list of added descriptors --}} 
-                </div>
-            </div>
+        <div id="descriptors">
+            {{-- Placeholder for list of added descriptors --}} 
         </div>
 
         <p>
-
+        <div class="input-group">
             {{ Form::text('descriptor', '',array('id'=>'descriptor', 'class'=>'ui-widget form-control')) }}
-            {{ HTML::link('#','Add as descriptor',array('id'=>'addAsDescriptor')) }} 
+            <span class="input-group-btn">
+                {{ HTML::link('#','...',array('id'=>'addAsDescriptor','class'=>'btn btn-default disabled','type'=>'button')) }} 
+            </span>
+        </div><!-- /input-group -->
         <p>
-            {{ Form::submit('submit', array('class'=>'btn btn-info','id'=>'submitButton')) }}
-            {{ link_to_route('products.index', 'Cancel', [],array('class'=>'btn btn-primary')) }}
+
+        <p>
+            {{ Form::submit('Submit', array('class'=>'btn  btn-primary col-xs-6')) }}
+            {{ link_to_route('products.index', 'Cancel', [],array('class'=>'btn btn-default col-xs-6')) }}
 
     </div>
 </div>

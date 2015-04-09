@@ -205,7 +205,7 @@ class DescriptorsController extends \BaseController {
             return Redirect::back()->with('message', $message);
         } else {
             $descriptor = Descriptor::find($id);
-            $descriptorType_id = $descriptor->descriptorType_id;
+            $descriptorType_id = Input::get('descriptorType_id');
             $descriptor->delete();
 
             return Redirect::route('descriptors.index', array('descriptorType_id' => $descriptorType_id));

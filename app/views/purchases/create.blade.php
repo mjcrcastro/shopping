@@ -43,6 +43,12 @@ active
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
+                    {"sExtends": "text", "sButtonText": "add new product",
+                        "fnClick": function (nButton, oConfig, oFlash) {
+                            window.open('{{ route("products.create") }}'); 
+                            return false;
+                        }
+                    },
                     {"sExtends": "text", "sButtonText": "add to purchase",
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('example');
@@ -70,7 +76,7 @@ active
                                 }
                             }
                         }
-                    }
+                    }                     
                 ]
             },
             "ajax": {
@@ -120,8 +126,6 @@ active
                     {{ Form::label('date', 'Date:') }}
                     {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
                     <p></p>
-
-
                 </div>
             </div>
             <div class="container container-fluid">

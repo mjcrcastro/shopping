@@ -17,7 +17,8 @@
         {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
         {{ HTML::style('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css') }}
         {{ HTML::style('magnific/magnific.css') }}
-
+        {{ HTML::style('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css') }}
+        
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
         {{ HTML::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js') }}
         {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}

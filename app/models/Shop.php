@@ -21,6 +21,7 @@ class Shop extends Eloquent {
     
     public static $rules = array(
         'description' => 'required|unique:shops',
+        'locationAddress'=>'required',
     );
 
     public function purchases() {

@@ -60,7 +60,7 @@ class ShopsController extends \BaseController {
                                 ->with('message', 'Shop ' . $shop->description . ' created');
             }
             //if data is not valid, return to edition for additional input
-                return Redirect::route('shop.create')
+                return Redirect::route('shops.create')
                                 ->withInput()
                                 ->withErrors($validation)
                                 ->with('message', 'There were validation errors');

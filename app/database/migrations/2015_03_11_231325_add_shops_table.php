@@ -18,8 +18,7 @@ class AddShopsTable extends Migration {
                  Schema::create('shops', function($table) {
                    $table->increments('id');
                    $table->string('description');
-                   $table->string('locationMap');
-                   $table->string('locationText');
+                   $table->string('locationAddress');
                    $table->timestamps();
                });
 	}
