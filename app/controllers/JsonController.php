@@ -86,8 +86,8 @@ class JsonController extends \BaseController {
                 $having.=" AND GROUP_CONCAT(descriptors.description) " .
                         'like "%' . ltrim(rtrim($searchArray[$nCount])) . '%"';
             } else {
-                $having.=" AND array_to_string(array_agg(descriptors.description), ' ') " .
-                        "like  '%" . ltrim(rtrim($searchArray[$nCount])) . "%'";
+                $having.=" AND array_to_string(array_agg(LOWER(descriptors.description)), ' ') " .
+                        "like  '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";
             }
         }
         return substr($having, 5, strlen($having) - 5);
