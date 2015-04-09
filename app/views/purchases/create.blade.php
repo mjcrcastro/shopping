@@ -66,6 +66,7 @@ active
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
                                             '</div></div>').appendTo('#products');
+                                    $('#myModal').modal('hide');
                                 }
                             }
                         }
@@ -91,7 +92,11 @@ active
         });
     });
 
-
+    $(document).on('click', '#addProducts', function () {
+        //Show modal bootstrap
+        $('#myModal').modal('show');
+        //return
+    });
 
 
 </script>
@@ -141,6 +146,7 @@ active
                 </div>
             </div>
             <p></p>
+            {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-info','id'=>'addProducts')) }}
             {{ Form::submit('submit', array('class'=>'btn btn-info')) }}
             {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
             {{ Form::close() }}
@@ -148,31 +154,42 @@ active
             <p></p>
 
             </dt>
-
-            <div class="col-xs-12">
-                <table id="example" class="display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Product</th>
-                        </tr>
-                    </thead>
-
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Product</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-
         </div>
     </div>
 </div>
 
 
+{{-- bootstrap modal --}}
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Search products</h4>
+            </div>
+            <div class="modal-body">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Product</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Product</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- bootstrap modal --}}
 @if ($errors->any())
 <ul>
     {{ implode('',$errors->all('<li class="error">:message</li>')) }}
