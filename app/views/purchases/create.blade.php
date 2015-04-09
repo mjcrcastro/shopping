@@ -45,7 +45,7 @@ active
                 "aButtons": [
                     {"sExtends": "text", "sButtonText": "add new product",
                         "fnClick": function (nButton, oConfig, oFlash) {
-                            window.open('{{ route("products.create") }}'); 
+                            window.open('{{ route("products.create") }}');
                             return false;
                         }
                     },
@@ -76,7 +76,7 @@ active
                                 }
                             }
                         }
-                    }                     
+                    }
                 ]
             },
             "ajax": {
@@ -118,7 +118,6 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                <div class="form-group">
                     {{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
                     {{ Form::label('shop', 'Shop:') }}
                     {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
@@ -126,9 +125,6 @@ active
                     {{ Form::label('date', 'Date:') }}
                     {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
                     <p></p>
-                </div>
-            </div>
-            <div class="container container-fluid">
                 <div class="row">
                     <dt>
                     <div class="col-xs-5">
@@ -143,9 +139,7 @@ active
                     <div class="col-xs-1">
                     </div>
                 </div>
-            </div>
 
-            <div class="container container-fluid">
                 <div class="row" id="products">
                 </div>
                 <p></p>
@@ -153,9 +147,10 @@ active
                 <p></p>
                 {{ Form::submit('Submit', array('class'=>'btn  btn-primary col-xs-6')) }}
                 {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-default col-xs-6')) }}
-            </div>
+                {{ Form::close() }}
 
-            {{ Form::close() }}
+
+            </div>
 
             <p></p>
 
