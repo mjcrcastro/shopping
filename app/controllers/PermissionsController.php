@@ -58,7 +58,11 @@ class PermissionsController extends \BaseController {
             //first run over all the array to add the role_id
 
             foreach ($input as &$row) {
-                $data[] = array('role_id' => $id, 'action_id' => $row);
+                $data[] = array('role_id' => $id, 
+                                'action_id' => $row,
+                                 'created_at'=>date("Y-m-d H:i:s"),
+                                'updated_at'=>date("Y-m-d H:i:s")
+                        );
             }
 
             Permission::insert($data);

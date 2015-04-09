@@ -83,7 +83,8 @@ class ProductsController extends \BaseController {
                 $data[] = array('product_id' => $product->id, 
                                 'descriptor_id' => $row,
                                 'created_at'=>date("Y-m-d H:i:s"),
-                                'updated_at'=>date("Y-m-d H:i:s"));
+                                'updated_at'=>date("Y-m-d H:i:s")
+                    );
             }
 
             ProductDescriptor::insert($data);
