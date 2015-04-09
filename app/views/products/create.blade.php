@@ -54,7 +54,7 @@ active
                     url: '{{ url('jdescriptors') }}',
                     dataType: "json",
                     data: {
-                        term: request.term,
+                        term: request.term
                     },
                     success: function (data) {
                         response(data);
@@ -208,6 +208,7 @@ active
         </div>
 
         <p>
+            
             {{ Form::text('descriptor', '',array('id'=>'descriptor', 'class'=>'ui-widget form-control')) }}
             {{ HTML::link('#','Add as descriptor',array('id'=>'addAsDescriptor')) }} 
         <p>
