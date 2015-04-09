@@ -73,8 +73,11 @@ class PurchasesController extends \BaseController {
         }//a return won't let the following code to continue
         //Receives and updates new purchase data
 
-        $purchaseData = array("shop_id" => Input::get('shop_id'),
-            "purchase_date" => Input::get('purchase_date'));
+        $purchaseData = array(
+            "shop_id" => Input::get('shop_id'),
+            "purchase_date" => Input::get('purchase_date'),
+            "user"=>Auth::user(),
+                );
         
         $purchasedProducts = Input::get('product_id');
         

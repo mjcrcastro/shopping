@@ -65,10 +65,10 @@ active
                                     $('<div class="container container-fluid">' +
                                             '<div class="row" id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
-                                            '<div class="col-xs-5"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
+                                            '<div class="col-xs-4"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
                                             '<div class="col-xs-3"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
                                             '<div class="col-xs-3"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                            '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
+                                            '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
                                             '</div></div>').appendTo('#products');
@@ -127,7 +127,7 @@ active
                     <p></p>
                 <div class="row">
                     <dt>
-                    <div class="col-xs-5">
+                    <div class="col-xs-4">
                         Product
                     </div>
                     <div class="col-xs-3">
@@ -136,7 +136,7 @@ active
                     <div class="col-xs-3">
                         Cost
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-xs-2">
                     </div>
                 </div>
 
