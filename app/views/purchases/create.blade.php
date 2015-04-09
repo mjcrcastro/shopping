@@ -144,26 +144,13 @@ active
             <div class="container container-fluid">
                 <div class="row" id="products">
                 </div>
+                <p></p>
+                {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block col-xs-12','id'=>'addProducts')) }}
+                <p></p>
+                {{ Form::submit('Submit', array('class'=>'btn  btn-primary col-xs-6')) }}
+                {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-default col-xs-6')) }}
             </div>
-            <p></p>
-            <div class="container container-fluid">
-                <div class="row">
-                    <div class ="col-sx-12">
-                        {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block','id'=>'addProducts')) }}
-                    </div>
-                </div>
-            </div>
-            <div class="container container-fluid">
-                <div class="row">
-                    <div class ="col-sx-6 ">
-                        {{ Form::submit('Submit', array('class'=>'btn  btn-block btn-primary')) }}
-                    </div>
-                    <div class ="col-sx-6">
-                        {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn  btn-block btn-warning')) }}
-                    </div>
-                </div>
-            </div>
-            
+
             {{ Form::close() }}
 
             <p></p>
@@ -184,21 +171,21 @@ active
                 <h4 class="modal-title" id="myModalLabel">Search products</h4>
             </div>
             <div class="modal-body">
-                    <table id="example" class="display" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Product</th>
-                            </tr>
-                        </thead>
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Product</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>Product</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Product</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
