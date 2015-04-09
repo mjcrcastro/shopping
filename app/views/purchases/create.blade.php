@@ -146,9 +146,24 @@ active
                 </div>
             </div>
             <p></p>
-            {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-info','id'=>'addProducts')) }}
-            {{ Form::submit('submit', array('class'=>'btn btn-info')) }}
-            {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
+            <div class="container container-fluid">
+                <div class="row">
+                    <div class ="col-sx-12">
+                        {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block','id'=>'addProducts')) }}
+                    </div>
+                </div>
+            </div>
+            <div class="container container-fluid">
+                <div class="row">
+                    <div class ="col-sx-6 ">
+                        {{ Form::submit('Submit', array('class'=>'btn  btn-block btn-primary')) }}
+                    </div>
+                    <div class ="col-sx-6">
+                        {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn  btn-block btn-warning')) }}
+                    </div>
+                </div>
+            </div>
+            
             {{ Form::close() }}
 
             <p></p>
