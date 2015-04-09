@@ -88,7 +88,7 @@ class DescriptorsController extends \BaseController {
         //Save new user data
         $input = Input::all();
         
-        Descriptor::$rules['description'] = 'required|unique:descriptors,description,'.$id;
+        Descriptor::$rules['description'] = '';
         
         $validation = Validator::make($input, Descriptor::$rules);
 
