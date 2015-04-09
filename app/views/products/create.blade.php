@@ -63,47 +63,47 @@ active
                 });
             },
             select: function (event, ui) { //function to run on select event
-                addDescriptorToList(ui.item.descriptor_id, 
-                                    ui.item.descriptorType_id, 
-                                    ui.item.category, 
-                                    ui.item.label);
+                addDescriptorToList(ui.item.descriptor_id,
+                        ui.item.descriptorType_id,
+                        ui.item.category,
+                        ui.item.label);
                 $(this).val(''); //clear text from the textbox
                 return false; //returns false to cancel the event
             }
         });
         $(document).on('click', '#removedescriptor', function () { //removes the <p></p> block 
-             $(this).parents('p').remove();
+            $(this).parents('p').remove();
         });
 
-        $(document).on('click', '#addAsDescriptor', function () { 
+        $(document).on('click', '#addAsDescriptor', function () {
             //Show modal bootstrap
             $('#description').val($('#descriptor').val());
             $('#myModal').modal('show');
             //return
         });
-        
+
         ///
-        
-        $(document).on('click', '#addNewDescriptor', function () { 
-                    //Adds a new descriptor to database
-                    var newDescription = $('#descriptor').val();
-                    var descriptorType_id = parseInt($('#descriptorType option:selected').val());
-                    var category = $('#descriptorType option:selected').text();
-                    var descriptor = {
-                            descriptorType_id: descriptorType_id,
-                            description: newDescription
-                    };
-                            $.ajax({
-                            type: "POST",
-                                    url: "{{ route('descriptors.store') }}",
-                                    data: descriptor,
-                                    dataType: 'json',
-                                    success: function (data) {
-                                    addDescriptorToList(data.id, data.descriptorType_id, category, data.description);
-                                    }
-                            });
-                    });
-        
+
+        $(document).on('click', '#addNewDescriptor', function () {
+            //Adds a new descriptor to database
+            var newDescription = $('#descriptor').val();
+            var descriptorType_id = parseInt($('#descriptorType option:selected').val());
+            var category = $('#descriptorType option:selected').text();
+            var descriptor = {
+                descriptorType_id: descriptorType_id,
+                description: newDescription
+            };
+            $.ajax({
+                type: "POST",
+                url: "{{ route('descriptors.store') }}",
+                data: descriptor,
+                dataType: 'json',
+                success: function (data) {
+                    addDescriptorToList(data.id, data.descriptorType_id, category, data.description);
+                }
+            });
+        });
+
         $('#formSubmit').submit(function (e) {
             //se traen todos los inputs del formulario
             var values = $("input[id='descriptorArray']")//gets the value of all elements whose id is productarray
@@ -161,8 +161,8 @@ active
 <div class ="container-fluid">
 
     <h1 class="h1" > Create product </h1>
-    
-{{-- Hidden form from Bootstrap --}}
+
+    {{-- Hidden form from Bootstrap --}}
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -193,7 +193,7 @@ active
             </div>
         </div>
     </div>
-{{-- Hidden form from Bootstrap --}}
+    {{-- Hidden form from Bootstrap --}}
 
     {{ Form::open(array('route'=>'products.store','class'=>'horizontal','role'=>'form','id'=>'formSubmit')) }}
 
@@ -208,7 +208,7 @@ active
         </div>
 
         <p>
-            
+
             {{ Form::text('descriptor', '',array('id'=>'descriptor', 'class'=>'ui-widget form-control')) }}
             {{ HTML::link('#','Add as descriptor',array('id'=>'addAsDescriptor')) }} 
         <p>
