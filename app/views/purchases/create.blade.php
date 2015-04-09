@@ -43,7 +43,7 @@ active
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
-                    {"sExtends": "text", "sButtonText": "add selection to purchase",
+                    {"sExtends": "text", "sButtonText": "add to purchase",
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('example');
                             var aData = oTT.fnGetSelectedData()
@@ -56,15 +56,17 @@ active
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
                                 if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
-                                    $('<div id="productRow">' +
+                                    $('<div class="container container-fluid">' +
+                                            '<div class="row" id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
-                                            '<div class="col-xs-7"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
-                                            '<div class="col-xs-2"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                            '<div class="col-xs-2"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                            '<div class="col-xs-5"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
+                                            '<div class="col-xs-3"> {{ Form::text("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                            '<div class="col-xs-3"> {{ Form::text("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
                                             '<div class="col-xs-1"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
-                                            '</div>').appendTo('#products');
+                                            '</div></div>').appendTo('#products');
+                                    $('#myModal').modal('hide');
                                 }
                             }
                         }
@@ -90,7 +92,11 @@ active
         });
     });
 
-
+    $(document).on('click', '#addProducts', function () {
+        //Show modal bootstrap
+        $('#myModal').modal('show');
+        //return
+    });
 
 
 </script>
@@ -101,51 +107,83 @@ active
 
 <h1> Create purchase </h1>
 
-{{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
-<div class="container">
 
-    <div class="form-group">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-6">
-                    <dt>
+<div class="container">
+    <div class="container container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    {{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
                     {{ Form::label('shop', 'Shop:') }}
                     {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
-                    </dd>
 
-                    <dt>
                     {{ Form::label('date', 'Date:') }}
                     {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
-                    </dd>
-
-                    <dt>
                     <p></p>
 
-                    <div class="row">
-                        <div class="col-xs-7">
-                            Product
-                        </div>
-                        <div class="col-xs-2">
-                            Amount
-                        </div>
-                        <div class="col-xs-2">
-                            Total Cost
-                        </div>
-                        <div class="col-xs-1">
-                        </div>
-                        <div id="products"></div>
-                    </div>
-
-                    </dt>
-
-                    <dt>
-                    {{ Form::submit('submit', array('class'=>'btn btn-info')) }}
-                    {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-info')) }}
-                    </dt>
 
                 </div>
+            </div>
+            <div class="container container-fluid">
+                <div class="row">
+                    <dt>
+                    <div class="col-xs-5">
+                        Product
+                    </div>
+                    <div class="col-xs-3">
+                        Qt
+                    </div>
+                    <div class="col-xs-3">
+                        Cost
+                    </div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            </div>
 
-                <div class="col-xs-6">
+            <div class="container container-fluid">
+                <div class="row" id="products">
+                </div>
+            </div>
+            <p></p>
+            <div class="container container-fluid">
+                <div class="row">
+                    <div class ="col-sx-12">
+                        {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block','id'=>'addProducts')) }}
+                    </div>
+                </div>
+            </div>
+            <div class="container container-fluid">
+                <div class="row">
+                    <div class ="col-sx-6 ">
+                        {{ Form::submit('Submit', array('class'=>'btn  btn-block btn-primary')) }}
+                    </div>
+                    <div class ="col-sx-6">
+                        {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn  btn-block btn-warning')) }}
+                    </div>
+                </div>
+            </div>
+            
+            {{ Form::close() }}
+
+            <p></p>
+
+            </dt>
+        </div>
+    </div>
+</div>
+
+
+{{-- bootstrap modal --}}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Search products</h4>
+            </div>
+            <div class="modal-body">
                     <table id="example" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -161,15 +199,12 @@ active
                             </tr>
                         </tfoot>
                     </table>
-                </div>
             </div>
         </div>
-
     </div>
 </div>
 
-{{ Form::close() }}
-
+{{-- bootstrap modal --}}
 @if ($errors->any())
 <ul>
     {{ implode('',$errors->all('<li class="error">:message</li>')) }}
