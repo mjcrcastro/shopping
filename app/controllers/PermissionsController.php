@@ -60,7 +60,7 @@ class PermissionsController extends \BaseController {
             foreach ($input as &$row) {
                 $data[] = array('role_id' => $id, 
                                 'action_id' => $row,
-                                 'created_at'=>date("Y-m-d H:i:s"),
+                                'created_at'=>date("Y-m-d H:i:s"),
                                 'updated_at'=>date("Y-m-d H:i:s")
                         );
             }
