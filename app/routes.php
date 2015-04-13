@@ -30,9 +30,12 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('products','ProductsController');
     
     Route::resource('descriptorsTypes','DescriptorsTypesController');
-    
+    //it is required to add the addiontional routes before the call to Route::resource
+    //if the additional route is added, Laravel wont be able to handle the get 
+    //request from descriptors (i.e. /descriptors/tocsv, 
+    //we would have to call it from the root // (i.e. /tocsv)
+    Route::get('descriptors/tocsv',array('as'=>'descriptors.csv','uses'=>'DescriptorsController@getCsv'));
     Route::resource('descriptors','DescriptorsController');
-    Route::get('descriptorscsv',array('as'=>'descriptors.csv','uses'=>'DescriptorsController@getCsv'));
     
     Route::resource('purchases','PurchasesController');
     
