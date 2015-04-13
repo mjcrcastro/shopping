@@ -26,7 +26,7 @@
     
     <p> {{ link_to_route('descriptors.create', 'Add new descriptor',array('descriptorType_id'=>$descriptorType_id)) }} </p>
     
-    <p> {{ link_to_route('descriptors.allCsv', 'Download CSV') }} </p>
+    <p> {{ link_to_route('descriptors.csv', 'Download CSV') }} </p>
    
     
 

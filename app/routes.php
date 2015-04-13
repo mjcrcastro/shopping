@@ -32,13 +32,12 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('descriptorsTypes','DescriptorsTypesController');
     
     Route::resource('descriptors','DescriptorsController');
+    Route::get('descriptorscsv',array('as'=>'descriptors.csv','uses'=>'DescriptorsController@getCsv'));
     
     Route::resource('purchases','PurchasesController');
     
     Route::get('jdescriptors',array('uses'=>'JsonController@descriptors'));
     Route::get('jproducts',array('uses'=>'JsonController@products'));
-    
-    Route::get('descriptorscsv',array('as'=>'descriptors.allCsv','uses'=>'DescriptorsController@getCsv'));
     
 });
 
