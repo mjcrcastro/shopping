@@ -87,9 +87,9 @@ class DescriptorsController extends \BaseController {
         }
         //Save new user data
         $input = Input::all();
-        
+
         Descriptor::$rules['description'] = '';
-        
+
         $validation = Validator::make($input, Descriptor::$rules);
 
         if ($validation->passes()) {
@@ -232,7 +232,7 @@ class DescriptorsController extends \BaseController {
                 $filter = Input::get('term');
                 //Will use the show function to return a json for ajax
                 $descriptors = Descriptor::orderBy('description', 'asc')
-                        ->where('description', 'like', '%' . $filter . '%')
+                        ->where('description', 'like', '%' . strtolower($filter) . '%')
                         ->get();
                 return Response::json($descriptors);
             } else {
@@ -240,5 +240,27 @@ class DescriptorsController extends \BaseController {
             }
         }
     }
+    
+    Public function getCsv() {
+
+        $table = Descriptor::all();
+        $filename = "descriptors.csv";
+        $handle = fopen($filename, 'w+');
+        
+        fputcsv($handle, array('id', 'descriptorType_id', 'description', 'created at','updated_at'));
+
+        foreach ($table as $row) {
+            fputcsv($handle, array($row['id'], $row['descriptorType_id'], $row['description'], $row['created_at'], $row['updated_at']));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+
+        return Response::download($filename, $filename, $headers);
+    }
+
 
 }

@@ -16,7 +16,6 @@
         {{ HTML::style('DataTables-1.10.5/media/css/jquery.dataTables.css') }}
         {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
         {{ HTML::style('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css') }}
-        {{ HTML::style('magnific/magnific.css') }}
         {{ HTML::style('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css') }}
         
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
@@ -25,7 +24,6 @@
         {{ HTML::script('DataTables-1.10.5/media/js/jquery.dataTables.js') }}
         {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
         {{ HTML::script('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js') }} 
-        {{ HTML::script('magnific/magnific-1.0.0.js') }}
         {{ HTML::script('geocoder/geocoder.js') }}
         
         @yield('header') <!-- Header is here to include required functions from the included blade page-->

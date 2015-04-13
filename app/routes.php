@@ -38,16 +38,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('jdescriptors',array('uses'=>'JsonController@descriptors'));
     Route::get('jproducts',array('uses'=>'JsonController@products'));
     
+    Route::get('descriptorscsv',array('as'=>'descriptors.allCsv','uses'=>'DescriptorsController@getCsv'));
     
-    /*
-    // For testing queries
-      Event::listen('illuminate.query', function($query, $params, $time, $conn)
-      {
-      dd(array($query, $params, $time, $conn));
-      });
-     
-     * 
-     */
 });
 
 // All this do not need to request authentication since they are doing 

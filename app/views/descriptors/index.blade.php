@@ -25,6 +25,10 @@
     <h1> All descriptors {{ $label }} </h1>
     
     <p> {{ link_to_route('descriptors.create', 'Add new descriptor',array('descriptorType_id'=>$descriptorType_id)) }} </p>
+    
+    <p> {{ link_to_route('descriptors.allCsv', 'Download CSV') }} </p>
+   
+    
 
     @if ($descriptors->count())
         <table class="table table-striped table-ordered">
