@@ -50,20 +50,26 @@ class JsonController extends \BaseController {
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                     ->groupBy('products.id')
-                    ->havingRaw($this->getHavingRaw($filter));
+                    ->havingRaw($this->getHavingRaw($filter))
+                    ->skip(Input::get('start'))
+                    ->take(Input::get('length'))
+                    ->get();
             
         } else {
             $products = Product::select('products.id as product_id', DB::raw($dbRaw))
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
-                    ->groupBy('products.id');
+                    ->groupBy('products.id')
+                    ->skip(Input::get('start'))
+                    ->take(Input::get('length'))
+                    ->get();
         }
         
         $response['length'] = Input::get('length');
         $response['draw'] = Input::get('draw');
         $response['recordsTotal'] = Product::all()->count();
         $response['recordsFiltered'] = $products->count();
-        $response['data'] = $products->skip(Input::get('start'))->take(Input::get('length'))->get();
+        $response['data'] = $products;
         return Response::json($response);
         //}
     }
