@@ -40,32 +40,30 @@ class JsonController extends \BaseController {
         $filter = Input::get('search.value');
         
         if (Config::get('database.default') === 'mysql') {
-            $dbRaw = 'GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR " ") as product_description';
+            $dbRaw = "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
             $dbRaw = "array_to_string(array_agg(descriptors.description), ' ') as product_description";
         }
         if ($filter) {
-
+            
             $products = Product::select('products.id as product_id', DB::raw($dbRaw))
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                     ->groupBy('products.id')
-                    ->havingRaw($this->getHavingRaw($filter))
-                    ->get();
+                    ->havingRaw($this->getHavingRaw($filter));
+            
         } else {
             $products = Product::select('products.id as product_id', DB::raw($dbRaw))
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
-                    ->groupBy('products.id')
-                    ->get();
+                    ->groupBy('products.id');
         }
-
-
+        
         $response['length'] = Input::get('length');
         $response['draw'] = Input::get('draw');
         $response['recordsTotal'] = Product::all()->count();
         $response['recordsFiltered'] = $products->count();
-        $response['data'] = $products->all();
+        $response['data'] = $products->skip(Input::get('start'))->take(Input::get('length'));
         return Response::json($response);
         //}
     }
@@ -84,7 +82,7 @@ class JsonController extends \BaseController {
         for ($nCount = 0; $nCount < sizeof($searchArray); $nCount++) {
             if (Config::get('database.default') === 'mysql') {
                 $having.=" AND GROUP_CONCAT(descriptors.description) " .
-                        'like "%' . ltrim(rtrim($searchArray[$nCount])) . '%"';
+                        "like '%" . ltrim(rtrim($searchArray[$nCount])) . "%'";
             } else {
                 $having.=" AND array_to_string(array_agg(LOWER(descriptors.description)), ' ') " .
                         "like  '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";

@@ -39,7 +39,10 @@ active
         var table = $('#example').dataTable({
             "processing": true,
             "serverSide": true,
-            dom: 'T<"clear">lfrtip',
+            "iDisplayLength": 5,
+            "aLengthMenu": [
+                [5, 10, 25, 50, -1], 
+                [5, 10, 25, 50, "All"]],
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
