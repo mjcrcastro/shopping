@@ -38,7 +38,6 @@ active
     $(document).ready(function () {
         var table = $('#example').dataTable({
             "processing": true,
-            "paging": true,
             "serverSide": true,
             "iDisplayLength": 5,
             "aLengthMenu": [
