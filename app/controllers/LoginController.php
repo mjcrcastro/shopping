@@ -37,7 +37,7 @@ class LoginController extends \BaseController {
 
             // attempt to do the login
             if (Auth::attempt($userdata)) {
-                return Redirect::back();
+                return Redirect::to('/');
             } else {
                 // validation not successful, send back to form	
                 return Redirect::to('login')
