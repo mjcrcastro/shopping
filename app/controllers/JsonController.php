@@ -65,6 +65,7 @@ class JsonController extends \BaseController {
                     ->get();
         }
         
+        $response['start'] = Input::get('start');
         $response['length'] = Input::get('length');
         $response['draw'] = Input::get('draw');
         $response['recordsTotal'] = Product::all()->count();
