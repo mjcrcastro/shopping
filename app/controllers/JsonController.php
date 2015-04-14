@@ -60,7 +60,7 @@ class JsonController extends \BaseController {
         
         $response['draw'] = Input::get('draw');
         $response['recordsTotal'] = Product::all()->count();
-        $response['recordsFiltered'] = $products->count();
+        $response['recordsFiltered'] = Product::all()->count();
         $response['data'] = $products
                 ->skip(Input::get('start'))
                 ->take(Input::get('length'))
@@ -83,7 +83,7 @@ class JsonController extends \BaseController {
         for ($nCount = 0; $nCount < sizeof($searchArray); $nCount++) {
             if (Config::get('database.default') === 'mysql') {
                 $having.=" AND GROUP_CONCAT(descriptors.description) " .
-                        "like '%" . ltrim(rtrim($searchArray[$nCount])) . "%'";
+                        "like '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";
             } else {
                 $having.=" AND array_to_string(array_agg(LOWER(descriptors.description)), ' ') " .
                         "like  '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";
