@@ -58,7 +58,7 @@ class JsonController extends \BaseController {
                     ->groupBy('products.id');
         }
         
-        $response['draw'] = parseInt(Input::get('draw'));
+        $response['draw'] = Input::get('draw');
         $response['recordsTotal'] = Product::all()->count();
         $response['recordsFiltered'] = $products->count();
         $response['data'] = $products
