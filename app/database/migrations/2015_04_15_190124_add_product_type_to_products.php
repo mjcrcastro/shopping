@@ -15,7 +15,10 @@ class AddProductTypeToProducts extends Migration {
 		//add column remember token
             Schema::table('products',function($table){
                   $table->integer('product_type_id')
-                          ->index()->references('id')->on('products_types');
+                          ->index()
+                          ->references('id')
+                          ->on('products_types')
+                          ->default(0);
             });
 	}
 
