@@ -35,13 +35,7 @@ class HomeController extends \BaseController {
             DB::setFetchMode(PDO::FETCH_CLASS);
 
             $fields = Schema::getColumnListing($tableName);
-            
-            $directory = './downloads';
-            //create a directory 
-            $dirSucess = File::makeDirectory($directory);
-            if(!$dirSucess) {
-                die("Failed to create directory\n");
-            }
+
             $filename = '/tmp/'.$tableName . ".csv";
             $handle = fopen($filename, 'w+');
 
