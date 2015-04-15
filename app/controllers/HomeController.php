@@ -53,7 +53,7 @@ class HomeController extends \BaseController {
         
         $zipArchive = new ZipArchive();
         
-        if ($zipArchive::open($zipFile, ZIPARCHIVE::OVERWRITE) !== TRUE) {
+        if ($zipArchive->open($zipFile, ZIPARCHIVE::OVERWRITE) !== TRUE) {
             die("Failed to create archive\n");
         }
 
