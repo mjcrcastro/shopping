@@ -91,6 +91,6 @@
 
     <h1> Dashboard </h1>
 
-    <div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+    <div id="container" col-sx-12></div>
 
 @stop 

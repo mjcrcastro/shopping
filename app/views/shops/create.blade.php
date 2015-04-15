@@ -12,7 +12,7 @@ active
 <div class='container container-fluid'>
     <h1> Create Shop </h1>
     {{ Form::open(array('route'=>'shops.store')) }}
-        @include('shops.form')
+    @include('shops.form')
     {{ Form::close() }}
 </div>
 

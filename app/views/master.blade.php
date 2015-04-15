@@ -17,7 +17,7 @@
         {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
         {{ HTML::style('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css') }}
         {{ HTML::style('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css') }}
-        
+
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
         {{ HTML::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js') }}
         {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
@@ -25,7 +25,7 @@
         {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
         {{ HTML::script('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js') }} 
         {{ HTML::script('geocoder/geocoder.js') }}
-        
+
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
@@ -55,7 +55,7 @@
                                     <ul class="nav navbar-nav">
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
                                         <li @yield('purchases_active')>{{ link_to_route('purchases.index','Purchases') }}</li>
-                                        
+
                                         <li class ="dropdown @yield('config_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
@@ -65,7 +65,7 @@
                                                 <li> {{ link_to_route('descriptorsTypes.index','Descriptors Types') }} </li>
                                             </ul>
                                         </li>
-                                        
+
                                         <li class ="dropdown @yield('dropdown_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users and Roles<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
@@ -84,10 +84,13 @@
                                 </div><!-- /.navbar-collapse -->
                             </div><!-- /.container-fluid -->
                         </nav>
+
+
+
                         @if(Session::has('message'))
-                            <div class="alert alert-success">
-                                {{Session::get('message')}}
-                            </div>
+                        <div class="alert alert-success">
+                            {{Session::get('message')}}
+                        </div>
                         @endif
 
                         @yield('main')
@@ -98,7 +101,7 @@
                         Copyright &copy; 2014 by Majcro<br/>
                         All Rights Reserved
                     </div><!-- footer -->
-                    
+
                 </div>
             </div>
         </div>

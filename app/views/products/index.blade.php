@@ -17,6 +17,7 @@ active
 
 @section('main')
 <div class="container-fluid">
+    <h1> All products </h1>
     <p> {{ link_to_route('products.create', Lang::get('products.add.new')) }} </p>
 
     @if ($products->count())
