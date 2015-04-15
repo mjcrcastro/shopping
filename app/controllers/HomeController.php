@@ -50,9 +50,10 @@ class HomeController extends \BaseController {
 
         //now zip the files
         $zipFile = "backup.zip";
-        $zipArchive = new ZipArchive();
+        
+        $zipArchive = new ZipArchive($zipFile, ZIPARCHIVE::OVERWRITE);
 
-        if (!$zipArchive->open($zipFile, ZIPARCHIVE::OVERWRITE)) {
+        if (!$zipArchive) {
             die("Failed to create archive\n");
         }
 
@@ -62,7 +63,6 @@ class HomeController extends \BaseController {
         }
 
         $zipArchive->close();
-
 
         $headers = array(
             'Content-Type' => 'application/octet-stream',
