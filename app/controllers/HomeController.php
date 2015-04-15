@@ -21,12 +21,16 @@ class HomeController extends \BaseController {
         } else {
             $allTables = DB::select("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'");
         }
-        
-        return $allTables;
-        
+
         foreach ($allTables as $table) {
 
-            $tableName = $table->Tables_in_lar_shopping;
+            if (Config::get('database.default') === 'mysql') {
+                $tableName = $table->Tables_in_lar_shopping;
+            } else {
+                $tableName = $table->tablename;
+            }
+
+
 
             DB::setFetchMode(PDO::FETCH_ASSOC);
             $result = DB::table($tableName)->get(); // array of arrays instead of objects
@@ -53,7 +57,7 @@ class HomeController extends \BaseController {
             die("Failed to create archive\n");
         }
 
-        $zipArchive->addGlob("*.csv"); 
+        $zipArchive->addGlob("*.csv");
         if (!$zipArchive->status == ZIPARCHIVE::ER_OK) {
             echo "Failed to write files to zip\n";
         }
