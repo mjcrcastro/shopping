@@ -1,2 +1,0 @@
-id,username,role_id,name,email,password,created_at,updated_at,remember_token
-1,admin,1,"Manuel Castro",mjcrcastro@hotmail.com,$2y$10$PDAW/j09GsiF1k6bZCo5qOgsotO.SDR4Q8kUHX3632IgB/iCYiH9i,"2015-03-23 00:00:00","2015-03-23 00:00:00",
