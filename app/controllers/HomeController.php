@@ -51,9 +51,9 @@ class HomeController extends \BaseController {
         //now zip the files
         $zipFile = "backup.zip";
         
-        $zipArchive = new ZipArchive($zipFile, ZIPARCHIVE::OVERWRITE);
+        $zipArchive = new ZipArchive();
         
-        if ($zipArchive !== TRUE) {
+        if ($zipArchive::open($zipFile, ZIPARCHIVE::OVERWRITE) !== TRUE) {
             die("Failed to create archive\n");
         }
 
