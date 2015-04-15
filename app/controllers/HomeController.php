@@ -36,7 +36,7 @@ class HomeController extends \BaseController {
 
             $fields = Schema::getColumnListing($tableName);
 
-            $filename = '/tmp/'.$tableName . ".csv";
+            $filename = $tableName . ".csv";
             $handle = fopen($filename, 'w+');
 
             fputcsv($handle, $fields);
@@ -49,7 +49,7 @@ class HomeController extends \BaseController {
         }
 
         //now zip the files
-        $zipFile = "/tmp/backup.zip";
+        $zipFile = "backup.zip";
         $zipArchive = new ZipArchive();
 
         if (!$zipArchive->open($zipFile, ZIPARCHIVE::OVERWRITE)) {
