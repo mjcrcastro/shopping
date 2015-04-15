@@ -18,7 +18,7 @@ class AddProductTypeToProducts extends Migration {
                           ->index()
                           ->references('id')
                           ->on('products_types')
-                          ->nullable();
+                          ->default(0);
             });
 	}
 
