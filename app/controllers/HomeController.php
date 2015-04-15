@@ -22,8 +22,6 @@ class HomeController extends \BaseController {
             $allTables = DB::select("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'");
         }
         
-        return Helper::lastQuery();
-
         foreach ($allTables as $table) {
 
             $tableName = $table->Tables_in_lar_shopping;
