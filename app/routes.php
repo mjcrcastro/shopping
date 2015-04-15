@@ -13,7 +13,7 @@
 
 Route::group(array('before' => 'auth'), function() {
     //routes within this group require authentication
-    Route::get('/getdata',array('uses'=>'HomeController@getData'));
+    Route::get('/getdata',array('as'=>'home.getdata','uses'=>'HomeController@getData'));
     
     Route::get('/', array('uses' => 'HomeController@showDashboard'));
 

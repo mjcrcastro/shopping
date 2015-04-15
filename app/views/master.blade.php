@@ -52,6 +52,7 @@
                                     <ul class="nav navbar-nav">
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
                                         <li @yield('purchases_active')>{{ link_to_route('purchases.index','Purchases') }}</li>
+                                        <li>{{ link_to_route('home.getdata','GetData') }}</li>
 
                                         <li class ="dropdown @yield('config_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<span class="caret"></span></a>
