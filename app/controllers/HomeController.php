@@ -10,6 +10,15 @@ class HomeController extends \BaseController {
     public function showDashboard() {
 
         //first the list of companies
+        
+        $action_code = 'home_dashboard';
+        
+        $message = Helper::usercan($action_code, Auth::user());
+        if ($message) {
+            return Redirect::back()->with('message', $message);
+        }
+        
+        $series = DB::table('');
 
         return View::make('home.dashboard', compact('series', 'categories'));
     }
@@ -30,11 +39,9 @@ class HomeController extends \BaseController {
                 $tableName = $table->tablename;
             }
 
-            DB::setFetchMode(PDO::FETCH_ASSOC);
-            $result = DB::table($tableName)->get(); // array of arrays instead of objects
-            DB::setFetchMode(PDO::FETCH_CLASS);
-
             $fields = Schema::getColumnListing($tableName);
+            
+            $result = DB::table($tableName)->get();
 
             $filename = $tableName . ".csv";
             $handle = fopen($filename, 'w+');
@@ -42,7 +49,8 @@ class HomeController extends \BaseController {
             fputcsv($handle, $fields);
 
             foreach ($result as $row) {
-                fputcsv($handle, $row);
+                fputcsv($handle, (array) $row);  //fputcsv requires array
+                                                 // as second parameter
             }
 
             fclose($handle);

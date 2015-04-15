@@ -16,6 +16,7 @@ class DescriptorsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
+
         $descriptorType_id = Input::get('descriptorType_id');
         $label = '';
         $filter = Input::get('filter');
@@ -140,21 +141,20 @@ class DescriptorsController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
-            //Actual code to execute
-            $descriptor = Descriptor::find($id);
-            $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
-                    ->lists('description', 'id');
-
-            if (is_null($descriptor)) {
-                return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
-                            'filter' => Input::get('filter'))
-                );
-            }
-            return View::make('descriptors.edit', compact('descriptor', 'descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
-                        'filter' => Input::get('filter')));
-            // End of actual code to execute
         }
+        //Actual code to execute
+        $descriptor = Descriptor::find($id);
+        $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
+                ->lists('description', 'id');
+
+        if (is_null($descriptor)) {
+            return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
+                        'filter' => Input::get('filter'))
+            );
+        }
+        return View::make('descriptors.edit', compact('descriptor', 'descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
+                    'filter' => Input::get('filter')));
+        // End of actual code to execute
     }
 
     /**
@@ -169,28 +169,27 @@ class DescriptorsController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
-            //Actual code to execute
-            //Receives and updates new role  data
-            $input = Input::all();
-
-            Descriptor::$rules['description'] = 'required|unique:descriptors,description,' . $id;
-
-            $validation = Validator::make($input, Descriptor::$rules);
-
-            if ($validation->passes()) {
-                $descriptor = Descriptor::find($id);
-                $descriptor->update($input);
-                return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
-                            'filter' => Input::get('filter'))
-                );
-            }
-            //if errors, return to edition
-            return Redirect::route('descriptors.edit', $id)
-                            ->withInput()
-                            ->withErrors($validation)
-                            ->with('message', 'There were validation errors.');
         }
+        //Actual code to execute
+        //Receives and updates new role  data
+        $input = Input::all();
+
+        Descriptor::$rules['description'] = 'required|unique:descriptors,description,' . $id;
+
+        $validation = Validator::make($input, Descriptor::$rules);
+
+        if ($validation->passes()) {
+            $descriptor = Descriptor::find($id);
+            $descriptor->update($input);
+            return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
+                        'filter' => Input::get('filter'))
+            );
+        }
+        //if errors, return to edition
+        return Redirect::route('descriptors.edit', $id)
+                        ->withInput()
+                        ->withErrors($validation)
+                        ->with('message', 'There were validation errors.');
     }
 
     /**
@@ -205,13 +204,12 @@ class DescriptorsController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
-            $descriptor = Descriptor::find($id);
-            $descriptorType_id = Input::get('descriptorType_id');
-            $descriptor->delete();
-
-            return Redirect::route('descriptors.index', array('descriptorType_id' => $descriptorType_id));
         }
+        $descriptor = Descriptor::find($id);
+        $descriptorType_id = Input::get('descriptorType_id');
+        $descriptor->delete();
+
+        return Redirect::route('descriptors.index', array('descriptorType_id' => $descriptorType_id));
     }
 
     /*
@@ -225,42 +223,19 @@ class DescriptorsController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
+        }
+
+        if (Request::ajax()) {
+
+            $filter = Input::get('term');
+            //Will use the show function to return a json for ajax
+            $descriptors = Descriptor::orderBy('description', 'asc')
+                    ->where('description', 'like', '%' . strtolower($filter) . '%')
+                    ->get();
+            return Response::json($descriptors);
         } else {
-
-            if (Request::ajax()) {
-
-                $filter = Input::get('term');
-                //Will use the show function to return a json for ajax
-                $descriptors = Descriptor::orderBy('description', 'asc')
-                        ->where('description', 'like', '%' . strtolower($filter) . '%')
-                        ->get();
-                return Response::json($descriptors);
-            } else {
-                return Response::make("Page not found", 404);
-            }
+            return Response::make("Page not found", 404);
         }
     }
-    
-    Public function getCsv() {
-
-        $table = Descriptor::all();
-        $filename = "descriptors.csv";
-        $handle = fopen($filename, 'w+');
-        
-        fputcsv($handle, array('id', 'descriptorType_id', 'description', 'created at','updated_at'));
-
-        foreach ($table as $row) {
-            fputcsv($handle, array($row['id'], $row['descriptorType_id'], $row['description'], $row['created_at'], $row['updated_at']));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-
-        return Response::download($filename, $filename, $headers);
-    }
-
 
 }

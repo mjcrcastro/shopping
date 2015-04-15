@@ -52,15 +52,16 @@
                                     <ul class="nav navbar-nav">
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
                                         <li @yield('purchases_active')>{{ link_to_route('purchases.index','Purchases') }}</li>
-                                        <li>{{ link_to_route('home.getdata','GetData') }}</li>
 
                                         <li class ="dropdown @yield('config_active')">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<span class="caret"></span></a>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li> {{ link_to_route('shops.index','Shops') }} </li>
                                                 <li> {{ link_to_route('products.index','Products') }} </li>
+                                                <li> {{ link_to_route('productsTypes.index','Products Types') }} </li>
                                                 <li> {{ link_to_route('descriptors.index','Descriptors') }} </li>
                                                 <li> {{ link_to_route('descriptorsTypes.index','Descriptors Types') }} </li>
+                                                <li> {{ link_to_route('home.getdata','GetData') }} </li>
                                             </ul>
                                         </li>
 

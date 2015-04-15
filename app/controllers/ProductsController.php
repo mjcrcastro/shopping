@@ -112,15 +112,27 @@ class ProductsController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //Redirect to Company editor
+        
+        //edit product
         $action_code = 'products_edit';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        }//a return won't let the following code to continue
+        }
         //Actual code to execute
-        return Redirect::route('products.index');
+        $product = Product::find($id);
+        $productsTypes = ProductType::orderBy('description', 'asc')
+                ->lists('description', 'id');
+
+        if (is_null($product)) {
+            return Redirect::route('products.index', array('productType_id' => Input::get('productType_id'),
+                        'filter' => Input::get('filter'))
+            );
+        }
+        return View::make('products.edit', compact('product', 'productsTypes'), array('productType_id' => Input::get('productType_id'),
+                    'filter' => Input::get('filter')));
+        // End of actual code to execute
     }
 
     /**
@@ -135,10 +147,25 @@ class ProductsController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        }//a return won't let the following code to continue
-        //
+        }
         //Actual code to execute
         //Receives and updates new role  data
+        $input = Input::all();
+
+        $validation = Validator::make($input, Product::$rules);
+
+        if ($validation->passes()) {
+            $product = Product::find($id);
+            $product->update($input);
+            return Redirect::route('products.index', array('productType_id' => Input::get('productType_id'),
+                        'filter' => Input::get('filter'))
+            );
+        }
+        //if errors, return to edition
+        return Redirect::route('products.edit', $id)
+                        ->withInput()
+                        ->withErrors($validation)
+                        ->with('message', 'There were validation errors.');
     }
 
     /**

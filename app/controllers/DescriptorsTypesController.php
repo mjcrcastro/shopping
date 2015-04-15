@@ -9,7 +9,7 @@ class DescriptorsTypesController extends \BaseController {
      */
     public function index() {
         //Returns all shops to a view
-        $action_code ='descriptorsTypes_index';
+        $action_code = 'descriptorsTypes_index';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -26,7 +26,7 @@ class DescriptorsTypesController extends \BaseController {
      */
     public function create() {
         //Display form for creation of shops
-        $action_code ='descriptorsTypes_create';
+        $action_code = 'descriptorsTypes_create';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -59,10 +59,10 @@ class DescriptorsTypesController extends \BaseController {
                                 ->with('message', 'Descriptor Type ' . $descriptorType->description . ' created');
             }
             //if data is not valid, return to edition for additional input
-                return Redirect::route('descriptorsTypes.create')
-                                ->withInput()
-                                ->withErrors($validation)
-                                ->with('message', 'There were validation errors');
+            return Redirect::route('descriptorsTypes.create')
+                            ->withInput()
+                            ->withErrors($validation)
+                            ->with('message', 'There were validation errors');
         }
     }
 
@@ -132,7 +132,7 @@ class DescriptorsTypesController extends \BaseController {
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                $descriptorType =DescriptorType::find($id);
+                $descriptorType = DescriptorType::find($id);
                 $descriptorType->update($input);
                 return Redirect::route('descriptorsTypes.index');
             }
@@ -159,27 +159,6 @@ class DescriptorsTypesController extends \BaseController {
             DescriptorType::find($id)->delete();
             return Redirect::route('descriptorsTypes.index');
         }
-    }
-    
-    Public function getCsv() {
-
-        $table = DescriptorType::all();
-        $filename = "descriptorstypes.csv";
-        $handle = fopen($filename, 'w+');
-        
-        fputcsv($handle, array('id', 'description', 'created at','updated_at'));
-
-        foreach ($table as $row) {
-            fputcsv($handle, array($row['id'], $row['description'], $row['created_at'], $row['updated_at']));
-        }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-
-        return Response::download($filename, $filename, $headers);
     }
 
 }

@@ -12,7 +12,6 @@
     <h1> All descriptors types </h1>
 
     <p> {{ link_to_route('descriptorsTypes.create', 'Add new descriptor type') }} </p>
-    <p> {{ link_to_route('descriptorsTypes.getcsv','Download CSV')}}</p>
 
     @if ($descriptorsTypes->count())
         <table class="table table-striped table-ordered">
