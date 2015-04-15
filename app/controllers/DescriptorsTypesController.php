@@ -160,5 +160,26 @@ class DescriptorsTypesController extends \BaseController {
             return Redirect::route('descriptorsTypes.index');
         }
     }
+    
+    Public function getCsv() {
+
+        $table = DescriptorType::all();
+        $filename = "descriptorstypes.csv";
+        $handle = fopen($filename, 'w+');
+        
+        fputcsv($handle, array('id', 'description', 'created at','updated_at'));
+
+        foreach ($table as $row) {
+            fputcsv($handle, array($row['id'], $row['description'], $row['created_at'], $row['updated_at']));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+
+        return Response::download($filename, $filename, $headers);
+    }
 
 }

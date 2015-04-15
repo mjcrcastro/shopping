@@ -13,10 +13,12 @@
 
 Route::group(array('before' => 'auth'), function() {
     //routes within this group require authentication
-    Route::get('/', array('uses' => 'HomeController@showDashboard'));
+    Route::get('/getdata',array('uses'=>'HomeController@getData'));
     
+    Route::get('/', array('uses' => 'HomeController@showDashboard'));
+
     Route::get('/about', array('uses' => 'HomeController@showDashboard'));
-        
+
     Route::resource('users', 'UsersController');
 
     Route::resource('roles', 'RolesController');
@@ -24,24 +26,30 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('permissions', 'PermissionsController');
 
     Route::resource('actions', 'ActionsController');
-    
+
     Route::resource('shops', 'ShopsController');
-    
-    Route::resource('products','ProductsController');
-    
-    Route::resource('descriptorsTypes','DescriptorsTypesController');
+
+    Route::resource('products', 'ProductsController');
+
+    Route::get('descriptorsTypes/getcsv', array(
+        'as' => 'descriptorsTypes.getcsv',
+        'uses' => 'DescriptorsTypesController@getCsv'
+    ));
+    Route::resource('descriptorsTypes', 'DescriptorsTypesController');
     //it is required to add the addiontional routes before the call to Route::resource
     //if the additional route is added, Laravel wont be able to handle the get 
     //request from descriptors (i.e. /descriptors/tocsv, 
     //we would have to call it from the root // (i.e. /tocsv)
-    Route::get('descriptors/tocsv',array('as'=>'descriptors.csv','uses'=>'DescriptorsController@getCsv'));
-    Route::resource('descriptors','DescriptorsController');
-    
-    Route::resource('purchases','PurchasesController');
-    
-    Route::get('jdescriptors',array('uses'=>'JsonController@descriptors'));
-    Route::get('jproducts',array('uses'=>'JsonController@products'));
-    
+    Route::get('descriptors/getcsv', array(
+        'as' => 'descriptors.getcsv',
+        'uses' => 'DescriptorsController@getCsv'
+    ));
+    Route::resource('descriptors', 'DescriptorsController');
+
+    Route::resource('purchases', 'PurchasesController');
+
+    Route::get('jdescriptors', array('uses' => 'JsonController@descriptors'));
+    Route::get('jproducts', array('uses' => 'JsonController@products'));
 });
 
 // All this do not need to request authentication since they are doing 
@@ -59,6 +67,6 @@ Route::get('logout', array('uses' => 'LoginController@doLogout'));
 Route::get('denied', array('uses' => 'LoginController@denied'));
 
 //To tell the user that the resource was not found.
-App::missing(function($exception){
+App::missing(function($exception) {
     return Response::make("Page not found", 404);
 });
