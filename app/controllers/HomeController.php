@@ -37,7 +37,7 @@ class HomeController extends \BaseController {
             DB::setFetchMode(PDO::FETCH_CLASS);
 
             $fields = Schema::getColumnListing($tableName);
-            $filename = $tableName . ".csv";
+            $filename = '/tmp/'.$tableName . ".csv";
             $handle = fopen($filename, 'w+');
 
             fputcsv($handle, $fields);
@@ -50,7 +50,7 @@ class HomeController extends \BaseController {
         }
 
         //now zip the files
-        $zipFile = "backup.zip";
+        $zipFile = "/tmp/backup.zip";
         $zipArchive = new ZipArchive();
 
         if (!$zipArchive->open($zipFile, ZIPARCHIVE::OVERWRITE)) {
