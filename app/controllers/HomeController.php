@@ -17,34 +17,24 @@ class HomeController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
-
-        $total = DB::table('products_purchases')
+        
+        $data = [];
+        
+        $raw_data = DB::table('products_purchases')
+                ->select(DB::raw('products_types.description, sum(products_purchases.total) as total'))
                 ->join('products', 'products.id', '=', 'products_purchases.product_id')
                 ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
                 ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
+                ->groupBy('products_types.id')
                 ->groupBy('purchases.user')
                 ->having('user', '=', Auth::user()->username)
-                ->count();
-        if ($total === 0) {
-            $data = [0, 0];
-        } else {
+                ->get();
 
-            $raw_data = DB::table('products_purchases')
-                    ->select(DB::raw('products_types.description, sum(products_purchases.total) as total'))
-                    ->join('products', 'products.id', '=', 'products_purchases.product_id')
-                    ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
-                    ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
-                    ->groupBy('products_types.id')
-                    ->groupBy('purchases.user')
-                    ->having('user', '=', Auth::user()->username)
-                    ->get();
-
-            foreach ($raw_data as $row) {
-                $data[] = [
-                    $row->description,
-                    floatval($row->total)
-                ];
-            }
+        foreach ($raw_data as $row) {
+            $data[] = [
+                $row->description,
+                floatval($row->total)
+            ];
         }
 
 
