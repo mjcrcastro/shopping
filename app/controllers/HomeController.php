@@ -39,7 +39,9 @@ class HomeController extends \BaseController {
                     ->having('user', '=', Auth::user()->username)
                     ->get();
         }
-
+        
+        return compact('series');
+        
         return View::make('home.dashboard', compact('series'));
     }
 
