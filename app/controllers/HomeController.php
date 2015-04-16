@@ -40,8 +40,6 @@ class HomeController extends \BaseController {
                     ->get();
         }
         
-        return compact('series');
-        
         return View::make('home.dashboard', compact('series'));
     }
 
