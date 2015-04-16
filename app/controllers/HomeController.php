@@ -26,7 +26,7 @@ class HomeController extends \BaseController {
                 ->having('user', '=', Auth::user()->username)
                 ->count();
         if ($total === 0) {
-            $series = [0, 0];
+            $data = [0, 0];
         } else {
 
             $raw_data = DB::table('products_purchases')
@@ -38,16 +38,17 @@ class HomeController extends \BaseController {
                     ->groupBy('purchases.user')
                     ->having('user', '=', Auth::user()->username)
                     ->get();
+
+            foreach ($raw_data as $row) {
+                $data[] = [
+                    $row->description,
+                    floatval($row->total)
+                ];
+            }
         }
-        
-        foreach($raw_data as $row) {
-            $data[] = [
-                $row->description,
-                floatval($row->total)
-                ]
-        }
-        }
-        
+
+
+
         return View::make('home.dashboard', compact('data'));
     }
 
