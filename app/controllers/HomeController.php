@@ -20,7 +20,7 @@ class HomeController extends \BaseController {
 
         $total = DB::table('products_purchases')
                 ->join('products', 'products.id', '=', 'products_purchases.product_id')
-                ->join('products_types', 'products_types.id', '=', 'products.producttype_id')
+                ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
                 ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
                 ->groupBy('purchases.user')
                 ->having('user', '=', Auth::user()->username)
