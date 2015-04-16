@@ -37,7 +37,7 @@ $(function () {
                 }
             }
         },
-        series: {{ $series }}
+        series: {{ json_encode($series) }}
     });
 });
 </script>
