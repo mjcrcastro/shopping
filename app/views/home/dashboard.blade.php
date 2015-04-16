@@ -37,7 +37,13 @@ $(function () {
                 }
             }
         },
-        series: {{ json_encode($series) }}
+        series: [{
+            type: 'pie',
+            name: 'Browser share',
+            data: {{ json_encode($data) }}
+            ]
+        }]
+                
     });
 });
 </script>

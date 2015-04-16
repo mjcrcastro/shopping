@@ -29,7 +29,7 @@ class HomeController extends \BaseController {
             $series = [0, 0];
         } else {
 
-            $series = DB::table('products_purchases')
+            $raw_data = DB::table('products_purchases')
                     ->select(DB::raw('products_types.description, sum(products_purchases.total) as total'))
                     ->join('products', 'products.id', '=', 'products_purchases.product_id')
                     ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
@@ -40,7 +40,15 @@ class HomeController extends \BaseController {
                     ->get();
         }
         
-        return View::make('home.dashboard', compact('series'));
+        foreach($raw_data as $row) {
+            $data[] = [
+                $row->description,
+                floatval($row->total)
+                ]
+        }
+        }
+        
+        return View::make('home.dashboard', compact('data'));
     }
 
     public function getData() {
