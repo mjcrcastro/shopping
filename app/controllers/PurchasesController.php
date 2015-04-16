@@ -156,7 +156,8 @@ class PurchasesController extends \BaseController {
             return Redirect::route('purchases.index');
         }
         $shops = Shop::orderBy('description','asc')->lists('description', 'id');
-        return View::make('purchases.edit', compact('purchase','shops'));
+        $products_purchases = ProductPurchases::where('purchase_id','=',$purchase->id);
+        return View::make('purchases.edit', compact('purchase','shops','products_purchases'));
         // End of actual code to execute
     }
 
