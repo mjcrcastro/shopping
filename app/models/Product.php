@@ -19,7 +19,7 @@ class Product extends Eloquent {
     // $ fillable are fields that can be sent as input
     
      public static $rules = array(
-        'productType_id' => 'required',
+        'product_type_id' => 'required',
     );
     
     public function productDescriptors(){
