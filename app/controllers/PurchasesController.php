@@ -143,19 +143,20 @@ class PurchasesController extends \BaseController {
      */
     public function edit($id) {
         //Redirect to Company editor
-        $action_code = 'products_edit';
+        $action_code = 'purchases_edit';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         }//a return won't let the following code to continue
         //Actual code to execute
-        $product = Product::find($id);
+        $purchase = Purchase::find($id);
 
-        if (is_null($product)) {
-            return Redirect::route('products.index');
+        if (is_null($purchase)) {
+            return Redirect::route('purchases.index');
         }
-        return View::make('products.edit', compact('product'));
+        $shops = Shop::orderBy('description','asc')->lists('description', 'id');
+        return View::make('purchases.edit', compact('purchase','shops'));
         // End of actual code to execute
     }
 
