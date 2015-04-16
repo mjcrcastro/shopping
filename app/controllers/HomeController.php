@@ -32,7 +32,7 @@ class HomeController extends \BaseController {
             $series = DB::table('products_purchases')
                     ->select('products_types.description', 'product_purchases.total /' . $total)
                     ->join('products', 'products.id', '=', 'products_purchases.product_id')
-                    ->join('products_types', 'products_types.id', '=', 'products.productType_id')
+                    ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
                     ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
                     ->groupBy('purchases.user')
                     ->having('user', '=', Auth::user()->username)
