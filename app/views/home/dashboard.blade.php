@@ -39,7 +39,7 @@ $(function () {
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: 'Expenditures share',
             data: {{ json_encode($data) }}
         }]
                 
