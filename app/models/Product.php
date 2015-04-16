@@ -29,7 +29,7 @@ class Product extends Eloquent {
     }
     
     public function productType() {
-        return $this->belongsTo('ProductType','productType_id');
+        return $this->belongsTo('ProductType','product_type_id');
     }
     
     

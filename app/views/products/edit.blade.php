@@ -26,7 +26,7 @@ active
     {{ Form::label('productType', 'Product Type:') }}
     </dt>
     <dd>
-        {{ Form::select('productType_id', $productsTypes) }}
+        {{ Form::select('product_type_id', $productsTypes) }}
     </dd>
     <dt>
     {{ Form::submit('submit', array('class'=>'btn')) }}

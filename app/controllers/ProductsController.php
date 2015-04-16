@@ -126,11 +126,11 @@ class ProductsController extends \BaseController {
                 ->lists('description', 'id');
 
         if (is_null($product)) {
-            return Redirect::route('products.index', array('productType_id' => Input::get('productType_id'),
+            return Redirect::route('products.index', array('product_type_id' => Input::get('product_type_id'),
                         'filter' => Input::get('filter'))
             );
         }
-        return View::make('products.edit', compact('product', 'productsTypes'), array('productType_id' => Input::get('productType_id'),
+        return View::make('products.edit', compact('product', 'productsTypes'), array('product_type_id' => Input::get('product_type_id'),
                     'filter' => Input::get('filter')));
         // End of actual code to execute
     }
@@ -157,7 +157,7 @@ class ProductsController extends \BaseController {
         if ($validation->passes()) {
             $product = Product::find($id);
             $product->update($input);
-            return Redirect::route('products.index', array('productType_id' => Input::get('productType_id'),
+            return Redirect::route('products.index', array('product_type_id' => Input::get('product_type_id'),
                         'filter' => Input::get('filter'))
             );
         }
