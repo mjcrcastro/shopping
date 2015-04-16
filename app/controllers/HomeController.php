@@ -36,7 +36,7 @@ class HomeController extends \BaseController {
                     ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
                     ->groupBy('purchases.user')
                     ->having('user', '=', Auth::user()->username)
-                    ->toArray();
+                    ->get();
         }
 
         return View::make('home.dashboard', compact('series'));
