@@ -35,11 +35,12 @@ class HomeController extends \BaseController {
                     ->join('products_types', 'products_types.id', '=', 'products.productType_id')
                     ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
                     ->groupBy('purchases.user')
-                    ->having('user', '=', Auth::user()->username);
+                    ->having('user', '=', Auth::user()->username)
+                    ->toArray();
         }
-        
+
         return $series;
-        
+
         return View::make('home.dashboard', compact('series'));
     }
 
