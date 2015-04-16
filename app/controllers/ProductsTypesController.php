@@ -28,7 +28,7 @@ class ProductsTypesController extends \BaseController {
      */
     public function create() {
         //Display form for creation of products types
-        $action_code = 'productsTypes_create';
+        $action_code = 'products_types_create';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
@@ -44,7 +44,7 @@ class ProductsTypesController extends \BaseController {
      */
     public function store() {
         //
-        $action_code = 'productsTypes_store';
+        $action_code = 'products_types_store';
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
