@@ -30,10 +30,11 @@ class HomeController extends \BaseController {
         } else {
 
             $series = DB::table('products_purchases')
-                    ->select('products_types.description', DB::raw('product_purchases.total /' . $total))
+                    ->select('products_types.description', DB::raw('SUM(product_purchases.total /' . $total.')'))
                     ->join('products', 'products.id', '=', 'products_purchases.product_id')
                     ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
                     ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
+                    ->groupBy('products_types.id')
                     ->groupBy('purchases.user')
                     ->having('user', '=', Auth::user()->username)
                     ->get();
