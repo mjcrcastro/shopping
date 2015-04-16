@@ -39,8 +39,6 @@ class HomeController extends \BaseController {
                     ->toArray();
         }
 
-        return $series;
-
         return View::make('home.dashboard', compact('series'));
     }
 
