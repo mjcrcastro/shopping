@@ -41,7 +41,6 @@ $(function () {
             type: 'pie',
             name: 'Browser share',
             data: {{ json_encode($data) }}
-            ]
         }]
                 
     });
