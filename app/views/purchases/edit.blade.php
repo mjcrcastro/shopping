@@ -37,89 +37,89 @@ active
      */
     $(document).ready(function () {
         //add current products to list
-        
-        var purchased_products = json_encode({{ $products_purchases }});
-        
-        /// USE AN ARRAY BETTER THAN VARIABLES
-        
-        var table = $('#example').dataTable({
-            "processing": true,
+        addToProducts({{ json_encode($products_purchases)  }});
+
+    var table = $('#example').dataTable({
+    "processing": true,
             "serverSide": true,
             "iDisplayLength": 5,
             "aLengthMenu": [
-                [5, 10, 25, 50, -1], 
-                [5, 10, 25, 50, "All"]],
+                    [5, 10, 25, 50, - 1],
+                    [5, 10, 25, 50, "All"]],
             dom: 'T<"clear">lfrtip',
             tableTools: {
-                "sRowSelect": "multi",
-                "aButtons": [
+            "sRowSelect": "multi",
+                    "aButtons": [
                     {"sExtends": "text", "sButtonText": "add new product",
-                        "fnClick": function (nButton, oConfig, oFlash) {
-                            window.open('{{ route("products.create") }}');
-                            return false;
-                        }
+                            "fnClick": function (nButton, oConfig, oFlash) {
+                                window.open('{{ route("products.create") }}');
+                                return false;
+                            }
                     },
                     {"sExtends": "text", "sButtonText": "add to purchase",
-                        "fnClick": function (nButton, oConfig, oFlash) {
-                            var oTT = TableTools.fnGetInstance('example');
-                            var aData = oTT.fnGetSelectedData()
-                            var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
-                                    .map(function () {
-                                        return parseInt($(this).val());
-                                    }).get();
-                            for (nCount = 0; nCount < aData.length; nCount++) {
-                                //check if there exists a product with same id in purchase list
-                                //$.inArray only compares between numbers or characters
-                                //so I converted the values to Int within the array before comparison.
-                                if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
-                                    addToProducts(
-                                            aData[nCount]['product_id'],
-                                            aData[nCount]['product_description'],
-                                            0,
-                                            0);
-                                    $('#myModal').modal('hide');
+                            "fnClick": function (nButton, oConfig, oFlash) {
+                                var oTT = TableTools.fnGetInstance('example');
+                                var aData = oTT.fnGetSelectedData()
+                                var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
+                                        .map(function () {
+                                            return parseInt($(this).val());
+                                        }).get();
+                                for (nCount = 0; nCount < aData.length; nCount++) {
+                                    //check if there exists a product with same id in purchase list
+                                    //$.inArray only compares between numbers or characters
+                                    //so I converted the values to Int within the array before comparison.
+                                    if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
+                                        addToProducts([{
+                                                "product_id": aData[nCount]['product_id'],
+                                                "description": aData[nCount]['product_description'],
+                                                "amount": 0,
+                                                "total": 0}]);
+                                        $('#myModal').modal('hide');
+                                    }
                                 }
                             }
-                        }
                     }
-                ]
+                    ]
             },
             "ajax": {
-                "url": "{{ url('jproducts') }}",
-                "type": "GET"
+            "url": "{{ url('jproducts') }}",
+                    "type": "GET"
             },
             "columnDefs": [
-                {
-                    "targets": [0],
+            {
+            "targets": [0],
                     "visible": false,
                     "searchable": false
-                }
+            }
             ],
             "columns": [//tells where (from data) the columns are to be placed
-                {"data": "product_id"},
-                {"data": "product_description"}
+            {"data": "product_id"},
+            {"data": "product_description"}
 
             ]
-        });
     });
-
-    $(document).on('click', '#addProducts', function () {
+    });
+            $(document).on('click', '#addProducts', function () {
         //Show modal bootstrap
         $('#myModal').modal('show');
         //return
     });
-    
-    function addToProducts (productId, productDescription, amount, total) {
-        $('<div class="container container-fluid">' +
-                                            '<div class="row" id="productRow">' +
-                                            '<input type="hidden" id="productarray" name="product_id[]" value=' + productId + '>' +
-                                            '<div class="col-xs-4"> {{ "' + productDescription + '" }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("amount[]",' + amount + ',array("class"=>"form-control input-sm")) }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("amount[]",' + total + ',array("class"=>"form-control input-sm")) }} </div> ' +
-                                            '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
-                                            '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
-                                            '</a></div> ' +
-                                            '</div></div>').appendTo('#products');
+
+    function addToProducts(productArray) {
+
+        for (var i = 0; i < productArray.length; i++) {
+
+            $('<div class="container container-fluid">' +
+                    '<div class="row" id="productRow">' +
+                    '<input type="hidden" id="productarray" name="product_id[]" value=' + productArray[i].product_id + '>' +
+                    '<div class="col-xs-4"> {{ "' + productArray[i].description + '" }} </div> ' +
+                    '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" value="' + productArray[i].amount + '"> </div> ' +
+                    '<div class="col-xs-3"> <input class="form-control input-sm" name="total[]" type="number" value="' + productArray[i].total + '"> </div> ' +
+                    '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
+                    '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
+                    '</a></div> ' +
+                    '</div></div>').appendTo('#products');
+        }
     }
 
 
@@ -136,13 +136,13 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                    {{ Form::model(array('route'=>'purchases.update','class'=>'horizontal','role'=>'form')) }}
-                    {{ Form::label('shop', 'Shop:') }}
-                    {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
+                {{ Form::model($purchase, array('method'=>'PATCH', 'route'=> array('purchases.update', $purchase->id)))  }}
+                {{ Form::label('shop', 'Shop:') }}
+                {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
 
-                    {{ Form::label('date', 'Date:') }}
-                    {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
-                    <p></p>
+                {{ Form::label('date', 'Date:') }}
+                {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
+                <p></p>
                 <div class="row">
                     <dt>
                     <div class="col-xs-4">

@@ -17,14 +17,18 @@ class ProductPurchase extends Eloquent {
     protected $guarded = array('id');
     // $ fillable are fields that can be send as input
     public static $rules = array(
-        'purchase_id' => 'required',
-        'product_id' => 'required',
-        'amount' => 'min:1',
-        'total' => 'min:0',
+        'purchase_id' => 'required|array|each',
+        'product_id' => 'required|array|each',
+        'amount' => 'array|each:min:1',
+        'total' => 'array|each|min:0',
     );
     
     public function purchase() {
         return $this->belongsTo('Purchase');
+    }
+    
+    public function product() {
+        return $this->belongsTo('Product');
     }
     
     

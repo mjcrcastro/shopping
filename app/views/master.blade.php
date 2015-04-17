@@ -14,7 +14,6 @@
         {{ HTML::style('css/style.css') }}
         {{ HTML::style('DataTables-1.10.5/media/css/jquery.dataTables.css') }}
         {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
-        {{ HTML::style('//code.jquery.com/jquery-1.10.2.js') }}
         {{ HTML::style('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css') }}
 
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
