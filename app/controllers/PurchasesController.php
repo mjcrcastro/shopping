@@ -157,13 +157,8 @@ class PurchasesController extends \BaseController {
 
         $shops = Shop::orderBy('description', 'asc')->lists('description', 'id');
 
-        if (Config::get('database.default') === 'mysql') {
-            $dbRaw = "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as description";
-        } else {
-            $dbRaw = "array_to_string(array_agg(descriptors.description), ' ') as product_description";
-        }
-
-        $products_purchases = Product::select('products.id as product_id', DB::raw($dbRaw), 'products_purchases.amount', 'products_purchases.total')
+        $products_purchases = Product::select(
+                        'products_purchases.id', 'products.id as product_id', DB::raw($this->dbRaw), 'products_purchases.amount', 'products_purchases.total')
                 ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('products_purchases', 'products.id', '=', 'products_purchases.product_id')
@@ -181,47 +176,45 @@ class PurchasesController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-
-        $action_code = 'purchases_update';
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) { return Redirect::back()->with('message', $message);}//a return won't let the following code to continue
-        //
-        //Actual code to execute
-        //Receives and updates new role  data
-        $input = Input::all();
+        
+        $message = Helper::usercan('purchases_update', Auth::user());
+        
+        if(!$message){if ($message) { return Redirect::back()->with('message', $message); }}
+        //Helper::usercan return won't let the following code to continue
 
         $purchaseData = array(
             "shop_id" => Input::get('shop_id'),
             "purchase_date" => Input::get('purchase_date'),
             'updated_at' => date("Y-m-d H:i:s")
         );
+        
+        $fields['id'] = $id;
+        $fields['purchased_products'] = Input::get('product_id');
+        $fields['purchased_amount'] = Input::get('amount'); //comes as an array
+        $fields['purchased_total'] = Input::get('total'); //comes an array
 
-        $purchasedProducts = Input::get('product_id');
-        $purchasedAmount = Input::get('amount'); //comes as an array
-        $purchasedTotal = Input::get('total'); //comes an array
+        $arrange_validate_details = $this->arrange_validate_details($fields);
 
-        arrange_validate_details ($purchasedProducts,
-            $purchasedAmount, 
-            $purchasedTotal,
-            $purchaseDetails,
-            $rulesArray);
+        $purchaseValidation = Validator::make(Input::all(), Purchase::$rules);
 
-        $purchaseValidation = Validator::make($input, Purchase::$rules);
-
-        $detailValidation = Validator::make($purchaseDetails, $rulesArray);
+        $detailValidation = Validator::make($arrange_validate_details->details, ProductPurchase::$rules); //$rulesArray);
 
         if ($purchaseValidation->passes() && $detailValidation->passes()) {
 
             $purchase = Purchase::find($id);
             $purchase->update($purchaseData);
-            $purchase->productsPurchases->updateMany($purchaseDetails);
+
+            $this->updatePurchaseDetails($purchaseDetails);
 
             return Redirect::route('purchases.index');
+            
+        } else {
+
+            return Redirect::route('purchases.edit', $id)
+                            ->withInput()
+                            ->withErrors($detailValidation)
+                            ->with('message', 'There were validation errors.');
         }
-        return Redirect::route('purchases.edit', $id)
-                        ->withInput()
-                        ->withErrors($detailValidation)
-                        ->with('message', 'There were validation errors.');
     }
 
     /**
@@ -241,30 +234,36 @@ class PurchasesController extends \BaseController {
         Purchase::find($id)->delete();
         return Redirect::route('purchases.index');
     }
-    
-    private function arrange_validate_details (
-            $purchasedProducts,
-            $purchasedAmount, 
-            $purchasedTotal,
-            &$purchaseDetails,
-            &$rulesArray
-            ) {
-        for ($nCount = 0; $nCount < count($purchasedProducts); $nCount++) {
+
+    private function arrange_validate_details($fields)    {
+        for ($nCount = 0; $nCount < count($fields['purchased_products']); $nCount++) {
             $purchaseDetails[] = new ProductPurchase(
                     array(
-                'purchase_id' => $id,
-                'product_id' => $purchasedProducts[$nCount],
-                'amount' => $purchasedAmount[$nCount],
-                'total' => $purchasedTotal[$nCount],
+                'purchase_id' => $fields['id'],
+                'product_id' => $fields['purchased_products'][$nCount],
+                'amount' => $fields['$purchased_amount'][$nCount],
+                'total' => $fields['purchased_total'][$nCount],
                 'updated_at' => date("Y-m-d H:i:s")
                     )
             );
+            foreach (ProductPurchase::$rules as $key => $value) {
+                $rulesArray[$key . ' in row (' . ($nCount + 1) . ')'] = $value;
+            }
+        }
+        return array('details'=>$purchaseDetails, 'rules'=>$rulesArray);
+    }
 
-            $rulesArray['purchase_id' . $nCount] = ProductPurchase::$rules['purchase_id'];
-            $rulesArray['product_id'] = ProductPurchase::$rules['product_id'];
-            $rulesArray['amount'] = ProductPurchase::$rules['amount'];
-            $rulesArray['total'] = ProductPurchase::$rules['total'];
-            $rulesArray['updated_at'] = ProductPurchase::$rules['updated_at'];
+    private function updatePurchaseDetails($purchaseDetails) {
+        foreach ($purchaseDetails as $row) {
+            
+        }
+    }
+    
+    private function dbRaw() {
+        if (Config::get('database.default') === 'mysql') {
+            return "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as description";
+        } else {
+            return "array_to_string(array_agg(descriptors.description), ' ') as product_description";
         }
     }
 

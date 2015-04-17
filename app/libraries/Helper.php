@@ -18,6 +18,7 @@ class Helper {
         $actions_allowed = $user->role->actions()->where('code', '=', $action_code)->get();
 
         return count($actions_allowed) ? 0 : 'Access denied to action : ' . Helper::actionDescription($action_code);
+        
     }
 
     public static function actionDescription($action_code) {

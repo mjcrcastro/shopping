@@ -9,15 +9,13 @@ class ShopsController extends \BaseController {
      */
     public function index() {
         //Returns all shops to a view
-        $action_code ='shops_index';
-        $message = Helper::usercan($action_code, Auth::user());
+        $message = Helper::usercan('shops_index', Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
-            $shops = Shop::paginate(7);
-
-            return View::make('shops.index', compact('shops'));
         }
+        $shops = Shop::paginate(7);
+
+        return View::make('shops.index', compact('shops'));
     }
 
     /**
@@ -27,13 +25,11 @@ class ShopsController extends \BaseController {
      */
     public function create() {
         //Display form for creation of shops
-        $action_code ='shops_create';
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        } else {
-            return View::make('shops.create');
-        }
+        $message = Helper::usercan('shops_create', Auth::user());
+        
+        if ($message) { return Redirect::back()->with('message', $message); } 
+       
+        return View::make('shops.create');
     }
 
     /**
@@ -60,10 +56,10 @@ class ShopsController extends \BaseController {
                                 ->with('message', 'Shop ' . $shop->description . ' created');
             }
             //if data is not valid, return to edition for additional input
-                return Redirect::route('shops.create')
-                                ->withInput()
-                                ->withErrors($validation)
-                                ->with('message', 'There were validation errors');
+            return Redirect::route('shops.create')
+                            ->withInput()
+                            ->withErrors($validation)
+                            ->with('message', 'There were validation errors');
         }
     }
 
