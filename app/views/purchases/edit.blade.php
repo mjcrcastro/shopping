@@ -115,8 +115,8 @@ active
                     '<input type="hidden" id="productarray" name="product_purchase_id[]" value=' + productArray[i].product_purchase_id + '>' +
                     '<input type="hidden" id="productarray" name="product_id[]" value=' + productArray[i].product_id + '>' +
                     '<div class="col-xs-4"> {{ "' + productArray[i].product_description + '" }} </div> ' +
-                    '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" step="0.01" value="' + productArray[i].amount + '"> </div> ' +
-                    '<div class="col-xs-3"> <input class="form-control input-sm" name="total[]" type="number" step="0.01" value="' + productArray[i].total + '"> </div> ' +
+                    '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" min ="0" step="0.01" value="' + productArray[i].amount + '"> </div> ' +
+                    '<div class="col-xs-3"> <input class="form-control input-sm" name="total[]" type="number" min ="0" step="0.01" value="' + productArray[i].total + '"> </div> ' +
                     '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                     '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                     '</a></div> ' +
