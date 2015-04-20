@@ -164,7 +164,6 @@ class PurchasesController extends \BaseController {
                 ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('products_purchases', 'products.id', '=', 'products_purchases.product_id')
-                ->orderBy('ORDER BY descriptors.descriptorType_id')
                 ->where('products_purchases.purchase_id', '=', $purchase->id)
                 ->groupBy('products.id')
                 ->groupBy('products_purchases.id')->get();
