@@ -70,6 +70,7 @@ active
                                     //so I converted the values to Int within the array before comparison.
                                     if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                         addToProducts([{
+                                                "product_purchase_id":null,
                                                 "product_id": aData[nCount]['product_id'],
                                                 "description": aData[nCount]['product_description'],
                                                 "amount": 0,
@@ -111,6 +112,7 @@ active
 
             $('<div class="container container-fluid">' +
                     '<div class="row" id="productRow">' +
+                    '<input type="hidden" id="productarray" name="product_purchase_id[]" value=' + productArray[i].product_purchase_id + '>' +
                     '<input type="hidden" id="productarray" name="product_id[]" value=' + productArray[i].product_id + '>' +
                     '<div class="col-xs-4"> {{ "' + productArray[i].description + '" }} </div> ' +
                     '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" value="' + productArray[i].amount + '"> </div> ' +
@@ -141,7 +143,7 @@ active
                 {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
 
                 {{ Form::label('date', 'Date:') }}
-                {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
+                {{ Form::text('purchase_date', null, array('class'=>'form-control', 'id'=>'purchase_date')) }}
                 <p></p>
                 <div class="row">
                     <dt>
