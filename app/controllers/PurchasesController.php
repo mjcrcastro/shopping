@@ -197,7 +197,7 @@ class PurchasesController extends \BaseController {
             'purchased_amount' => Input::get('amount'),
             'purchased_total' => Input::get('total')
         ));
-
+        
         $purchaseValidation = Validator::make($incoming_purchase, Purchase::$rules);
 
         $detailValidation = Validator::make($purchaseDetails, ProductPurchase::$rules);
@@ -256,12 +256,13 @@ class PurchasesController extends \BaseController {
 
         $purchase = Purchase::find($purchase_id);
         $purchase->update($incomingPurchase);
-        //Remove from database those that are not present in
-        //input, since they were removed from the view
-        ProductPurchase::whereNotIn('product_id',$purchaseDetails->lists('product_id'))
-                ->delete();
+        
+        
         //update those that were updated
         foreach ($purchaseDetails as $row) {
+            
+            $productsIds[] = $row->product_id;
+            
             if ($row->id) {
                 $ProductPurchase = ProductPurchase::find($row->id);
                 $ProductPurchase->update($row);
@@ -272,6 +273,10 @@ class PurchasesController extends \BaseController {
                 $row->save();
             }
         }
+        //Remove from database those that are not present in
+        //input, since they were removed from the view
+        ProductPurchase::whereNotIn('product_id',$productsIds)
+                ->delete();
     }
 
     private function dbRaw() {
