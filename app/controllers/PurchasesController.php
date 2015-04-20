@@ -252,7 +252,7 @@ class PurchasesController extends \BaseController {
         $purchase = Purchase::find($purchase_id);
         $purchase->update($incomingPurchase);
         
-        ProductPurchase::whereNotIn('product_id',$purchaseDetails['product_id'])
+        ProductPurchase::whereNotIn('product_id',$purchaseDetails)
                 ->delete();
         
         foreach ($purchaseDetails as $row) {
