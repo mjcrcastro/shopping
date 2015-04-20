@@ -70,8 +70,8 @@ active
                                             '<div class="row" id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
                                             '<div class="col-xs-4"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("amount[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("total[]",null,array("class"=>"form-control input-sm")) }} </div> ' +
+                                            '<div class="col-xs-3"> {{ Form::number("amount[]",null,array("class"=>"form-control input-sm","step"=>"any")) }} </div> ' +
+                                            '<div class="col-xs-3"> {{ Form::number("total[]",null,array("class"=>"form-control input-sm","step"=>"any")) }} </div> ' +
                                             '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
