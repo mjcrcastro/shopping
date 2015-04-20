@@ -165,7 +165,8 @@ class PurchasesController extends \BaseController {
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('products_purchases', 'products.id', '=', 'products_purchases.product_id')
                 ->where('products_purchases.purchase_id', '=', $purchase->id)
-                ->groupBy('products.id')->get();
+                ->groupBy('products.id')
+                ->groupBy('products_purchases.id')->get();
         
         return View::make('purchases.edit', compact('purchase', 'shops', 'products_purchases'));
         // End of actual code to execute
