@@ -233,6 +233,10 @@ class PurchasesController extends \BaseController {
     }
 
     private function arrange_details($fields) {
+        
+        $purchaseDetails = []; //need to initilaze so variable exists
+        //even if no rows come in with $fields
+        
         for ($nCount = 0; $nCount < count($fields['purchased_products']); $nCount++) {
             $purchaseDetails[] = new ProductPurchase(
                     array(
