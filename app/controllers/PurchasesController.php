@@ -256,15 +256,19 @@ class PurchasesController extends \BaseController {
 
         $purchase = Purchase::find($purchase_id);
         $purchase->update($incomingPurchase);
-        
+        //Remove from database those that are not present in
+        //input, since they were removed from the view
         ProductPurchase::whereNotIn('product_id',$purchaseDetails)
                 ->delete();
-        
+        //update those that were updated
         foreach ($purchaseDetails as $row) {
             if ($row->id) {
                 $ProductPurchase = ProductPurchase::find($row->id);
                 $ProductPurchase->update($row);
             } else {
+                //add those that were added
+                //I can do it with a save since these are objects,
+                //not arrays
                 $row->save();
             }
         }
