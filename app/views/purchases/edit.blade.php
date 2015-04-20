@@ -114,7 +114,7 @@ active
                     '<div class="row" id="productRow">' +
                     '<input type="hidden" id="productarray" name="product_purchase_id[]" value=' + productArray[i].product_purchase_id + '>' +
                     '<input type="hidden" id="productarray" name="product_id[]" value=' + productArray[i].product_id + '>' +
-                    '<div class="col-xs-4"> {{ "' + productArray[i].description + '" }} </div> ' +
+                    '<div class="col-xs-4"> {{ "' + productArray[i].product_description + '" }} </div> ' +
                     '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" value="' + productArray[i].amount + '"> </div> ' +
                     '<div class="col-xs-3"> <input class="form-control input-sm" name="total[]" type="number" value="' + productArray[i].total + '"> </div> ' +
                     '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
