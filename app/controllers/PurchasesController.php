@@ -279,7 +279,7 @@ class PurchasesController extends \BaseController {
             return "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
             return "array_to_string(array_agg(descriptors.description), ' ') as product_description "
-            . "FROM (SELECT descriptors.description FROM descriptors ORDER BY descriptors.descriptorType_id)";
+            . "FROM (SELECT descriptors.description FROM descriptors ORDER BY descriptors.descriptorType_id) x";
         }
     }
 
