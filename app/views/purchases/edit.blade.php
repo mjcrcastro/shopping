@@ -72,7 +72,7 @@ active
                                         addToProducts([{
                                                 "product_purchase_id":null,
                                                 "product_id": aData[nCount]['product_id'],
-                                                "description": aData[nCount]['product_description'],
+                                                "product_description": aData[nCount]['product_description'],
                                                 "amount": 0,
                                                 "total": 0}]);
                                         $('#myModal').modal('hide');
