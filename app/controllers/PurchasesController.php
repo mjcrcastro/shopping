@@ -276,6 +276,7 @@ class PurchasesController extends \BaseController {
         //Remove from database those that are not present in
         //input, since they were removed from the view
         ProductPurchase::whereNotIn('product_id',$productsIds)
+                ->where('purchase_id','=',$purchase_id)
                 ->delete();
     }
 
