@@ -258,7 +258,7 @@ class PurchasesController extends \BaseController {
         $purchase->update($incomingPurchase);
         //Remove from database those that are not present in
         //input, since they were removed from the view
-        ProductPurchase::whereNotIn('product_id',$purchaseDetails->product_id)
+        ProductPurchase::whereNotIn('product_id',$purchaseDetails->lists('product_id'))
                 ->delete();
         //update those that were updated
         foreach ($purchaseDetails as $row) {
