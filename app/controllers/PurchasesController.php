@@ -194,6 +194,7 @@ class PurchasesController extends \BaseController {
         );
 
         $purchaseDetails = $this->arrange_details(array(
+            'id' => Input::get('id'),
             'purchase_id' => $id,
             'purchased_products' => Input::get('product_id'),
             'purchased_amount' => Input::get('amount'),
