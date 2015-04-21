@@ -243,6 +243,7 @@ class PurchasesController extends \BaseController {
         for ($nCount = 0; $nCount < count($fields['purchased_products']); $nCount++) {
             $purchaseDetails[] = new ProductPurchase(
                     array(
+                'id' => $fields['id'],        
                 'purchase_id' => $fields['purchase_id'],
                 'product_id' => $fields['purchased_products'][$nCount],
                 'amount' => $fields['purchased_amount'][$nCount],
@@ -263,10 +264,11 @@ class PurchasesController extends \BaseController {
         //update those that were updated
         foreach ($purchaseDetails as $row) {
             
-            $productsIds[] = $row->product_id;
+            $purchasesIds = [];
             
-            if ($row->id) {
-                $ProductPurchase = ProductPurchase::find($row->id);
+            if ($row->purchase_id) {
+                $purchasesIds[] = $row->purchase_id; 
+                $ProductPurchase = ProductPurchase::find($row->purchase_id);
                 $ProductPurchase->update($row);
             } else {
                 //add those that were added
@@ -277,8 +279,7 @@ class PurchasesController extends \BaseController {
         }
         //Remove from database those that are not present in
         //input, since they were removed from the view
-        ProductPurchase::whereNotIn('product_id',$productsIds)
-                ->where('purchase_id','=',$purchase_id)
+        ProductPurchase::whereNotIn('id',$purchasesIds)
                 ->delete();
     }
 
