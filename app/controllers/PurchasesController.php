@@ -292,7 +292,7 @@ class PurchasesController extends \BaseController {
             . "descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
             return "array_to_string(array_agg(descriptors.description "
-            . 'ORDER BY "descriptors"."descriptorType_id"), " " ' 
+            . 'ORDER BY "descriptors"."descriptortype_id"), " " ' 
             . ") as product_description ";
         }
     }
