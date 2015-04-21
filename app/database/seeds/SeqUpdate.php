@@ -11,6 +11,7 @@ class SeqUpdate extends Seeder {
     public function run() {
         if (DB::connection()->getName() == 'pgsql') {
             $this->command->info('updating tables seeds ');
+            DB::select("SELECT  setval('actions_id_seq', (select max(id)  from actions));");
             DB::select("SELECT  setval('descriptors_id_seq', (select max(id)  from descriptors));");
             DB::select("SELECT  setval('descriptors_types_id_seq', (select max(id)  from descriptors_types));");
             DB::select("SELECT  setval('products_descriptors_id_seq', (select max(id)  from products_descriptors));");
