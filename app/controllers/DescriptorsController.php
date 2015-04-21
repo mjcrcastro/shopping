@@ -18,28 +18,15 @@ class DescriptorsController extends \BaseController {
         }
 
         $descriptorType_id = Input::get('descriptorType_id');
-        $label = '';
+        
         $filter = Input::get('filter');
-
-        if ($filter and $descriptorType_id) {
-            $descriptors = Descriptor::orderBy('description', 'asc')
-                    ->where('description', 'like', '%' . $filter . '%')
-                    ->where('descriptorType_id', '=', $descriptorType_id)
-                    ->paginate(7);
-            $label = ' for ' . DescriptorType::find($descriptorType_id)->description;
-        } elseif ($descriptorType_id) {
-            $descriptors = Descriptor::orderBy('description', 'asc')
-                    ->where('descriptorType_id', '=', $descriptorType_id)
-                    ->paginate(7);
-            $label = ' for ' . DescriptorType::find($descriptorType_id)->description;
-        } elseif ($filter) {
-            $descriptors = Descriptor::orderBy('description', 'asc')
-                    ->where('description', 'like', '%' . $filter . '%')
-                    ->paginate(7);
-        } else {
-            $descriptors = Descriptor::orderBy('description', 'asc')
-                    ->paginate(7);
-        }
+        
+        $descriptors_label = $this->getDescriptorsLabel($descriptorType_id, $filter);
+        
+        $descriptors =  $descriptors_label['descriptors'];
+        
+        $label = $descriptors_label['label'];
+        
         return View::make('descriptors.index', compact('descriptors'))
                         ->with('descriptorType_id', $descriptorType_id)
                         ->with('filter', $filter)
@@ -60,17 +47,18 @@ class DescriptorsController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
-        $descriptorType_id = Input::get('descriptorType_id');
+        $descriptorTypeId = Input::get('descriptorType_id');
         $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
                 ->lists('description', 'id');
         $label = '';
-        if ($descriptorType_id) {
+        if ($descriptorTypeId) {
             //say that the descriptor is of a specific descriptor type
-            $label = ' for ' . DescriptorType::find($descriptorType_id)->description;
+            $label = ' for ' . DescriptorType::find($descriptorTypeId)
+                    ->description;
         }
 
         return View::make('descriptors.create')
-                        ->with('descriptorType_id', $descriptorType_id)
+                        ->with('descriptorType_id', $descriptorTypeId)
                         ->with('descriptorsTypes', $descriptorsTypes)
                         ->with('label', $label);
     }
@@ -136,24 +124,25 @@ class DescriptorsController extends \BaseController {
      */
     public function edit($id) {
         //Redirect to Company editor
-        $action_code = 'descriptors_edit';
-
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        }
+        $message = Helper::usercan('descriptors_edit', Auth::user());
+        if ($message) { return Redirect::back()->with('message', $message); }
         //Actual code to execute
         $descriptor = Descriptor::find($id);
         $descriptorsTypes = DescriptorType::orderBy('description', 'asc')
                 ->lists('description', 'id');
 
         if (is_null($descriptor)) {
-            return Redirect::route('descriptors.index', array('descriptorType_id' => Input::get('descriptorType_id'),
+            return Redirect::route(
+                    'descriptors.index', 
+                    array('descriptorType_id' => Input::get('descriptorType_id'),
                         'filter' => Input::get('filter'))
             );
         }
-        return View::make('descriptors.edit', compact('descriptor', 'descriptorsTypes'), array('descriptorType_id' => Input::get('descriptorType_id'),
-                    'filter' => Input::get('filter')));
+        return View::make('descriptors.edit', 
+                compact('descriptor', 'descriptorsTypes'), 
+                array('descriptorType_id' => Input::get('descriptorType_id'),
+                    'filter' => Input::get('filter'))
+                );
         // End of actual code to execute
     }
 
@@ -236,6 +225,29 @@ class DescriptorsController extends \BaseController {
         } else {
             return Response::make("Page not found", 404);
         }
+    }
+    
+    private function getDescriptorsLabel($descriptorType_id, $filter) {
+        //returns descriptors array and label for use in index
+        $label = '';
+        if ($filter and $descriptorType_id) {
+            $descriptors = Descriptor::orderBy('description', 'asc')
+                    ->where('description', 'like', '%' . $filter . '%')
+                    ->where('descriptorType_id', '=', $descriptorType_id);
+            $label = ' for ' . DescriptorType::find($descriptorType_id)
+                    ->description;
+        } elseif ($descriptorType_id) {
+            $descriptors = Descriptor::orderBy('description', 'asc')
+                    ->where('descriptorType_id', '=', $descriptorType_id);
+            $label = ' for ' . DescriptorType::find($descriptorType_id)
+                    ->description;
+        } elseif ($filter) {
+            $descriptors = Descriptor::orderBy('description', 'asc')
+                    ->where('description', 'like', '%' . $filter . '%');
+        } else {
+            $descriptors = Descriptor::orderBy('description', 'asc');
+        }
+        return array('descriptors'=>$descriptors->paginate(7), 'label'=>$label);
     }
 
 }

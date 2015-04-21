@@ -1,6 +1,7 @@
 <?php
 
-class ActionsController extends \BaseController {
+class ActionsController extends \BaseController 
+{
 
 	/**
 	 * Display a listing of the resource.
@@ -40,12 +41,13 @@ class ActionsController extends \BaseController {
 	{
 		 //Save new action data
             $input = Input::all();
-                      
+            
+            /* @var $validation validation object */  
             $validation = Validator::make($input, Action::$rules);
                         
-            if ($validation->passes())
+        if ($validation->passes())
             {
-                $action = Action::create($input);
+                Action::create($input);
                                 
                 return Redirect::route('actions.index')
                         ->with('message', 'Action Created');
@@ -96,9 +98,8 @@ class ActionsController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//Receives and updates new company data
+	//Receives and updates new company data
             $input  = Input::all();
-            //This made only because when updating a user with the same username will faile.
             
             $validation = Validator::make($input, Action::$rules);
                    
