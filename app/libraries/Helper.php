@@ -38,6 +38,14 @@ class Helper {
         return $last_query;
     }
     
+    public static function getAllTables() {
+        if (DB::connection()->getName() === 'mysql') {
+            $allTables = DB::select('SHOW TABLES');
+        } else {
+            $allTables = DB::select("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'");
+        }
+    }
+    
     
     
 }

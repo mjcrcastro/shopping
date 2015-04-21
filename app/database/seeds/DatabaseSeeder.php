@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder {
                 $this->call('ProductsDescriptorsTableSeeder');
                 $this->call('PurchasesTableSeeder');
                 $this->call('ProductsPurchasesTableSeeder');
+                if (Config::get('database.default') === 'pgsql') {
+                    $this->call('SeqUpdate');
+                }
 	}
 
 }
