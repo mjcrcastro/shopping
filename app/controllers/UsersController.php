@@ -119,7 +119,7 @@ class UsersController extends \BaseController {
         } else {
             //Receive data to be updated and update it
             $input = Input::all();
-            //This made only because when updating a user with the same username will faile.
+            //This made only because when updating a user with the same username will fail.
             $rules = array(
                 'username' => 'sometimes|required|min:8|unique:users',
                 'password' => 'confirmed',

@@ -27,6 +27,7 @@ $app = new Illuminate\Foundation\Application;
 $env = $app->detectEnvironment(array(
 
 	'local' => array('ManuelCT'),
+        'home'=>array('manuelpc'),
         'production' => array('*.herokuapp.com')
 
 ));

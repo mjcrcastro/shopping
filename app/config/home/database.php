@@ -31,6 +31,17 @@ return array(
 			'prefix'    => '',
 		),
 
+		'pgsql' => array(
+			'driver'   => 'pgsql',
+			'host'     => 'localhost',
+			'database' => 'shopping',
+			'username' => 'postgres',
+			'password' => '1h1hpcha',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+			'schema'   => 'public',
+		),
+
 	),
 
 );
