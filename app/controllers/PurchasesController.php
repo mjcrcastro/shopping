@@ -290,7 +290,7 @@ class PurchasesController extends \BaseController {
         if (Config::get('database.default') === 'mysql') {
             return "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
-            return "array_to_string(array_agg(descriptors.description), ' ') as product_description ";
+            return "array_to_string(array_agg(descriptors.description) ORDER BY descriptors.description, ' ') as product_description ";
         }
     }
 
