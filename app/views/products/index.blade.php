@@ -41,7 +41,7 @@ active
                     @endforeach
                 </td>
                 <td> 
-                    
+                   {{ $product->productType->description }} 
                 </td>
                 <td> 
                     {{ link_to_route('products.edit', 'Edit', array($product->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} 
