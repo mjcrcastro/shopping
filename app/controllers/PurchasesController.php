@@ -291,9 +291,8 @@ class PurchasesController extends \BaseController {
             return "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY "
             . "descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
-            return "array_to_string(array_agg(descriptors.description "
-            . 'ORDER BY "descriptors"."descriptortype_id"), " " ' 
-            . ") as product_description ";
+            return "string_agg(descriptors.description, ' ' order by "
+            ." 'descriptorType_id' as product_description ";
         }
     }
 
