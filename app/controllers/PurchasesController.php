@@ -267,10 +267,10 @@ class PurchasesController extends \BaseController {
             
             $purchasesIds = [];
             
-            if ($row->purchase_id) {
+            if ($row->purchase_id !== null) {
                 $purchasesIds[] = $row->purchase_id; 
-                $ProductPurchase = ProductPurchase::find($row->purchase_id);
-                $ProductPurchase->update($row);
+                $productPurchase = ProductPurchase::find($row->purchase_id);
+                $productPurchase->update($row);
             } else {
                 //add those that were added
                 //I can do it with a save since these are objects,
