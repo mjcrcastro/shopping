@@ -70,7 +70,7 @@ active
                                     //so I converted the values to Int within the array before comparison.
                                     if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                         addToProducts([{
-                                                "product_purchase_id":null,
+                                                "id":null,
                                                 "product_id": aData[nCount]['product_id'],
                                                 "product_description": aData[nCount]['product_description'],
                                                 "amount": 0,
@@ -112,7 +112,7 @@ active
 
             $('<div class="container container-fluid">' +
                     '<div class="row" id="productRow">' +
-                    '<input type="hidden" id="productarray" name="product_purchase_id[]" value=' + productArray[i].product_purchase_id + '>' +
+                    '<input type="hidden" id="productarray" name="id[]" value=' + productArray[i].id + '>' +
                     '<input type="hidden" id="productarray" name="product_id[]" value=' + productArray[i].product_id + '>' +
                     '<div class="col-xs-4"> {{ "' + productArray[i].product_description + '" }} </div> ' +
                     '<div class="col-xs-3"> <input class="form-control input-sm" name="amount[]" type="number" min ="0" step="0.01" value="' + productArray[i].amount + '"> </div> ' +
