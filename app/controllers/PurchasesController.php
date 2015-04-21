@@ -164,7 +164,7 @@ class PurchasesController extends \BaseController {
                 ->where('products_purchases.purchase_id', '=', $purchase->id)
                 ->groupBy('products.id')
                 ->groupBy('products_purchases.id')
-                ->orderBy('products.id')
+                ->orderBy('products_purchases.id')
                 ->get();
 
         return View::make('purchases.edit', compact('purchase', 'shops', 'products_purchases'));
@@ -291,7 +291,7 @@ class PurchasesController extends \BaseController {
             return "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY "
             . "descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
-            return "array_to_string(array_agg(descriptors.description ORDER BY descriptors.descriptortype_id), ' ' "
+            return "array_to_string(array_agg(descriptors.description ORDER BY descriptors.descriptorType_id), ' ' "
             . ") as product_description ";
         }
     }
