@@ -212,7 +212,7 @@ class PurchasesController extends \BaseController {
                             ->withErrors($bag)
                             ->with('message', 'There were validation errors.');
         }
-
+        return $purchaseDetails;
         $this->updatePurchaseDetails($id, $incoming_purchase, $purchaseDetails);
 
         return Redirect::route('purchases.index');
