@@ -42,7 +42,7 @@ class JsonController extends \BaseController {
         if (Config::get('database.default') === 'mysql') {
             $dbRaw = "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as product_description";
         } else {
-            $dbRaw = "array_to_string(array_agg(descriptors.description), ' ') as product_description";
+            $dbRaw = "string_agg(descriptors.description, ' ' ORDER BY descriptors.\"descriptorType_id\") as product_description";
         }
         if ($filter) {
             
@@ -85,7 +85,7 @@ class JsonController extends \BaseController {
                 $having.=" AND GROUP_CONCAT(descriptors.description) " .
                         "like '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";
             } else {
-                $having.=" AND array_to_string(array_agg(LOWER(descriptors.description) ORDER BY descriptors.descriptortype_id), ' ') " .
+                $having.=" AND string_agg(LOWER(descriptors.description), ' ' ORDER BY descriptors.\"descriptorType_id\") " .
                         "like  '%" . strtolower(ltrim(rtrim($searchArray[$nCount]))) . "%'";
             }
         }
