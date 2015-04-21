@@ -157,10 +157,7 @@ class PurchasesController extends \BaseController {
 
         $shops = Shop::orderBy('description', 'asc')->lists('description', 'id');
 
-        $products_purchases = Product::select('products_purchases.id', 
-                'products.id as product_id', DB::raw($this->dbRaw()), 
-                'products_purchases.amount', 
-                'products_purchases.total')
+        $products_purchases = Product::select('products_purchases.id', 'products.id as product_id', DB::raw($this->dbRaw()), 'products_purchases.amount', 'products_purchases.total')
                 ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('products_purchases', 'products.id', '=', 'products_purchases.product_id')
@@ -169,7 +166,7 @@ class PurchasesController extends \BaseController {
                 ->groupBy('products_purchases.id')
                 ->orderBy('products.id')
                 ->get();
-        
+
         return View::make('purchases.edit', compact('purchase', 'shops', 'products_purchases'));
         // End of actual code to execute
     }
@@ -184,7 +181,9 @@ class PurchasesController extends \BaseController {
 
         $message = Helper::usercan('purchases_update', Auth::user());
 
-        if ($message) { return Redirect::back()->with('message', $message); }
+        if ($message) {
+            return Redirect::back()->with('message', $message);
+        }
         //Helper::usercan return won't let the following code to continue
 
         $incoming_purchase = array(
@@ -194,25 +193,25 @@ class PurchasesController extends \BaseController {
         );
 
         $purchaseDetails = $this->arrange_details(array(
-            'id' => Input::get('id'),
             'purchase_id' => $id,
+            'id' => Input::get('id'),
             'purchased_products' => Input::get('product_id'),
             'purchased_amount' => Input::get('amount'),
             'purchased_total' => Input::get('total')
         ));
-        
+
         $purchaseValidation = Validator::make($incoming_purchase, Purchase::$rules);
 
         $detailValidation = Validator::make($purchaseDetails, ProductPurchase::$rules);
 
-        if ($purchaseValidation->fails() || $detailValidation->fails() ) {
+        if ($purchaseValidation->fails() || $detailValidation->fails()) {
             $bag = $purchaseValidation->messages()->merge($detailValidation->messages());
             return Redirect::route('purchases.edit', $id)
                             ->withInput()
                             ->withErrors($bag)
                             ->with('message', 'There were validation errors.');
         }
-        return $purchaseDetails;
+
         $this->updatePurchaseDetails($id, $incoming_purchase, $purchaseDetails);
 
         return Redirect::route('purchases.index');
@@ -237,20 +236,18 @@ class PurchasesController extends \BaseController {
     }
 
     private function arrange_details($fields) {
-        
+
         $purchaseDetails = []; //need to initilaze so variable exists
         //even if no rows come in with $fields
-        
+
         for ($nCount = 0; $nCount < count($fields['purchased_products']); $nCount++) {
-            $purchaseDetails[] = new ProductPurchase(
-                    array(
-                'id' => $fields['id'],        
-                'purchase_id' => $fields['purchase_id'],
-                'product_id' => $fields['purchased_products'][$nCount],
-                'amount' => $fields['purchased_amount'][$nCount],
-                'total' => $fields['purchased_total'][$nCount],
-                'updated_at' => date("Y-m-d H:i:s")
-                    )
+            $purchaseDetails[] = array(
+                        'id' => $fields['id'][$nCount],
+                        'purchase_id' => $fields['purchase_id'],
+                        'product_id' => $fields['purchased_products'][$nCount],
+                        'amount' => $fields['purchased_amount'][$nCount],
+                        'total' => $fields['purchased_total'][$nCount],
+                        'updated_at' => date("Y-m-d H:i:s")
             );
         }
         return $purchaseDetails;
@@ -261,27 +258,31 @@ class PurchasesController extends \BaseController {
         $purchase = Purchase::find($purchase_id);
         $purchase->update($incomingPurchase);
         
-        
         //update those that were updated
         foreach ($purchaseDetails as $row) {
-            
-            $purchasesIds = [];
-            
-            if ($row->purchase_id !== null) {
-                $purchasesIds[] = $row->purchase_id; 
-                $productPurchase = ProductPurchase::find($row->purchase_id);
-                $productPurchase->update($row);
-            } else {
+
+            if ($row['id'] === 'null') {
                 //add those that were added
                 //I can do it with a save since these are objects,
                 //not arrays
-                $row->save();
+                //store the newly created purchasesId as valid so 
+                //I do not erase it by mistake
+                $purchasesIds[] = ProductPurchase::create($row)->id;
+            } else {
+                $purchasesIds[] = $row['id']; //keep track of the incoming products_purchases.id
+                $productPurchase = ProductPurchase::find($row['id']);
+                $productPurchase->purchase_id = $row['purchase_id'];
+                $productPurchase->product_id = $row['product_id'];
+                $productPurchase->amount = $row['amount'];
+                $productPurchase->total = $row['total'];
+                $productPurchase->updated_at = $row['updated_at'];
+                $productPurchase->save();
             }
         }
         //Remove from database those that are not present in
         //input, since they were removed from the view
-        ProductPurchase::whereNotIn('id',$purchasesIds)
-                ->where('purchase_id','=',$purchase_id)
+        ProductPurchase::whereNotIn('id', $purchasesIds)
+                ->where('purchase_id', '=', $purchase_id)
                 ->delete();
     }
 
