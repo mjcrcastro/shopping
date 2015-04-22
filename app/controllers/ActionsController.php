@@ -14,7 +14,8 @@ class ActionsController extends \BaseController {
         }
 
 
-        $actions = Action::paginate(7);
+        $actions = Action::orderBy('code')
+                ->paginate(7);
 
         return View::make('actions.index', compact('actions'));
     }

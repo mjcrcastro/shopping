@@ -15,15 +15,15 @@
 
         <p>
             {{ Form::label('username', 'Username') }}
-            {{ Form::text('username') }}
+            {{ Form::text('username',null,array('class'=>'form-control')) }}
         </p>
 
         <p>
             {{ Form::label('password', 'Password') }}
-            {{ Form::password('password') }}
+            {{ Form::password('password',array('class'=>'form-control')) }}
         </p>
 
-        <p>{{ Form::submit('Submit!') }}</p>
+        <p>{{ Form::submit('Submit!',array('class'=>'form-control btn btn-primary')) }}</p>
     {{ Form::close() }}
 
 
