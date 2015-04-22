@@ -77,7 +77,7 @@
                                     @yield('form_search')
 
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li>{{ Auth::check() ? '<a href="logout">Log Out</a>' : '<a href="login">Log In</a>'; }}</li>
+                                        <li>{{ Auth::check() ? '<a href="/logout">Log Out</a>' : '<a href="/login">Log In</a>'; }}</li>
                                     </ul>
                                 </div><!-- /.navbar-collapse -->
                             </div><!-- /.container-fluid -->

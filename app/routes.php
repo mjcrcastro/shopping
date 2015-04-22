@@ -46,16 +46,16 @@ Route::group(array('before' => 'auth'), function() {
 // All this do not need to request authentication since they are doing 
 // the authentication
 // route to show the login form
-Route::get('login', array('uses' => 'LoginController@showLogin'));
+Route::get('/login', array('uses' => 'LoginController@showLogin'));
 
 // route to process the form
-Route::post('login', array('uses' => 'LoginController@doLogin'));
+Route::post('/login', array('uses' => 'LoginController@doLogin'));
 
 //Logout route
-Route::get('logout', array('uses' => 'LoginController@doLogout'));
+Route::get('/logout', array('uses' => 'LoginController@doLogout'));
 
 //Route to denied page
-Route::get('denied', array('uses' => 'LoginController@denied'));
+Route::get('/denied', array('uses' => 'LoginController@denied'));
 
 //To tell the user that the resource was not found.
 App::missing(function($exception) {
