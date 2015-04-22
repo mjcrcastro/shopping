@@ -116,9 +116,7 @@ class ShopsController extends \BaseController {
 
         $action_code = 'shops_update';
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        } else {
+        if ($message) { return Redirect::back()->with('message', $message); } 
             //Actual code to execute
             //Receives and updates new shop data
             $input = Input::all();
@@ -137,7 +135,6 @@ class ShopsController extends \BaseController {
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
-        }
     }
 
     /**

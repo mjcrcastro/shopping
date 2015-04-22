@@ -5,10 +5,10 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
+
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait, RemindableTrait;
-
     /**
      * The database table used by the model.
      *
@@ -25,7 +25,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     // $guarded are fields that can not be sent as input
     protected $guarded = array('id');
     // $ fillable are fields that can be sent as input
-    protected $fillable = array('email', 'username', 'name');
+    protected $fillable = array('email', 'username', 'name','role_id');
     
     public static $rules = array(
         'username' => 'sometimes|required|min:8|unique:users',

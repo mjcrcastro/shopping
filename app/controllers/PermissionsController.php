@@ -12,7 +12,7 @@ class PermissionsController extends \BaseController {
         } else {
             $permissions = DB::table('actions')
                     ->select('actions.id as action_id', 'actions.description', 'role_id')
-                    ->orderBy('actions.description')
+                    ->orderBy('actions.code')
                     ->leftjoin(DB::raw(
                                     '(SELECT role_id, action_id FROM roles_actions where role_id = ' . $id . ') filtered_permissions'), function($join) {
                         $join->on('actions.id', '=', 'filtered_permissions.action_id');

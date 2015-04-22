@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('dropdown_active')
-   active
+active
 @stop
 
 
@@ -9,43 +9,42 @@
 
 <h1> Edit User </h1>
 
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            {{ Form::model($user, array('method'=>'PATCH', 'route'=> array('users.update', $user->id)))  }}
 
-{{ Form::model($user, array('method'=>'PATCH', 'route'=> array('users.update', $user->id)))  }}
 
-    <ul>
-        
-        <li>
             {{ Form::label('username', 'Username:') }}
-            {{ Form::label('username_text', $user->username) }}
-        </li>
-        
-        <li>
+            {{ Form::label('username_text', $user->username, array('class'=>'form-control')) }}
+
             {{ Form::label('name', 'Name:') }}
-            {{ Form::text('name') }}
-        </li>
-        
-        <li>
+            {{ Form::text('name',null,  array('class'=>'form-control')) }}
+
             {{ Form::label('email', 'Email:') }}
-            {{ Form::text('email') }}
-        </li>
+            {{ Form::text('email', null,  array('class'=>'form-control')) }}
 
-        <li>
             {{ Form::label('name', 'Name:') }}
-            {{ Form::select('role_id', $roles) }}
-        </li>    
-      
-        <li>
-            {{ Form::submit('Update', array('class'=>'btn btn-info')) }}
-            {{ link_to_route('users.index', 'Cancel', null, array('class'=>'btn btn-info')) }}
-        </li>
+            {{ Form::select('role_id', $roles, null, array('class'=>'form-control')) }}
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-xs-6">
+            {{ Form::submit('Update', array('class'=>'btn btn-primary btn-block')) }}
+        </div>
+        <div class="col-xs-6">
+            {{ link_to_route('users.index', 'Cancel', null, array('class'=>'btn btn-info btn-block')) }}
+        </div>
+    </div>
+</div>
 
-    </ul>
 {{ Form::close() }}
 
 @if ($errors->any())
-    <ul>
-        {{ implode('',$errors->all('<li class="error">:message</li>')) }}
-    </ul>
+<ul>
+    {{ implode('',$errors->all('<li class="error">:message</li>')) }}
+</ul>
 @endif
 
 @stop

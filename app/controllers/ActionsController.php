@@ -128,6 +128,10 @@ $message = Helper::usercan('actions_update', Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
+        
+        // Delete action
+        Action::find($id)->delete();
+        return Redirect::route('actions.index');
     }
 
 }

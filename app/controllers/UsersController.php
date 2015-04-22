@@ -32,8 +32,8 @@ class UsersController extends \BaseController {
             return Redirect::back()->with('message', $message);
         } else {
             //For adding new users
-            $roles = Role::lists('description','id');
-            return View::make('users.create',compact('roles'));
+            $roles = Role::lists('description', 'id');
+            return View::make('users.create', compact('roles'));
         }
     }
 
@@ -100,8 +100,8 @@ class UsersController extends \BaseController {
             if (is_null($user)) {
                 return Redirect::route('users.index');
             }
-            $roles = Role::lists('description','id');
-            return View::make('users.edit', compact('user','roles'));
+            $roles = Role::lists('description', 'id');
+            return View::make('users.edit', compact('user', 'roles'));
         }
     }
 
@@ -114,30 +114,25 @@ class UsersController extends \BaseController {
     public function update($id) {
         $action_code = 'users_update';
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        } else {
+        if ($message) { return Redirect::back()->with('message', $message); } 
             //Receive data to be updated and update it
             $input = Input::all();
-            //This made only because when updating a user with the same username will fail.
-            $rules = array(
-                'username' => 'sometimes|required|min:8|unique:users',
-                'password' => 'confirmed',
-                'name' => 'required|min:5',
-                'email' => 'sometimes|required|unique:users,email,' . $id);
 
-            $validation = Validator::make($input, $rules);
+            //This[ made only because when updating a user with the same username will fail.
+            User::$rules['email'] = 'sometimes|required|unique:users,email,' . $id;
+
+            $validation = Validator::make($input, User::$rules);
 
             if ($validation->passes()) {
                 $user = User::find($id);
                 $user->update($input);
+                
                 return Redirect::route('users.index');
             }
             return Redirect::route('users.edit', $id)
                             ->withInput()
                             ->withErrors($validation)
                             ->with('message', 'There were validation errors.');
-        }
     }
 
     /**
@@ -151,13 +146,11 @@ class UsersController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
             return Redirect::back()->with('message', $message);
-        } else {
-            // Delete user
-            User::find($id)->delete();
-            return Redirect::route('users.index');
         }
+        // Delete user
+        User::find($id)->delete();
+        return Redirect::route('users.index');
     }
 
     // functions to manage permissions from a given role
-    
 }
