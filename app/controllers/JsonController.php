@@ -17,10 +17,11 @@ class JsonController extends \BaseController {
             $filter = Input::get('term');
             //Will use the show function to return a json for ajax
             $descriptors = Descriptor::orderBy('descriptors_types.id', 'asc')
+                    ->whereRaw("LOWER(descriptors.description) like '%" . strtolower($filter) . "%'")
                     ->orderBy('descriptors.description', 'asc')
                     ->select('descriptors.id as descriptor_id', 'descriptors.description as label', 'descriptors_types.description as category', 'descriptors.descriptorType_id')
                     ->join('descriptors_types', 'descriptors.descriptorType_id', '=', 'descriptors_types.id')
-                    ->where('descriptors.description', 'like', '%' . $filter . '%')
+                    
                     ->get();
             return Response::json($descriptors);
         } else {
