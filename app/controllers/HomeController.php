@@ -76,7 +76,7 @@ class HomeController extends \BaseController {
         }
 
         //now zip the files
-        $zipFile = "backup.zip";
+        $zipFile = "shopping". date('Ymd Hi'). ".zip";
 
         $zipArchive = new ZipArchive();
 
