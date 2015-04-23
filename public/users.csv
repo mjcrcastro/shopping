@@ -1,3 +1,0 @@
-id,username,role_id,name,email,password,created_at,updated_at,remember_token
-1,admin,1,"Manuel Castro",mjcrcastro@hotmail.com,$2y$10$v0DgHz1K/RCiilyRGy7jyuwCEJzJjb1v7RENixX/V8smJd6GW1ucS,"2015-03-23 00:00:00","2015-04-22 20:57:01",QOLBflymKZcTF2YNOaiv8P13Q2zm8NtPW1kQuHwQ0z6OhdoE8VaDFzjTO6yL
-2,eblandon,2,"Enrique Blandon",eblandon@mdb.com,$2y$10$SYun7I3JWqXu4OJPehfCQ.Yr0fLj5IlWFbT2GBYJBZjVWpFgRvibi,"2015-04-09 23:45:58","2015-04-22 21:48:50",0V83432SofkaxOvVTeV1r5I5PQKrwDm6FAdblBEoaBfrQDcusYYPix1DoztI

@@ -17,9 +17,9 @@ class HomeController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
-        
+
         $data = [];
-        
+
         $raw_data = DB::table('products_purchases')
                 ->select(DB::raw('products_types.description, sum(products_purchases.total) as total'))
                 ->join('products', 'products.id', '=', 'products_purchases.product_id')
@@ -44,39 +44,29 @@ class HomeController extends \BaseController {
 
     public function getData() {
 
-        if (Config::get('database.default') === 'mysql') {
-            $allTables = DB::select('SHOW TABLES');
-        } else {
-            $allTables = DB::select("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'");
+        $allTableNames = Schema::getConnection()
+                ->getDoctrineSchemaManager()
+                ->listTableNames();
+        
+        $this->exportToCsv($allTableNames);
+        
+        $zipFile = $this->zipCsvFiles();
+
+        //now delete the *.csv files
+        foreach (glob("*.csv") as $filename) {
+            unlink($filename);
         }
 
-        foreach ($allTables as $table) {
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
 
-            if (Config::get('database.default') === 'mysql') {
-                $tableName = $table->Tables_in_lar_shopping;
-            } else {
-                $tableName = $table->tablename;
-            }
+        return Response::download($zipFile, $zipFile, $headers);
+    }
 
-            $fields = Schema::getColumnListing($tableName);
-
-            $result = DB::table($tableName)->get();
-
-            $filename = $tableName . ".csv";
-            $handle = fopen($filename, 'w+');
-
-            fputcsv($handle, $fields);
-
-            foreach ($result as $row) {
-                fputcsv($handle, (array) $row);  //fputcsv requires array
-                // as second parameter
-            }
-
-            fclose($handle);
-        }
-
+    private function zipCsvFiles() {
         //now zip the files
-        $zipFile = "shopping". date('Ymd Hi'). ".zip";
+        $zipFile = "shopping" . date('Ymd Hi') . ".zip";
 
         $zipArchive = new ZipArchive();
 
@@ -90,12 +80,29 @@ class HomeController extends \BaseController {
         }
 
         $zipArchive->close();
-
-        $headers = array(
-            'Content-Type' => 'application/octet-stream',
-        );
-
-        return Response::download($zipFile, $zipFile, $headers);
+        
+        return $zipFile;
     }
+    
+    private function exportToCsv($allTableNames) {
+        
+        foreach ($allTableNames as $name) {
 
+            $fields = Schema::getColumnListing($name);
+
+            $result = DB::table($name)->get();
+
+            $handle = fopen($name . ".csv", 'w+');
+
+            fputcsv($handle, $fields);
+
+            foreach ($result as $row) {
+                fputcsv($handle, (array) $row);  //fputcsv requires array
+                // as second parameter
+            }
+
+            fclose($handle);
+        }
+        
+    }
 }
