@@ -16,6 +16,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('/getdata',array('as'=>'home.getdata','uses'=>'HomeController@getData'));
     
     Route::get('/', array('uses' => 'HomeController@showDashboard'));
+    
+    Route::get('/prices', array('uses' => 'HomeController@showPricesSearch'));
 
     Route::get('/about', array('uses' => 'HomeController@showDashboard'));
 
