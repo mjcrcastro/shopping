@@ -8,7 +8,7 @@ active
 
 <script type='text/javascript'>
     /*
-     * Script to delete a product in the purchase list
+     * Script to delete a product in the shopping list
      */
     $(window).load(function () {
         $(document).on('click', '#removedescriptor', function () {
@@ -17,18 +17,6 @@ active
         });
     });
 </script>
-
-<script type='text/javascript'>
-    /*Shows a datepicker widget for
-     * the purchase_date text input control
-     */
-    $(function () {
-        $("#purchase_date").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: "yy-mm-dd"
-        });
-    });</script>
 
 <script type='text/javascript'>
     /*
@@ -47,13 +35,7 @@ active
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
-                    {"sExtends": "text", "sButtonText": "add new product",
-                        "fnClick": function (nButton, oConfig, oFlash) {
-                            window.open('{{ route("products.create") }}');
-                            return false;
-                        }
-                    },
-                    {"sExtends": "text", "sButtonText": "add to purchase",
+                    {"sExtends": "text", "sButtonText": "add to shopping list",
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('example');
                             var aData = oTT.fnGetSelectedData()
@@ -84,7 +66,7 @@ active
                 ]
             },
             "ajax": {
-                "url": "{{ url('jproducts') }}",
+                "url": "{{ url('jshoppinglist') }}",
                 "type": "GET"
             },
             "columnDefs": [
@@ -96,7 +78,10 @@ active
             ],
             "columns": [//tells where (from data) the columns are to be placed
                 {"data": "product_id"},
-                {"data": "product_description"}
+                {"data": "product_description"},
+                {"data": "shop"},
+                {"data": "price"},
+                {"data": "date"},
 
             ]
         });
@@ -173,6 +158,9 @@ active
                         <tr>
                             <th></th>
                             <th>Product</th>
+                            <th>Shop</th>
+                            <th>Price</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
 
@@ -180,6 +168,9 @@ active
                         <tr>
                             <th></th>
                             <th>Product</th>
+                            <th>Shop</th>
+                            <th>Price</th>
+                            <th>Date</th>
                         </tr>
                     </tfoot>
                 </table>
