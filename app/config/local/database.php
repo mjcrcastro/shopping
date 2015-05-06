@@ -23,7 +23,7 @@ return array(
                         'host' => 'localhost',
                         'database' => 'shopping',
                         'username' => 'postgres',
-                        'password' => '1h1hpcha',
+                        'password' => 'postgres',
                         'charset' => 'utf8',
                         'prefix' => '',
                         'schema' => 'public',

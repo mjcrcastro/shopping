@@ -42,37 +42,17 @@ class HomeController extends \BaseController {
         return View::make('home.dashboard', compact('data'));
     }
     
-    public function showPricesSearch() {
+    public function createShoppingList() {
 
         //first the list of companies
 
-        $action_code = 'home_prices_search';
+        $action_code = 'home_shopping_list';
 
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) { return Redirect::back()->with('message', $message); }
-
-        $data = [];
-
-        $raw_data = DB::table('products_purchases')
-                ->select(DB::raw('products_types.description, sum(products_purchases.total) as total'))
-                ->join('products', 'products.id', '=', 'products_purchases.product_id')
-                ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
-                ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
-                ->groupBy('products_types.id')
-                ->groupBy('purchases.user')
-                ->having('user', '=', Auth::user()->username)
-                ->get();
-
-        foreach ($raw_data as $row) {
-            $data[] = [
-                $row->description,
-                floatval($row->total)
-            ];
-        }
-
-
-
-        return View::make('home.prices', compact('data'));
+        if ($message) { return Redirect::back()->with('message', $message);}
+        //a return won't let the following code to continue
+       
+        return View::make('home.shoppinglist');
     }
 
     public function getData() {

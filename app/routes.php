@@ -17,7 +17,7 @@ Route::group(array('before' => 'auth'), function() {
     
     Route::get('/', array('uses' => 'HomeController@showDashboard'));
     
-    Route::get('/prices', array('uses' => 'HomeController@showPricesSearch'));
+    Route::get('/prices', array('uses' => 'HomeController@createShoppingList'));
 
     Route::get('/about', array('uses' => 'HomeController@showDashboard'));
 
@@ -43,6 +43,7 @@ Route::group(array('before' => 'auth'), function() {
 
     Route::get('jdescriptors', array('uses' => 'JsonController@descriptors'));
     Route::get('jproducts', array('uses' => 'JsonController@products'));
+    Route::get('jshoppinglist', array('uses' => 'JsonController@productsShoppingList'));
 });
 
 // All this do not need to request authentication since they are doing 

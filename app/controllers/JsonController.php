@@ -37,6 +37,45 @@ class JsonController extends \BaseController {
         if ($message) {
             return Redirect::back()->with('message', $message);
         }
+        if (Request::ajax()) {
+        $filter = Input::get('search.value');
+        
+        if (Config::get('database.default') === 'mysql') {
+            $dbRaw = "GROUP_CONCAT(DISTINCT descriptors.description ORDER BY descriptors.descriptorType_id SEPARATOR ' ') as product_description";
+        } else {
+            $dbRaw = "string_agg(descriptors.description, ' ' ORDER BY descriptors.\"descriptorType_id\") as product_description";
+        }
+        if ($filter) {
+            
+            $products = Product::select('products.id as product_id', DB::raw($dbRaw) )
+                    ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
+                    ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
+                    ->groupBy('products.id')
+                    ->havingRaw($this->getHavingRaw($filter));
+        } else {
+            $products = Product::select('products.id as product_id', DB::raw($dbRaw))
+                    ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
+                    ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
+                    ->groupBy('products.id');
+        }
+        
+        $response['draw'] = Input::get('draw');
+        $response['recordsTotal'] = Product::all()->count();
+        $response['recordsFiltered'] = $products->get()->count();
+        $response['data'] = $products
+                ->skip(Input::get('start'))
+                ->take(Input::get('length'))
+                ->get();
+        return Response::json($response);
+        }
+    }
+    
+    public function productsShoppingList() {
+
+        $action_code = 'products_shopping_list';
+
+        $message = Helper::usercan($action_code, Auth::user());
+        if ($message) { return Redirect::back()->with('message', $message); }
         //if (Request::ajax()) {
         $filter = Input::get('search.value');
         
@@ -47,15 +86,30 @@ class JsonController extends \BaseController {
         }
         if ($filter) {
             
-            $products = Product::select('products.id as product_id', DB::raw($dbRaw))
+            $products = Product::select('products.id as product_id', 
+                    'shops.description', 
+                    DB::raw('round(avg(products_purchases.total/products_purchases.amount)::numeric,2) as price'),
+                    DB::raw($dbRaw)
+                    )
+                    ->join('products_purchases','products.id','=','products_purchases.product_id')
+                    ->join('shops','products_purchases.shop_id','=','shop.id')
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                     ->groupBy('products.id')
+                    ->groupBy('shops.id')                                
                     ->havingRaw($this->getHavingRaw($filter));
-        } else {
-            $products = Product::select('products.id as product_id', DB::raw($dbRaw))
+        } else {                          
+            $products = Product::select('products.id as product_id', 
+                    'shops.description', 
+                    DB::raw('round(avg(products_purchases.total/products_purchases.amount)::numeric,2) as price'),
+                    DB::raw($dbRaw)
+                    )
                     ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
+                    ->join('products_purchases','products.id','=','products_purchases.product_id')
+                    ->join('purchases','products_purchases.purchase_id','=','purchases.id')
+                    ->join('shops','purchases.shop_id','=','shops.id')
                     ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
+                    ->groupBy('shops.id')
                     ->groupBy('products.id');
         }
         
