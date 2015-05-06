@@ -11,12 +11,17 @@ class="active"
 {{ HTML::script('js/highcharts/js/modules/exporting.js') }}
 
 <script type="text/javascript">
-$(function () {
-    $('#container').highcharts({
-        chart: {
+
+    var options = {
+            chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
-            plotShadow: false
+            plotShadow: false,
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
         },
         title: {
             text: 'My purchases'
@@ -38,13 +43,15 @@ $(function () {
             }
         },
         series: [{
-            type: 'pie',
-            name: 'Expenditures share',
-            data: {{ json_encode($data) }}
-        }]
-                
+                type: 'pie',
+                name: 'Expenditures share',
+                data: []
+            }]
+    };
+
+    $(function () {
+        $('#container').highcharts(options);
     });
-});
 </script>
 
 

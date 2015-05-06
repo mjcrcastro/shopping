@@ -9,15 +9,14 @@ class HomeController extends \BaseController {
 
     public function showDashboard() {
 
-        //first the list of companies
-
         $action_code = 'home_dashboard';
 
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        }
-
+        if ($message) { return Redirect::back()->with('message', $message);  }
+        
+        $date_ini = Input::get('date_ini')=== null?date('Ymd'):Input::get('date_ini');
+        $date_end = Input::get('date_end')=== null?date('Ymd'):Input::get('date_end');
+        
         $data = [];
 
         $raw_data = DB::table('products_purchases')
@@ -25,19 +24,15 @@ class HomeController extends \BaseController {
                 ->join('products', 'products.id', '=', 'products_purchases.product_id')
                 ->join('products_types', 'products_types.id', '=', 'products.product_type_id')
                 ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
+                ->whereBetween('purchases.purchase_date',array($date_ini,$date_end))
                 ->groupBy('products_types.id')
                 ->groupBy('purchases.user')
-                ->having('user', '=', Auth::user()->username)
-                ->get();
+                ->having('user', '=', Auth::user()->username)->get();
 
         foreach ($raw_data as $row) {
-            $data[] = [
-                $row->description,
-                floatval($row->total)
-            ];
+            $data[] = [ $row->description,
+                floatval($row->total) ];
         }
-
-
 
         return View::make('home.dashboard', compact('data'));
     }
