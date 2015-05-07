@@ -100,6 +100,10 @@ active
 
             ]
         });
+        
+        $('#example')
+        .removeClass('display')
+        .addClass('table table-striped table-bordered');
     });
 
     $(document).on('click', '#addProducts', function () {

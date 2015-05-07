@@ -6,9 +6,9 @@ class="active"
 
 @section('header')
 
-{{ HTML::script('js/highcharts/js/highcharts.js') }}
-{{ HTML::script('js/highcharts/js/highcharts-more.js') }}
-{{ HTML::script('js/highcharts/js/modules/exporting.js') }}
+{{ HTML::script('http://code.highcharts.com/highcharts.js') }}
+{{ HTML::script('http://code.highcharts.com/highcharts-more.js') }}
+{{ HTML::script('http://code.highcharts.com/modules/exporting.js') }}
 
 <script type="text/javascript">
 

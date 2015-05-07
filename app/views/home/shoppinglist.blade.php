@@ -24,29 +24,33 @@ active
      * a datatables jQuery plugin on table id="example"
      */
     $(document).ready(function () {
-        var table = $('#example').dataTable({
+        var table = $('#productslist').dataTable({
             "processing": true,
             "serverSide": true,
             "iDisplayLength": 5,
             "aLengthMenu": [
                 [5, 10, 25, 50, -1], 
                 [5, 10, 25, 50, "All"]],
-            dom: 'T<"clear">lfrtip',
+            dom: '<"row"<"col-xs-4"l><"col-xs-8"f>>rt<"text-center"T>ip',
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
-                    {"sExtends": "text", "sButtonText": "add to shopping list",
+                    {"sExtends": "text", 
+                        "sButtonText": "add to shopping list",
+                        "sButtonClass": "btn-block",
                         "fnClick": function (nButton, oConfig, oFlash) {
-                            var oTT = TableTools.fnGetInstance('example');
+                            var oTT = TableTools.fnGetInstance('productslist');
                             var aData = oTT.fnGetSelectedData()
                             var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
                                     .map(function () {
                                         return parseInt($(this).val());
                                     }).get();
                             for (nCount = 0; nCount < aData.length; nCount++) {
+                                $('#myModal').modal('hide');
                                 //check if there exists a product with same id in purchase list
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
+                                
                                 if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                     $('<div class="container container-fluid">' +
                                             '<div class="row" id="productRow">' +
@@ -58,7 +62,6 @@ active
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
                                             '</div></div>').appendTo('#products');
-                                    $('#myModal').modal('hide');
                                 }
                             }
                         }
@@ -69,11 +72,11 @@ active
                 "url": "{{ url('jshoppinglist') }}",
                 "type": "GET"
             },
-            "columnDefs": [
+            "aoColumnDefs": [
                 {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
+                    "aTargets": [0],
+                    "bVisible": false,
+                    "bSearchable": false
                 }
             ],
             "columns": [//tells where (from data) the columns are to be placed
@@ -85,7 +88,13 @@ active
 
             ]
         });
+        
+        $('#productslist')
+        .removeClass('display')
+        .addClass('table table-striped table-bordered');
     });
+    
+    
 
     $(document).on('click', '#addProducts', function () {
         //Show modal bootstrap
@@ -149,11 +158,11 @@ active
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">Search products</h4>
             </div>
             <div class="modal-body">
-                <table id="example" class="display" cellspacing="0" width="100%">
+                <table id="productslist" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th></th>

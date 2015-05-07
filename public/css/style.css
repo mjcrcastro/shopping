@@ -26,11 +26,6 @@ li, td,  th {
     font-size: 14px;
 }
 
-.white-popup {
-  position: relative;
-  background: #FFF;
-  padding: 20px;
-  width: 400px;
-  height: 300px;
-  margin: 20px auto;
-}
+.active tr {
+    background-color: red !important; /* Add !important to make sure override datables base styles */
+ }

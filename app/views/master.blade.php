@@ -10,18 +10,19 @@
 
         <title>Shopping Management System</title>
 
-        {{ HTML::style('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css') }}
-        {{ HTML::style('css/style.css') }}
-        {{ HTML::style('DataTables-1.10.5/media/css/jquery.dataTables.css') }}
-        {{ HTML::style('DataTables-1.10.5/extensions/TableTools/css/dataTables.tableTools.css') }}
+        {{ HTML::style('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css') }}
         {{ HTML::style('//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css') }}
-
+        {{ HTML::style('//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css') }}
+        {{ HTML::style('//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css') }}
+        {{ HTML::style('css/style.css') }}
+        
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
         {{ HTML::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js') }}
         {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
-        {{ HTML::script('DataTables-1.10.5/media/js/jquery.dataTables.js') }}
-        {{ HTML::script('DataTables-1.10.5/extensions/TableTools/js/dataTables.tableTools.js') }}
-
+        {{ HTML::script('//cdn.datatables.net/1.10.7/js/jquery.dataTables.js') }}
+        {{ HTML::script('//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.js') }}
+        {{ HTML::script('//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js') }}
+        
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>
