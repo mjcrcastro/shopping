@@ -42,23 +42,25 @@ active
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('productslist');
                             var aData = oTT.fnGetSelectedData()
-                            var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
-                                    .map(function () {
-                                        return parseInt($(this).val());
-                                    }).get();
+                            
                             for (nCount = 0; nCount < aData.length; nCount++) {
                                 $('#myModal').modal('hide');
                                 //check if there exists a product with same id in purchase list
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
                                 
+                                var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
+                                    .map(function () {
+                                        return parseInt($(this).val());
+                                    }).get();
+                                
                                 if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                     $('<div class="container container-fluid">' +
                                             '<div class="row" id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
-                                            '<div class="col-xs-4"> {{ "' + aData[nCount]['product_description'] + '" }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("amount[]",null,array("class"=>"form-control input-sm","step"=>"any")) }} </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("total[]",null,array("class"=>"form-control input-sm","step"=>"any")) }} </div> ' +
+                                            '<div class="col-xs-4"> ' + aData[nCount]['product_description'] + ' </div> ' +
+                                            '<div class="col-xs-3"> {{ Form::number("amount[]",1,array("class"=>"form-control input-sm","step"=>"any")) }} </div>' +
+                                            '<div class="col-xs-3"> <input type="number" class="form-control input-sm" name="total[]" value=' + aData[nCount]['price'] + ' step="0.01" disabled> </div>' +
                                             '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
@@ -81,7 +83,7 @@ active
                 }
             ],
             "columns": [//tells where (from data) the columns are to be placed
-                {"data": "products_id"},
+                {"data": "product_id"},
                 {"data": "product_description"},
                 {"data": "shops_description"},
                 {"data": "price"},

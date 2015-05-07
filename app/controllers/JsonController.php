@@ -128,8 +128,8 @@ class JsonController extends \BaseController {
     private function prodShoppingList($filter, $dbRaw, $orderBy) {
 
         $products = Product::select(
-                        'products.id as products_id', 'shops.description as shops_description', 
-                DB::raw('to_char(purchases.purchase_date,'."'YYYY MM DD'".') as "purchase_date"'), 
+                        'products.id as product_id', 'shops.description as shops_description', 
+                DB::raw('to_char(purchases.purchase_date,'."'YYYY/MM/DD'".') as "purchase_date"'), 
                 DB::raw($dbRaw), DB::raw('round(avg(products_purchases.total / '
                                 . 'products_purchases.amount)::numeric,2) '
                                 . 'as price')
