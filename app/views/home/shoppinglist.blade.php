@@ -16,6 +16,7 @@ active
             return false;
         });
     });
+    
 </script>
 
 <script type='text/javascript'>
@@ -80,11 +81,11 @@ active
                 }
             ],
             "columns": [//tells where (from data) the columns are to be placed
-                {"data": "product_id"},
+                {"data": "products_id"},
                 {"data": "product_description"},
-                {"data": "shop"},
+                {"data": "shops_description"},
                 {"data": "price"},
-                {"data": "date"},
+                {"data": "purchase_date"},
 
             ]
         });

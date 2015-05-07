@@ -11,9 +11,8 @@ class="active"
 {{ HTML::script('//code.highcharts.com/modules/exporting.js') }}
 
 <script type="text/javascript">
-
-    var options = {
-            chart: {
+    var highChartOptions = {
+        chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
@@ -50,8 +49,9 @@ class="active"
     };
 
     $(function () {
-        $('#container').highcharts(options);
+        $('#container').highcharts(highChartOptions);
     });
+
 </script>
 
 

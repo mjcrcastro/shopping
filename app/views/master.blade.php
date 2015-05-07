@@ -15,14 +15,14 @@
         {{ HTML::style('//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css') }}
         {{ HTML::style('//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css') }}
         {{ HTML::style('css/style.css') }}
-        
+
         {{ HTML::script('https://code.jquery.com/jquery-2.1.3.min.js') }}
         {{ HTML::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js') }}
         {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
         {{ HTML::script('//cdn.datatables.net/1.10.7/js/jquery.dataTables.js') }}
         {{ HTML::script('//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.js') }}
         {{ HTML::script('//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js') }}
-        
+
         @yield('header') <!-- Header is here to include required functions from the included blade page-->
         <!-- for graphs displays -->
     </head>

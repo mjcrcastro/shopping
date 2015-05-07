@@ -69,9 +69,7 @@ class JsonController extends \BaseController {
         $action_code = 'products_shopping_list_json';
 
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        }
+        if ($message) { return Redirect::back()->with('message', $message); }
 
         if (Request::ajax()) {
 
@@ -79,16 +77,24 @@ class JsonController extends \BaseController {
 
             $dbRaw = $this->getDbRaw();
 
-            $products = $this->getProductsShoppingList($filter, $dbRaw);
+            $inputColumns = Input::get('columns');
+
+            $inputOrder = Input::get('order');
+            
+            $orderBy = array(
+                'column' => $inputColumns[$inputOrder[0]['column']]['data'],
+                'sortOrder' => $inputOrder[0]['dir']);
+
+            $pFiltered = $this->prodShoppingList($filter, $dbRaw, $orderBy);
+
+            $pUnFiltered = $this->prodShoppingList(null, $dbRaw, $orderBy);
 
             $response['draw'] = Input::get('draw');
-            $response['recordsTotal'] = Product::all()->count();
-            $response['recordsFiltered'] = $products->get()->count();
+            $response['recordsTotal'] = $pUnFiltered->get()->count();
+            $response['recordsFiltered'] = $pFiltered->get()->count();
 
-            $response['data'] = $products
-                    ->skip(Input::get('start'))
-                    ->take(Input::get('length'))
-                    ->get();
+            $response['data'] = $pFiltered->skip(Input::get('start'))
+                    ->take(Input::get('length'))->get();
 
             return Response::json($response);
         }
@@ -119,9 +125,12 @@ class JsonController extends \BaseController {
         return substr($having, 5, strlen($having) - 5);
     }
 
-    private function getProductsShoppingList($filter, $dbRaw) {
+    private function prodShoppingList($filter, $dbRaw, $orderBy) {
 
-        $products = Product::select('products.id as product_id', 'shops.description as shop', DB::raw("to_char(purchases.purchase_date,'YYYY MM DD') as date"), DB::raw($dbRaw), DB::raw('round(avg(products_purchases.total / '
+        $products = Product::select(
+                        'products.id as products_id', 'shops.description as shops_description', 
+                DB::raw('to_char(purchases.purchase_date,'."'YYYY MM DD'".') as "purchase_date"'), 
+                DB::raw($dbRaw), DB::raw('round(avg(products_purchases.total / '
                                 . 'products_purchases.amount)::numeric,2) '
                                 . 'as price')
                 )
@@ -132,7 +141,8 @@ class JsonController extends \BaseController {
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->groupBy('products.id')
                 ->groupBy('shops.id')
-                ->groupBy('purchases.purchase_date');
+                ->groupBy('purchases.purchase_date')
+                ->orderBy($orderBy['column'],$orderBy['sortOrder']);
 
         if ($filter) {
 
