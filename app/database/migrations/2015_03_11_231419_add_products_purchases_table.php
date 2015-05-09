@@ -20,8 +20,8 @@ class AddProductsPurchasesTable extends Migration {
                            ->index()->references('id')->on('purchases');
                    $table->integer('product_id')
                            ->index()->references('id')->on('products');
-                   $table->float('amount');
-                   $table->float('total');
+                   $table->decimal('amount',8,2);
+                   $table->decimal('total',8,2);
                    $table->timestamps();
                });
 	}
