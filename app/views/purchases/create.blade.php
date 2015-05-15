@@ -41,7 +41,7 @@ active
             "serverSide": true,
             "iDisplayLength": 5,
             "aLengthMenu": [
-                [5, 10, 25, 50, -1], 
+                [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]],
             dom: 'T<"clear">lfrtip',
             tableTools: {
@@ -100,10 +100,10 @@ active
 
             ]
         });
-        
+
         $('#example')
-        .removeClass('display')
-        .addClass('table table-striped table-bordered');
+                .removeClass('display')
+                .addClass('table table-striped table-bordered');
     });
 
     $(document).on('click', '#addProducts', function () {
@@ -126,13 +126,34 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                    {{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
-                    {{ Form::label('shop', 'Shop:') }}
-                    {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
+                {{ Form::open(array('route'=>'purchases.store','class'=>'form-horizontal','role'=>'form')) }}
 
-                    {{ Form::label('date', 'Date:') }}
-                    {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control', 'id'=>'purchase_date')) }}
-                    <p></p>
+                <div class="form-group row">
+                    {{ Form::label('shop_id', 'Shop',array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('date', 'Date', array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control',"id"=>"purchase_date")) }}
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class=" col-xs-2 text-right">
+                        {{ Form::label('is_reference', "I did not buy this" ,array("class"=>"control-label")) }}
+                    </div>
+                    <div class="col-xs-10">
+                        {{ Form::checkbox('is_reference') }} 
+                    </div>
+
+                </div>
+
+                <p></p>
                 <div class="row">
                     <dt>
                     <div class="col-xs-4">

@@ -25,7 +25,8 @@ class PurchasesController extends \BaseController {
             //productDescriptors returns all of this product descriptors
             $purchases = Purchase::where('user','=',Auth::user()->username)
                     ->whereHas('Shop', function($q) {
-                        $q->where('description', 'like',"'%" . Input::get('filter') . "%'");
+                        $q->where('description', 'like',"'%" . 
+                                Input::get('filter') . "%'");
                     })->paginate(Config::get('global/default.rows'));
 
             return View::make('purchases.index', compact('purchases'))
@@ -76,6 +77,7 @@ class PurchasesController extends \BaseController {
         $purchaseData = array(
             "shop_id" => Input::get('shop_id'),
             "purchase_date" => Input::get('purchase_date'),
+            "is_reference" => Input::get('is_reference'),
             "user" => Auth::user()->username,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
@@ -182,14 +184,13 @@ class PurchasesController extends \BaseController {
 
         $message = Helper::usercan('purchases_update', Auth::user());
 
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        }
+        if ($message) { return Redirect::back()->with('message', $message); }
         //Helper::usercan return won't let the following code to continue
 
         $incoming_purchase = array(
             "shop_id" => Input::get('shop_id'),
             "purchase_date" => Input::get('purchase_date'),
+            "is_reference" => Input::get('is_reference', false),
             'updated_at' => date("Y-m-d H:i:s")
         );
 

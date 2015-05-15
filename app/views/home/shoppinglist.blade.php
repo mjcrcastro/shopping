@@ -104,8 +104,7 @@ active
         $('#myModal').modal('show');
         //return
     });
-
-
+    
 </script>
 
 @stop

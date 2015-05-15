@@ -70,7 +70,7 @@ active
                                     //so I converted the values to Int within the array before comparison.
                                     if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                         addToProducts([{
-                                                "id":null,
+                                                "id": null,
                                                 "product_id": aData[nCount]['product_id'],
                                                 "product_description": aData[nCount]['product_description'],
                                                 "amount": 0,
@@ -138,13 +138,35 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                {{ Form::model($purchase, array('method'=>'PATCH', 'route'=> array('purchases.update', $purchase->id)))  }}
-                {{ Form::label('shop', 'Shop:') }}
-                {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
 
-                {{ Form::label('date', 'Date:') }}
-                {{ Form::text('purchase_date', null, array('class'=>'form-control', 'id'=>'purchase_date')) }}
+                {{ Form::model($purchase, array('method'=>'PATCH', 'route'=> array('purchases.update', $purchase->id)))  }}
+
+                <div class="form-group row">
+                    {{ Form::label('shop_id', 'Shop',array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::select('shop_id', $shops, null, array('class'=>'form-control')) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('date', 'Date', array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::text('purchase_date', date('Y-m-d'), array('class'=>'form-control',"id"=>"purchase_date")) }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class=" col-xs-2 text-right">
+                        {{ Form::label('is_reference', "I did not buy this" ,array("class"=>"control-label")) }}
+                    </div>
+                    <div class="col-xs-10">
+                        {{ Form::checkbox('is_reference') }} 
+                    </div>
+
+                </div>
+
                 <p></p>
+                
                 <div class="row">
                     <dt>
                     <div class="col-xs-4">
@@ -162,6 +184,7 @@ active
 
                 <div class="row" id="products">
                 </div>
+                
                 <p></p>
                 {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block col-xs-12','id'=>'addProducts')) }}
                 <p></p>
