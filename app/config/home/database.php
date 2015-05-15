@@ -17,6 +17,8 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 	*/
+    
+        'default' => 'pgsql',
 
 	'connections' => array(
 
