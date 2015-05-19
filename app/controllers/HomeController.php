@@ -32,7 +32,7 @@ class HomeController extends \BaseController {
             $data[] = [ $row->description,
                 floatval($row->total) ];
         }
-
+        
         return View::make('home.dashboard', compact('data'));
     }
     

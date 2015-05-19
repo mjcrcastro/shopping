@@ -44,7 +44,7 @@ class="active"
         series: [{
                 type: 'pie',
                 name: 'Expenditures share',
-                data: []
+                data: {{ json_encode($data)  }}
             }]
     };
 
