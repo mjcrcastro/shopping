@@ -20,13 +20,12 @@ class PurchasesController extends \BaseController {
 
         if ($filter) {
             //filter by shop description
-            $purchases = Purchase::where('user','=',Auth::user()->username)
-                    ->whereHas('Shop', function($q) {
-                        $q->where('description', 'like',"'%" . 
-                                Input::get('filter') . "%'");
-                    })->orderBy('purchase_date','desc')
-                            ->paginate(Config::get('global/default.rows'));
-                    
+           $purchases = Purchase::join('shops','purchases.shop_id','=','shops.id')
+                   ->where('user','=',Auth::user()->username)
+                   ->whereRAW("shops.description like '%".$filter."%'")
+                   ->orderBy('purchase_date','desc')
+                   ->paginate(Config::get('global/default.rows'));
+            
             return View::make('purchases.index', compact('purchases'))
                             ->with('filter', $filter);
         } else {

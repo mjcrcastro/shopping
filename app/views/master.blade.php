@@ -44,14 +44,14 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <a class="navbar-brand" href="about" >Happy Shopping</a>
+                                    <a class="navbar-brand" href="about" >Shopping aide</a>
                                 </div>
 
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav">
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
-                                        <li @yield('search_prices_active')> <a href='/prices'>Create Shopping List</a> </li>
+                                        <li @yield('search_prices_active')> <a href='/prices'>Shopping List</a> </li>
                                         <li @yield('purchases_active')>{{ link_to_route('purchases.index','Purchases') }}</li>
 
                                         <li class ="dropdown @yield('config_active')">
