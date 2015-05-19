@@ -14,9 +14,8 @@ class HomeController extends \BaseController {
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) { return Redirect::back()->with('message', $message);  }
         
-        $date_ini = Input::get('date_ini')=== null?date('Ymd'):Input::get('date_ini');
-        $date_end = Input::get('date_end')=== null?date('Ymd'):Input::get('date_end');
-        
+        $date_ini = Input::get('date_ini')=== null?date('Ym01'):Input::get('date_ini');
+        $date_end = Input::get('date_end')=== null?date('Ymt'):Input::get('date_end');
         $data = [];
 
         $raw_data = DB::table('products_purchases')
@@ -27,8 +26,8 @@ class HomeController extends \BaseController {
                 ->whereBetween('purchases.purchase_date',array($date_ini,$date_end))
                 ->groupBy('products_types.id')
                 ->groupBy('purchases.user')
-                ->having('user', '=', Auth::user()->username)->get();
-
+                ->having('purchases.user', '=', Auth::user()->username)->get();
+        
         foreach ($raw_data as $row) {
             $data[] = [ $row->description,
                 floatval($row->total) ];
