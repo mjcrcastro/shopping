@@ -27,7 +27,8 @@ class PurchasesController extends \BaseController {
                     ->whereHas('Shop', function($q) {
                         $q->where('description', 'like',"'%" . 
                                 Input::get('filter') . "%'");
-                    })->paginate(Config::get('global/default.rows'));
+                    })->orderBy('purchase_date','desc')
+                            ->paginate(Config::get('global/default.rows'));
 
             return View::make('purchases.index', compact('purchases'))
                             ->with('filter', $filter);

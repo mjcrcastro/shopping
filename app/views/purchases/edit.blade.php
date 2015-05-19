@@ -139,7 +139,7 @@ active
         <div class="row">
             <div class="col-xs-12">
 
-                {{ Form::model($purchase, array('method'=>'PATCH', 'route'=> array('purchases.update', $purchase->id)))  }}
+                {{ Form::model($purchase, array('method'=>'PATCH', 'route'=> array('purchases.update', $purchase->id),'class'=>'form-horizontal','role'=>'form'))  }}
 
                 <div class="form-group row">
                     {{ Form::label('shop_id', 'Shop',array("class"=>"col-xs-2 control-label")) }}
