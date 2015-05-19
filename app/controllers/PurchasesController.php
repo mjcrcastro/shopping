@@ -13,16 +13,13 @@ class PurchasesController extends \BaseController {
         $action_code = 'purchases_index';
 
         $message = Helper::usercan($action_code, Auth::user());
-        if ($message) {
-            return Redirect::back()->with('message', $message);
-        }//a return won't let the following code to continue
+        if ($message) { return Redirect::back()->with('message', $message); }
+        //a return won't let the following code to continue
 
         $filter = Input::get('filter');
 
         if ($filter) {
-            //this query depends on the definition of 
-            //function productDescriptors in the products model
-            //productDescriptors returns all of this product descriptors
+            //filter by shop description
             $purchases = Purchase::where('user','=',Auth::user()->username)
                     ->whereHas('Shop', function($q) {
                         $q->where('description', 'like',"'%" . 
