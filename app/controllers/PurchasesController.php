@@ -26,12 +26,13 @@ class PurchasesController extends \BaseController {
                                 Input::get('filter') . "%'");
                     })->orderBy('purchase_date','desc')
                             ->paginate(Config::get('global/default.rows'));
-
+                    
             return View::make('purchases.index', compact('purchases'))
                             ->with('filter', $filter);
         } else {
 
             $purchases = Purchase::where('user','=',Auth::user()->username)
+                    ->orderBy('purchase_date','desc')
                     ->paginate(Config::get('global/default.rows'));
 
             return View::make('purchases.index', compact('purchases'))
