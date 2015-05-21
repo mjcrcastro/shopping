@@ -6,17 +6,7 @@ active
 
 @section('header')
 
-<script type='text/javascript'>
-    /*
-     * Script to delete a product in the purchase list
-     */
-    $(window).load(function () {
-        $(document).on('click', '#removedescriptor', function () {
-            $(this).parents('#productRow').remove();
-            return false;
-        });
-    });
-</script>
+
 
 <script type='text/javascript'>
     /*Shows a datepicker widget for
@@ -28,7 +18,14 @@ active
             changeYear: true,
             dateFormat: "yy-mm-dd"
         });
-    });</script>
+    });
+
+    $(document).on('click', '#removedescriptor', function () {
+        $(this).parents('#productRow').remove();
+        return false;
+    });
+
+</script>
 
 <script type='text/javascript'>
     /*

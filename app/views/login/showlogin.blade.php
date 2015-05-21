@@ -23,7 +23,7 @@
             {{ Form::password('password',array('class'=>'form-control')) }}
         </p>
 
-        <p>{{ Form::submit('Submit!',array('class'=>'form-control btn btn-primary')) }}</p>
+        <p>{{ Form::submit('Login',array('class'=>'form-control btn btn-primary')) }}</p>
     {{ Form::close() }}
 
 

@@ -14,12 +14,11 @@ class PurchasesController extends \BaseController {
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) { return Redirect::back()->with('message', $message); }
-        //a return won't let the following code to continue
-
+      
         $filter = Input::get('filter');
 
         if ($filter) {
-            //filter by shop description
+       
            $purchases = Purchase::join('shops','purchases.shop_id','=','shops.id')
                    ->where('user','=',Auth::user()->username)
                    ->whereRAW("shops.description like '%".$filter."%'")
