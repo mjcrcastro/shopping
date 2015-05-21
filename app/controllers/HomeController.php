@@ -36,19 +36,6 @@ class HomeController extends \BaseController {
         return View::make('home.dashboard', compact('data'));
     }
     
-    public function createShoppingList() {
-
-        //first the list of companies
-
-        $action_code = 'home_shopping_list';
-
-        $message = Helper::usercan($action_code, Auth::user());
-        if ($message) { return Redirect::back()->with('message', $message);}
-        //a return won't let the following code to continue
-       
-        return View::make('home.shoppinglist');
-    }
-
     public function getData() {
 
         $allTableNames = Schema::getConnection()

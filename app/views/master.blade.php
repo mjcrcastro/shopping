@@ -51,7 +51,7 @@
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav">
                                         <li @yield('dashboard_active')> <a href='/'>Dashboard</a> </li>
-                                        <li @yield('search_prices_active')> <a href='/prices'>Shopping List</a> </li>
+                                        <li @yield('search_prices_active')> {{ link_to_route('shoppingLists.index','Shopping List') }} </li>
                                         <li @yield('purchases_active')>{{ link_to_route('purchases.index','Purchases') }}</li>
 
                                         <li class ="dropdown @yield('config_active')">

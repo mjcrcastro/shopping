@@ -40,6 +40,8 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('purchases', 'PurchasesController');
     
     Route::resource('productsTypes', 'ProductsTypesController');
+    
+    Route::resource('shoppingLists', 'ShoppingListsController');
 
     Route::get('jdescriptors', array('uses' => 'JsonController@descriptors'));
     Route::get('jproducts', array('uses' => 'JsonController@products'));
