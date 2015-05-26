@@ -60,6 +60,7 @@ active
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
                                             '<div class="col-xs-4"> ' + aData[nCount]['product_description'] + ' </div> ' +
                                             '<div class="col-xs-3"> {{ Form::number("amount[]",1,array("class"=>"form-control input-sm","step"=>"any","id"=>"amount")) }} </div>' +
+                                            '<input type="hidden" id="unitPrice" name="unitprice[]" value=' + aData[nCount]['price'] + '>' +
                                             '<div class="col-xs-3"> <input type="number" id="total" class="form-control input-sm" name="total[]" value=' + aData[nCount]['price'] + ' step="0.01" disabled> </div>' +
                                             '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
@@ -106,7 +107,13 @@ active
     });
     
     $(document).on('input','#amount',function(){
-        $(this).parents('#productRow').children('#total').val($(this).val());
+        //navigate to the parent to find the total since
+        //total is not a sibling, but it is part of 
+        //#productRow family down the tree
+        total = $(this).parents('#productRow').find('#total');
+        unitPrice = $(this).parents('#productRow').find('#unitPrice');
+        total.val($(this).val()*unitPrice.val());
+        
     });
     
 </script>
