@@ -8,7 +8,31 @@ class ShoppingListsController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //
+        $action_code = 'shopping_lists_index';
+
+        $message = Helper::usercan($action_code, Auth::user());
+        if ($message) {
+            return Redirect::back()->with('message', $message);
+        }
+
+        $filter = Input::get('filter');
+
+        if ($filter) {
+
+            $shoppingLists = ShoppingList::join('shops', 'shopping_lists.shop_id', '=', 'shops.id')
+                    ->where('user_id', '=', Auth::user()->id)
+                    ->whereRAW("shops.description like '%" . $filter . "%'")
+                    ->orderBy('planned_date', 'desc')
+                    ->paginate(Config::get('global/default.rows'));
+        } else {
+
+            $shoppingLists = ShoppingList::where('user', '=', Auth::user()->id)
+                    ->orderBy('planned_date', 'desc')
+                    ->paginate(Config::get('global/default.rows'));
+        }
+
+        return View::make('shoppingLists.index', compact('shoppingLists'))
+                        ->with('filter', $filter);
     }
 
     /**
@@ -20,7 +44,7 @@ class ShoppingListsController extends \BaseController {
         //
         //first the list of companies
 
-        $action_code = 'shopping_list_create';
+        $action_code = 'shopping_lists_create';
 
         $message = Helper::usercan($action_code, Auth::user());
         if ($message) {
@@ -28,7 +52,7 @@ class ShoppingListsController extends \BaseController {
         }
         //a return won't let the following code to continue
 
-        return View::make('shoppingList.create');
+        return View::make('shoppingLists.create');
     }
 
     /**

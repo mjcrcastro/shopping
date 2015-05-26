@@ -15,8 +15,11 @@ class AddShoppingListTable extends Migration {
 		//
             Schema::create('shopping_lists',function($table ) {
                 $table->increments('id');
+                $table->string('note'); //to annotate observations
                 $table->date('planned_date');
-                $table->integer('planned_shop_id');
+                $table->integer('shop_id');
+                $table->string('user');
+                $table->timestamps();
             });
             
             }
@@ -29,6 +32,7 @@ class AddShoppingListTable extends Migration {
 	public function down()
 	{
 		//
+            Schema::drop('shopping_lists');
 	}
 
 }

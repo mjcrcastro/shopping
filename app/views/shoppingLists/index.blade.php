@@ -1,12 +1,12 @@
 @extends('master')
 
-@section('purchases_active')
+@section('shopping_lists_active')
 active
 @stop
 
 @section('form_search')
 {{-- Creates a form search on the menu bar --}}
-{{ Form::open(array('class'=>'navbar-form navbar-left','method'=>'get','role'=>'search','route'=>'purchases.index')) }}
+{{ Form::open(array('class'=>'navbar-form navbar-left','method'=>'get','role'=>'search','route'=>'shoppingLists.index')) }}
 <div class="form-group">
     {{ Form::text('filter',$filter,array('class'=>'form-control','placeholder'=>'Search')) }}
 </div>
@@ -17,36 +17,36 @@ active
 
 @section('main')
 
-<p> {{ link_to_route('purchases.create', Lang::get('purchases.add.new')) }} </p>
+<p> {{ link_to_route('shoppingLists.create', Lang::get('shoppingLists.add.new')) }} </p>
 
-@if ($purchases->count())
+@if ($shoppingLists->count())
 <table class="table table-striped table-ordered table-condensed">
     <thead>
         <tr>
-            <th>{{Lang::get('purchases.store')}}</th>
+            <th>{{Lang::get('shoppingLists.store')}}</th>
             <th>Date</th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($purchases as $purchase)
+        @foreach ($shoppingLists as $shoppingList)
         <tr>
 
             <td> 
-                {{ $purchase->shop->description }}
+                {{ $shoppingList->shop->description }}
             </td>
 
             <td>
-                {{ $purchase->purchase_date }}
+                {{ $shoppingList->planned_date }}
             </td>
 
             <td> 
-                {{ link_to_route('purchases.edit', 'Edit', array($purchase->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} 
+                {{ link_to_route('shoppingLists.edit', 'Edit', array($shoppingList->id), array('class'=>'btn btn-info '.Config::get('global/default.button_size'))) }} 
             </td>
 
             <td>
-                {{ Form::open(array('method'=>'DELETE', 'route'=>array('purchases.destroy', $purchase->id))) }}
+                {{ Form::open(array('method'=>'DELETE', 'route'=>array('purchases.destroy', $shoppingList->id))) }}
                 {{ Form::submit('Delete', array('class'=>'btn btn-danger '.Config::get('global/default.button_size'), 'onclick'=>"if(!confirm('Are you sure to delete this item?')){return false;};")) }} 
                 {{ Form::close() }}
             </td>
@@ -54,7 +54,7 @@ active
         @endforeach
     </tbody>
 </table>
-{{ $purchases->appends(array('filter'=>$filter))->links() }}
+{{ $shoppingList->appends(array('filter'=>$filter))->links() }}
 @else
 There are no purchases
 @endif

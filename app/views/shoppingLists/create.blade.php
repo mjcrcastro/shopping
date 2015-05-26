@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('products_active')
+@section('shopping_lists_active')
 active
 @stop
 
@@ -59,8 +59,8 @@ active
                                             '<div class="row" id="productRow">' +
                                             '<input type="hidden" id="productarray" name="product_id[]" value=' + aData[nCount]['product_id'] + '>' +
                                             '<div class="col-xs-4"> ' + aData[nCount]['product_description'] + ' </div> ' +
-                                            '<div class="col-xs-3"> {{ Form::number("amount[]",1,array("class"=>"form-control input-sm","step"=>"any")) }} </div>' +
-                                            '<div class="col-xs-3"> <input type="number" class="form-control input-sm" name="total[]" value=' + aData[nCount]['price'] + ' step="0.01" disabled> </div>' +
+                                            '<div class="col-xs-3"> {{ Form::number("amount[]",1,array("class"=>"form-control input-sm","step"=>"any","id"=>"amount")) }} </div>' +
+                                            '<div class="col-xs-3"> <input type="number" id="total" class="form-control input-sm" name="total[]" value=' + aData[nCount]['price'] + ' step="0.01" disabled> </div>' +
                                             '<div class="col-xs-2"> <a href="#" id="removedescriptor">' +
                                             '{{ HTML::image("img/delete.png", "remove", array( "width" => 16, "height" => 16 )) }} ' +
                                             '</a></div> ' +
@@ -87,7 +87,7 @@ active
                 {"data": "product_description"},
                 {"data": "shops_description"},
                 {"data": "price"},
-                {"data": "purchase_date"},
+                {"data": "purchase_date"}
 
             ]
         });
@@ -105,6 +105,10 @@ active
         //return
     });
     
+    $(document).on('input','#amount',function(){
+        $(this).parents('#productRow').children('#total').val($(this).val());
+    });
+    
 </script>
 
 @stop
@@ -118,7 +122,7 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                    {{ Form::open(array('route'=>'purchases.store','class'=>'horizontal','role'=>'form')) }}
+                    {{ Form::open(array('route'=>'shoppingLists.store','class'=>'horizontal','role'=>'form')) }}
                 <div class="row">
                     <dt>
                     <div class="col-xs-4">
@@ -140,7 +144,7 @@ active
                 {{ HTML::link('#', 'Add Items',array('class'=>'btn btn-success btn-block col-xs-12','id'=>'addProducts')) }}
                 <p></p>
                 {{ Form::submit('Submit', array('class'=>'btn  btn-primary col-xs-6')) }}
-                {{ link_to_route('purchases.index', 'Cancel', [],array('class'=>'btn btn-default col-xs-6')) }}
+                {{ link_to_route('shoppingLists.index', 'Cancel', [],array('class'=>'btn btn-default col-xs-6')) }}
                 {{ Form::close() }}
 
 
