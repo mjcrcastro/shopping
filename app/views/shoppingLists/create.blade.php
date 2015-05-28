@@ -16,7 +16,7 @@ active
             return false;
         });
     });
-    
+
 </script>
 
 <script type='text/javascript'>
@@ -30,30 +30,30 @@ active
             "serverSide": true,
             "iDisplayLength": 5,
             "aLengthMenu": [
-                [5, 10, 25, 50, -1], 
+                [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]],
             dom: '<"row"<"col-xs-4"l><"col-xs-8"f>>rt<"text-center"T>ip',
             tableTools: {
                 "sRowSelect": "multi",
                 "aButtons": [
-                    {"sExtends": "text", 
+                    {"sExtends": "text",
                         "sButtonText": "add to shopping list",
                         "sButtonClass": "btn-block",
                         "fnClick": function (nButton, oConfig, oFlash) {
                             var oTT = TableTools.fnGetInstance('productslist');
                             var aData = oTT.fnGetSelectedData()
-                            
+
                             for (nCount = 0; nCount < aData.length; nCount++) {
                                 $('#myModal').modal('hide');
                                 //check if there exists a product with same id in purchase list
                                 //$.inArray only compares between numbers or characters
                                 //so I converted the values to Int within the array before comparison.
-                                
+
                                 var values = $("input[id='productarray']")//gets the value of all elements whose id is productarray
-                                    .map(function () {
-                                        return parseInt($(this).val());
-                                    }).get();
-                                
+                                        .map(function () {
+                                            return parseInt($(this).val());
+                                        }).get();
+
                                 if (!values.length || $.inArray(aData[nCount]['product_id'], values) === -1) {
                                     $('<div class="container container-fluid">' +
                                             '<div class="row" id="productRow">' +
@@ -74,7 +74,10 @@ active
             },
             "ajax": {
                 "url": "{{ url('jshoppinglist') }}",
-                "type": "GET"
+                "type": "GET",
+                "data": function(d) {
+                   d.shop_id = $('#shop_id').val();
+                }
             },
             "aoColumnDefs": [
                 {
@@ -86,36 +89,34 @@ active
             "columns": [//tells where (from data) the columns are to be placed
                 {"data": "product_id"},
                 {"data": "product_description"},
-                {"data": "shops_description"},
-                {"data": "price"},
-                {"data": "purchase_date"}
-
+                {"data": "price"}
+                
             ]
         });
-        
+
         $('#productslist')
-        .removeClass('display')
-        .addClass('table table-striped table-bordered');
+                .removeClass('display')
+                .addClass('table table-striped table-bordered');
     });
-    
-    
+
+
 
     $(document).on('click', '#addProducts', function () {
         //Show modal bootstrap
         $('#myModal').modal('show');
         //return
     });
-    
-    $(document).on('input','#amount',function(){
+
+    $(document).on('input', '#amount', function () {
         //navigate to the parent to find the total since
         //total is not a sibling, but it is part of 
         //#productRow family down the tree
         total = $(this).parents('#productRow').find('#total');
         unitPrice = $(this).parents('#productRow').find('#unitPrice');
-        total.val($(this).val()*unitPrice.val());
-        
+        total.val($(this).val() * unitPrice.val());
+
     });
-    
+
 </script>
 
 @stop
@@ -129,7 +130,29 @@ active
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xs-12">
-                    {{ Form::open(array('route'=>'shoppingLists.store','class'=>'horizontal','role'=>'form')) }}
+                {{ Form::open(array('route'=>'shoppingLists.store','class'=>'form-horizontal','role'=>'form')) }}
+
+                <div class="form-group row">
+                    {{ Form::label('shop_id', 'Shop',array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::select('shop_id', $shops, null, array('class'=>'form-control', 'id'=>'shop_id')) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('planned_date', 'Planned date', array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::text('planned_date', date('Y-m-d'), array('class'=>'form-control',"id"=>"planned_date")) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('note', 'Note', array("class"=>"col-xs-2 control-label")) }}
+                    <div class=" col-xs-10">
+                        {{ Form::textarea('note', null, array('class'=>'form-control',"id"=>"note","rows"=>"3")) }}
+                    </div>
+                </div>
+
                 <div class="row">
                     <dt>
                     <div class="col-xs-4">
@@ -158,8 +181,6 @@ active
             </div>
 
             <p></p>
-
-            </dt>
         </div>
     </div>
 </div>
@@ -180,9 +201,7 @@ active
                         <tr>
                             <th></th>
                             <th>Product</th>
-                            <th>Shop</th>
                             <th>Price</th>
-                            <th>Date</th>
                         </tr>
                     </thead>
 
@@ -190,9 +209,7 @@ active
                         <tr>
                             <th></th>
                             <th>Product</th>
-                            <th>Shop</th>
                             <th>Price</th>
-                            <th>Date</th>
                         </tr>
                     </tfoot>
                 </table>

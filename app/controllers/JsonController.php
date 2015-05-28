@@ -74,7 +74,7 @@ class JsonController extends \BaseController {
         if (Request::ajax()) {
 
             $filter = Input::get('search.value');
-
+            
             $dbRaw = $this->getDbRaw();
 
             $inputColumns = Input::get('columns');
@@ -85,9 +85,13 @@ class JsonController extends \BaseController {
                 'column' => $inputColumns[$inputOrder[0]['column']]['data'],
                 'sortOrder' => $inputOrder[0]['dir']);
 
-            $pFiltered = $this->prodShoppingList($filter, $dbRaw, $orderBy);
-
-            $pUnFiltered = $this->prodShoppingList(null, $dbRaw, $orderBy);
+            $pFiltered = $this->prodShoppingList($filter, Input::get('shop_id'), $dbRaw, $orderBy);
+            
+            $data = $pFiltered->get();
+            
+            return Response::json($pFiltered);
+            
+            $pUnFiltered = $this->prodShoppingList(null, Input::get('shop_id'), $dbRaw, $orderBy);
 
             $response['draw'] = Input::get('draw');
             $response['recordsTotal'] = $pUnFiltered->get()->count();
@@ -95,7 +99,7 @@ class JsonController extends \BaseController {
 
             $response['data'] = $pFiltered->skip(Input::get('start'))
                     ->take(Input::get('length'))->get();
-
+            
             return Response::json($response);
         }
     }
@@ -125,23 +129,36 @@ class JsonController extends \BaseController {
         return substr($having, 5, strlen($having) - 5);
     }
 
-    private function prodShoppingList($filter, $dbRaw, $orderBy) {
-
-        $products = Product::select(
-                        'products.id as product_id', 'shops.description as shops_description', 
-                DB::raw('to_char(purchases.purchase_date,'."'YYYY/MM/DD'".') as "purchase_date"'), 
-                DB::raw($dbRaw), DB::raw('round(avg(products_purchases.total / '
-                                . 'products_purchases.amount)::numeric,2) '
-                                . 'as price')
-                )
-                ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products.id')
-                ->join('products_purchases', 'products.id', '=', 'products_purchases.product_id')
-                ->join('purchases', 'products_purchases.purchase_id', '=', 'purchases.id')
-                ->join('shops', 'purchases.shop_id', '=', 'shops.id')
-                ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
+    private function prodShoppingList($filter, $shop_id, $dbRaw, $orderBy) {
+        //I need to use three subqueries to get the latest price from db
+        
+        $subLastDate = DB::table('products_purchases')
+                ->select('products_purchases.product_id',
+                        'purchases.id as purchase_id',
+                DB::raw('max(purchases.purchase_date) as last_date'))
+                ->join('purchases','purchases.id','=','products_purchases.purchase_id')
+                ->groupBy('products_purchases.product_id')
+                ->groupBy('purchases.id');
+        
+        $subLastPpId = Purchase::select('lastdate.product_id', 'last_date as purchase_date',
+                DB::raw('max(products_purchases.id) AS id'))
+                ->join(DB::raw('('.$subLastDate->toSql().') AS lastdate'),
+                        'lastdate.product_id','=','products_purchases.product_id')
+                ->join('products_purchases','products_purchases.purchase_date','=','lastdate.last_date')
+                ->groupBy('lastdate.product_id')
+                ->groupBy('last_date.purchase_date');
+        
+        return $subLastPpId;
+        
+        $products = Product::select('products.id as product_id', 
+                DB::raw($dbRaw), 'lastppid.price as price')
+                ->join(DB::raw('('.$subLastPpId->toSql().') AS lastppid'))
+                ->join('products_descriptors', 'products_descriptors.product_id'
+                        , '=', 'products.id')
+                ->join('descriptors', 'descriptors.id', '=', 
+                        'products_descriptors.descriptor_id')
+                ->where('purchases.shop_id','=',$shop_id)
                 ->groupBy('products.id')
-                ->groupBy('shops.id')
-                ->groupBy('purchases.purchase_date')
                 ->orderBy($orderBy['column'],$orderBy['sortOrder']);
 
         if ($filter) {

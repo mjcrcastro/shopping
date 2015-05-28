@@ -15,8 +15,9 @@ class AddVerifiedMarkProductPurchase extends Migration {
 	    //was_verified indicates that the reported price
             //was actually verified
             Schema::table('products_purchases',function($table){
-                  $table->boolean('was_verified')
-                          ->default(false);
+                  $table->datetime('verified_date')
+                          ->nullable()
+                          ->default(null);
                   $table->integer('verified_by_id')
                           ->index()
                           ->nullable()
@@ -35,7 +36,7 @@ class AddVerifiedMarkProductPurchase extends Migration {
 	{
 		//
             Schema::table('products_purchases', function($table) {
-                $table->dropColumn('was_verified');
+                $table->dropColumn('verified_date');
                 $table->dropColumn('verified_by_id');
         });
 	}

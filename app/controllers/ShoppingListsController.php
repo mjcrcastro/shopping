@@ -51,8 +51,10 @@ class ShoppingListsController extends \BaseController {
             return Redirect::back()->with('message', $message);
         }
         //a return won't let the following code to continue
+        
+        $shops = Shop::orderBy('description', 'asc')->lists('description', 'id');
 
-        return View::make('shoppingLists.create');
+        return View::make('shoppingLists.create',compact('shops'));
     }
 
     /**
