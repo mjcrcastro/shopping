@@ -89,7 +89,7 @@ class JsonController extends \BaseController {
             
             $data = $pFiltered->get();
             
-            return Response::json($pFiltered);
+            return $pFiltered->toSql();
             
             $pUnFiltered = $this->prodShoppingList(null, Input::get('shop_id'), $dbRaw, $orderBy);
 
@@ -134,31 +134,26 @@ class JsonController extends \BaseController {
         
         $subLastDate = DB::table('products_purchases')
                 ->select('products_purchases.product_id',
-                        'purchases.id as purchase_id',
                 DB::raw('max(purchases.purchase_date) as last_date'))
                 ->join('purchases','purchases.id','=','products_purchases.purchase_id')
-                ->groupBy('products_purchases.product_id')
-                ->groupBy('purchases.id');
+                ->groupBy('products_purchases.product_id');
         
-        $subLastPpId = Purchase::select('lastdate.product_id', 'last_date as purchase_date',
-                DB::raw('max(products_purchases.id) AS id'))
-                ->join(DB::raw('('.$subLastDate->toSql().') AS lastdate'),
-                        'lastdate.product_id','=','products_purchases.product_id')
-                ->join('products_purchases','products_purchases.purchase_date','=','lastdate.last_date')
-                ->groupBy('lastdate.product_id')
-                ->groupBy('last_date.purchase_date');
+        $subLastPpId = Purchase::select(DB::raw('max(products_purchases.id) AS id'))
+                ->from(DB::raw('('.$subLastDate->toSql().') AS lastdate'))
+                ->join('products_purchases','products_purchases.product_id','=','lastdate.product_id')
+                ->groupBy('lastdate.product_id');
         
-        return $subLastPpId;
-        
-        $products = Product::select('products.id as product_id', 
-                DB::raw($dbRaw), 'lastppid.price as price')
-                ->join(DB::raw('('.$subLastPpId->toSql().') AS lastppid'))
+        $products = Product::select(DB::raw($dbRaw),
+                'products_purchases.product_id',
+                DB::raw('avg(products_purchases.total/products_purchases.amount) as price'))
+                ->from(DB::raw('('.$subLastPpId->toSql().') AS lastppid'))
+                ->join('products_purchases','lastppid.id','=','products_purchases.id')
                 ->join('products_descriptors', 'products_descriptors.product_id'
-                        , '=', 'products.id')
+                        , '=', 'products_purchases.product_id')
                 ->join('descriptors', 'descriptors.id', '=', 
                         'products_descriptors.descriptor_id')
                 ->where('purchases.shop_id','=',$shop_id)
-                ->groupBy('products.id')
+                ->groupBy('products_purchases.product_id')
                 ->orderBy($orderBy['column'],$orderBy['sortOrder']);
 
         if ($filter) {
