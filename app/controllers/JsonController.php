@@ -87,10 +87,6 @@ class JsonController extends \BaseController {
 
             $pFiltered = $this->prodShoppingList($filter, Input::get('shop_id'), $dbRaw, $orderBy);
             
-            $data = $pFiltered->get();
-            
-            return $pFiltered->toSql();
-            
             $pUnFiltered = $this->prodShoppingList(null, Input::get('shop_id'), $dbRaw, $orderBy);
 
             $response['draw'] = Input::get('draw');
@@ -152,6 +148,7 @@ class JsonController extends \BaseController {
                         , '=', 'products_purchases.product_id')
                 ->join('descriptors', 'descriptors.id', '=', 
                         'products_descriptors.descriptor_id')
+                ->join('purchases','purchases.id','=','products_purchases.purchase_id')
                 ->where('purchases.shop_id','=',$shop_id)
                 ->groupBy('products_purchases.product_id')
                 ->orderBy($orderBy['column'],$orderBy['sortOrder']);
