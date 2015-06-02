@@ -144,10 +144,8 @@ class JsonController extends \BaseController {
                 DB::raw('avg(products_purchases.total/products_purchases.amount) as price'))
                 ->from(DB::raw('('.$subLastPpId->toSql().') AS lastppid'))
                 ->join('products_purchases','lastppid.id','=','products_purchases.id')
-                ->join('products_descriptors', 'products_descriptors.product_id'
-                        , '=', 'products_purchases.product_id')
-                ->join('descriptors', 'descriptors.id', '=', 
-                        'products_descriptors.descriptor_id')
+                ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products_purchases.product_id')
+                ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('purchases','purchases.id','=','products_purchases.purchase_id')
                 ->where('purchases.shop_id','=',$shop_id)
                 ->groupBy('products_purchases.product_id')
