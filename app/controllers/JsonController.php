@@ -147,7 +147,7 @@ class JsonController extends \BaseController {
                 ->join('products_descriptors', 'products_descriptors.product_id', '=', 'products_purchases.product_id')
                 ->join('descriptors', 'descriptors.id', '=', 'products_descriptors.descriptor_id')
                 ->join('purchases','purchases.id','=','products_purchases.purchase_id')
-                ->where('purchases.shop_id','=',$shop_id)
+                ->groupBy('purchases.shop_id')
                 ->groupBy('products_purchases.product_id')
                 ->orderBy($orderBy['column'],$orderBy['sortOrder']);
 
